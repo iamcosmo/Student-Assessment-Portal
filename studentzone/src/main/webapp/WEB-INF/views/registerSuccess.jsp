@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Registration Successful</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -36,33 +36,10 @@
     </div>
 </nav>
 
-<!-- Registration Form -->
+<!-- Main Content -->
 <div class="container mt-5">
-    <h2 class="text-center">Register</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form action="${pageContext.request.contextPath}/registerUser" method="post">
-			    <div class="form-group">
-			        <label for="name">Name</label>
-			        <input type="text" class="form-control" id="name" name="name" required>
-			    </div>
-			    <div class="form-group">
-			        <label for="email">Email</label>
-			        <input type="email" class="form-control" id="email" name="email" required>
-			    </div>
-			    <div class="form-group">
-			        <label for="dob">Date of Birth</label>
-			        <input type="date" class="form-control" id="dob" name="dob" required>
-			    </div>
-			    <div class="form-group">
-			        <label for="password">Password</label>
-			        <input type="password" class="form-control" id="password" name="password" required>
-			    </div>
-			    <button type="submit" class="btn btn-primary btn-block">Register</button>
-			</form>
-
-        </div>
-    </div>
+    <h2 class="text-center">Registration Successful</h2>
+    <p class="text-center">Thank you for registering!</p>
 </div>
 
 <!-- Bootstrap JS and dependencies -->
