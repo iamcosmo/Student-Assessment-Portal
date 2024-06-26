@@ -5,6 +5,7 @@ public class User {
     private String email;
     private String dob;
     private String password;
+    private int usertype;
 
     // Getters and Setters
     public String getName() {
@@ -38,4 +39,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public int getUsertype() {
+		return usertype;
+	}
+
+	public void setUsertype(int usertype) {
+		this.usertype = usertype;
+	}
 }

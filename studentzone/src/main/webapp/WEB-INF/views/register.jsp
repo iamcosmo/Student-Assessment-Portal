@@ -41,6 +41,9 @@
     <h2 class="text-center">Register</h2>
     <div class="row justify-content-center">
         <div class="col-md-6">
+        <c:if test="${not empty errorMessage}">
+	        <p style="color: red;">${errorMessage}</p>
+	    </c:if>
             <form action="${pageContext.request.contextPath}/registerUser" method="post">
 			    <div class="form-group">
 			        <label for="name">Name</label>
