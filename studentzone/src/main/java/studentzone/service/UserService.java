@@ -10,7 +10,8 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public void registerUser(String name, String email, String dob, String password) {
-        userDao.registerUser(name, email, dob, password);
+    public void registerUser(String name, String email, String dob, String password, int usertype) {
+    	String lowercaseEmail = email.toLowerCase();
+    	userDao.registerUser(name, lowercaseEmail, dob, password,usertype);
     }
 }
