@@ -30,6 +30,13 @@
   scroll-behavior: smooth;
 }
 
+.dark-background {
+  --background-color: black;
+  --default-color: #ffffff;
+  --heading-color: #ffffff;
+  --surface-color: #254160;
+  --contrast-color: #ffffff;
+}
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
