@@ -2,10 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Student Zone</title>
+    <title>Login Page</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -35,10 +35,8 @@
 
     <!-- Main CSS File -->
     <link href="assets/css/register.css" rel="stylesheet" />
-    
-  </head>
-
-  <body class="index-page">
+</head>
+<body class="index-page">
     <header id="header" class="header d-flex align-items-center fixed-top">
       <div
         class="container-fluid position-relative d-flex align-items-center justify-content-between"
@@ -74,114 +72,55 @@
     </header>
 
     <main class="main">
-      <!-- Hero Section -->
-      <section id="hero" class="hero section">
-        <img src="assets/img/hero-bg1.jpg" alt="" data-aos="fade-in" />
+        <!-- Hero Section -->
+        <section id="hero" class="hero section">
+            <img src="assets/img/hero-bg1.jpg" alt="" data-aos="fade-in" />
 
-        <div class="container">
-          <h1>Register</h1>
-          <div class="row">
-            <div class="col-xl-4">
-            <c:if test="${not empty errorMessage}">
-	        	<p style="color: red;">${errorMessage}</p>
-	    	</c:if>
-            <form action="${pageContext.request.contextPath}/registerUser" method="post">
-                <div class="row gy-3 overflow-hidden">
-                  <div class="col-12">
-                    <div class="form-floating mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="name"
-                        id="name"
-                        placeholder="First Name"
-                        required
-                      />
-                      <label for="name" class="form-label">Name</label>
+            <div class="container">
+                <h1>Login</h1>
+                <div class="row">
+                    <div class="col-xl-4">
+                        <c:if test="${not empty errorMessage}">
+                            <p style="color: red;">${errorMessage}</p>
+                        </c:if>
+                        <form action="${pageContext.request.contextPath}/loginUser" method="post">
+                            <div class="row gy-3 overflow-hidden">
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required />
+                                        <label for="email" class="form-label">Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required />
+                                        <label for="password" class="form-label">Password</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" name="usertype" id="usertype" required>
+                                            <option value="0">Student</option>
+                                            <option value="1">Admin</option>
+                                        </select>
+                                        <label for="usertype" class="form-label">User Type</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-grid">
+                                        <button class="btn btn-dark btn-lg" type="submit">Login</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-floating mb-3">
-                      <input
-                        type="date"
-                        class="form-control"
-                        name="dob"
-                        id="dob"
-                        placeholder="date"
-                        required
-                      />
-                      <label for="dob" class="form-label"></label>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-floating mb-3">
-                      <input
-                        type="email"
-                        class="form-control"
-                        name="email"
-                        id="email"
-                        placeholder="name@example.com"
-                        required
-                      />
-                      <label for="email" class="form-label">Email</label>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-floating mb-3">
-                      <input
-                        type="password"
-                        class="form-control"
-                        name="password"
-                        id="password"
-                        value=""
-                        placeholder="Password"
-                        required
-                      />
-                      <label for="password" class="form-label">Password</label>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        name="iAgree"
-                        id="iAgree"
-                        required
-                      />
-                      <label
-                        class="form-check-label text-secondary"
-                        for="iAgree"
-                      >
-                        I agree to the
-                        <a href="#!" class="link-primary text-decoration-none"
-                          >terms and conditions</a
-                        >
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="d-grid">
-                      <button
-                        class="btn btn-dark btn-lg"
-                        type="submit"
-                        href="login.jsp"
-                      >
-                        Sign up
-                      </button>
-                    </div>
-                  </div>
                 </div>
-              </form>
             </div>
-          </div>
-        </div>
-      </section>
-      <!-- /Hero Section -->
+        </section>
+        <!-- /Hero Section -->
     </main>
-    
-     <!-- Footer Section -->
+
+    <!-- Footer Section -->
     <footer id="footer" class="footer position-relative">
       <div class="container footer-top">
         <div class="row gy-4">
@@ -249,25 +188,21 @@
     <!-- /Footer Section -->
 
     <!-- Scroll Top -->
-    <a
-      href="#"
-      id="scroll-top"
-      class="scroll-top d-flex align-items-center justify-content-center"
-      ><i class="bi bi-arrow-up-short"></i
-    ></a>
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <!-- Preloader -->
     <div id="preloader"></div>
 
     <!-- Vendor JS Files -->
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/aos/aos.js"></script>
     <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
     <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-
-    <!-- Main JS File -->
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+	 <!-- Main JS File -->
     <script src="assets/js/register.js"></script>
-  </body>
+
+</body>
 </html>
