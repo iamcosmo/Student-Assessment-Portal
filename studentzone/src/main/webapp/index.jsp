@@ -46,7 +46,7 @@
         class="container-fluid position-relative d-flex align-items-center justify-content-between"
       >
         <a
-          href="index.html"
+          href="index.jsp"
           class="logo d-flex align-items-center me-auto me-xl-0"
         >
           <h1 class="sitename">StudentZone</h1>
@@ -55,11 +55,20 @@
 
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="#" class="active">Home</a></li>
+            <li><a href="index.jsp" class="active">Home</a></li>
             <li><a href="about.jsp">About</a></li>
             <li><a href="assessment.jsp">Assessment</a></li>
             <li><a href="results.jsp">Results</a></li>
             <li><a href="analyze.jsp">Analyze</a></li>
+            <c:choose>
+                <c:when test="${not empty sessionScope.user}">
+                    <li><a href="<c:url value='/logout'/>">Logout</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li><a href="<c:url value='/login'/>">Login</a></li>
+                    <li><a href="<c:url value='/register'/>">Register</a></li>
+                </c:otherwise>
+            </c:choose>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>

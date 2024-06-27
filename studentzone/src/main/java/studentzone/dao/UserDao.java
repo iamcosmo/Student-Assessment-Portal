@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
+import studentzone.model.User;
 
 @Repository
 public class UserDao {
@@ -37,6 +38,23 @@ public class UserDao {
             } else {
                 throw new RuntimeException("Error registering user", e);
             }
+        }
+    }
+    
+    public User validateUser(String email, String password, int usertype) {
+        String sql = "SELECT * FROM users WHERE email = ? AND password = ? AND usertype = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+                User user = new User();
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setDob(rs.getString("dob"));
+                user.setPassword(rs.getString("password"));
+                user.setUsertype(rs.getInt("usertype"));
+                return user;
+            }, email, password, usertype);
+        } catch (DataAccessException e) {
+            return null;
         }
     }
 }

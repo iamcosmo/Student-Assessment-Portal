@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import studentzone.model.User;
 import studentzone.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
@@ -38,5 +42,33 @@ public class HomeController {
     @GetMapping("/registerSuccess")
     public String showRegistrationSuccessPage() {
         return "registerSuccess";
+    }
+    
+    @GetMapping("/login")
+    public String login() {
+    	System.out.println("Login Invoked");
+        return "login";
+    }
+
+    @PostMapping("/loginUser")
+    public String loginUser(@RequestParam("email") String email, 
+                            @RequestParam("password") String password, 
+                            @RequestParam("usertype") int userType,
+                            HttpServletRequest request, Model model) {
+        User user = userService.validateUser(email, password, userType);
+        if (user != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            return "redirect:/index.jsp";
+        } else {
+            model.addAttribute("errorMessage", "Invalid email, password, or user type.");
+            return "login";
+        }
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/index.jsp";
     }
 }
