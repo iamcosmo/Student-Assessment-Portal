@@ -72,7 +72,7 @@
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
-
+			
         <a class="btn-getstarted" href="<c:url value='/register'/>">Register</a>
       </div>
     </header>

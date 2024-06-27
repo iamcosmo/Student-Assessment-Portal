@@ -32,7 +32,7 @@ public class HomeController {
                                Model model) {
         try {
             userService.registerUser(name, email, dob, password, 0);
-            return "redirect:/registerSuccess";
+            return "redirect:/login";
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "register";
