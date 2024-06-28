@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import studentzone.model.User;
-import studentzone.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import studentzone.model.User;
+import studentzone.service.UserService;
 
 @Controller
 public class HomeController {
@@ -46,7 +46,6 @@ public class HomeController {
     
     @GetMapping("/login")
     public String login() {
-    	System.out.println("Login Invoked");
         return "login";
     }
 
@@ -59,7 +58,12 @@ public class HomeController {
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            return "redirect:/index.jsp";
+            if (userType == 1) {
+                session.setAttribute("adminUsername", user.getEmail());
+                return "redirect:/admin/dashboard";
+            } else {
+                return "redirect:/index.jsp";
+            }
         } else {
             model.addAttribute("errorMessage", "Invalid email, password, or user type.");
             return "login";
