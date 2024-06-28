@@ -21,7 +21,7 @@
                 <a class="nav-link" href="index.jsp">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="assessment.jsp">Assessment</a>
+                <a class="nav-link" href="<c:url value='/student/assessment'/>">Assessment</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="results.jsp">Results</a>
