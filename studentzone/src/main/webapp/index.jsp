@@ -42,39 +42,55 @@
 
   <body class="index-page">
     <header id="header" class="header d-flex align-items-center fixed-top">
-      <div
-        class="container-fluid position-relative d-flex align-items-center justify-content-between"
-      >
-        <a
-          href="index.jsp"
-          class="logo d-flex align-items-center me-auto me-xl-0"
-        >
-          <h1 class="sitename">StudentZone</h1>
-          <span></span>
-        </a>
+		<div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+	        <a
+	          href="index.jsp"
+	          class="logo d-flex align-items-center me-auto me-xl-0"
+	        >
+	          <h1 class="sitename">StudentZone</h1>
+	          <span></span>
+	        </a>
 
-        <nav id="navmenu" class="navmenu">
-          <ul>
-            <li><a href="index.jsp" class="active">Home</a></li>
-            <li><a href="about.jsp">About</a></li>
-            <li><a href="assessment.jsp">Assessment</a></li>
-            <li><a href="results.jsp">Results</a></li>
-            <li><a href="analyze.jsp">Analyze</a></li>
-            <c:choose>
-                <c:when test="${not empty sessionScope.user}">
-                    <li><a href="<c:url value='/logout'/>">Logout</a></li>
-                </c:when>
-                <c:otherwise>
-                    <li><a href="<c:url value='/login'/>">Login</a></li>
-                    <li><a href="<c:url value='/register'/>">Register</a></li>
-                </c:otherwise>
-            </c:choose>
-          </ul>
-          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-        </nav>
-
-        <a class="btn-getstarted" href="<c:url value='/register'/>">Register</a>
-      </div>
+	        <nav id="navmenu" class="navmenu">
+	          <ul>
+	            <li><a href="index.jsp" class="active">Home</a></li>
+	            <li><a href="about.jsp">About</a></li>
+	            <li><a href="assessment.jsp">Assessment</a></li>
+	            <li><a href="results.jsp">Results</a></li>
+	            <li><a href="analyze.jsp">Analyze</a></li>
+	            <c:choose>
+	                <c:when test="${not empty sessionScope.user}">
+	                    <li><a href="<c:url value='/logout'/>">Logout</a></li>
+	                </c:when>
+	                <c:otherwise>
+	                    <li><a href="<c:url value='/login'/>">Login</a></li>
+	                    <li><a href="<c:url value='/register'/>">Register</a></li>
+	                </c:otherwise>
+	            </c:choose>
+	          </ul>
+	          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+	        </nav> 
+	        <c:choose>
+	                <c:when test="${not empty sessionScope.user}">
+	                    <div class="dropdown">
+						  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border: none">
+						  		<i class="bi bi-person-circle" 
+	                    			style="font-size: 1.5rem;
+	    							cursor: pointer;
+	    							color: white;">
+	    						</i>
+						  </button>
+						  <ul class="dropdown-menu">
+						    <li><a class="dropdown-item" href="#">Profile</a></li>
+						    <li><a class="dropdown-item" href="#">Another action</a></li>
+						  </ul>
+						</div>   
+	                </c:when>
+	                <c:otherwise>
+						<a class="btn-getstarted" href="<c:url value='/register'/>">Register</a>
+	                </c:otherwise>
+	        </c:choose>     
+        </div>
     </header>
 
     <main class="main">
