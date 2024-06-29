@@ -30,4 +30,9 @@ public class Questions {
 
     public String getAnswer() { return answer; }
     public void setAnswer(String answer) { this.answer = answer; }
+
+    private int setId; // Foreign key to QuestionSet
+    public int getSetId() { return setId; }
+    public void setSetId(int setId) { this.setId = setId; }
+
 }

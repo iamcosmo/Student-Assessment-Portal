@@ -19,27 +19,44 @@ public class QuestionsDao {
 
     @Transactional
     public boolean insertQuestion(Questions question) {
-        String sql = "INSERT INTO question (question, a, b, c, d, answer) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO question (question, a, b, c, d, answer, set_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
-            int result = jdbcTemplate.update(sql, question.getQuestion(), question.getA(), question.getB(), question.getC(), question.getD(), question.getAnswer());
+            int result = jdbcTemplate.update(sql, question.getQuestion(), question.getA(), question.getB(), question.getC(), question.getD(), question.getAnswer(), question.getSetId());
             return result > 0;
         } catch (DataAccessException e) {
             return false;
         }
     }
 
-
-    public List<Questions> getAllRecords() {
-        String sql = "SELECT * FROM question";
-        return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
+    @SuppressWarnings("deprecation")
+    public List<Questions> getAllRecordsBySetId(int setId) {
+        String sql = "SELECT * FROM question WHERE set_id = ?";
+        return jdbcTemplate.query(sql, new Object[]{setId}, (ResultSet rs, int rowNum) -> {
             Questions question = new Questions();
-            question.setId(rs.getInt("id")); // Make sure to include the ID
+            question.setId(rs.getInt("id")); 
             question.setQuestion(rs.getString("question"));
             question.setA(rs.getString("a"));
             question.setB(rs.getString("b"));
             question.setC(rs.getString("c"));
             question.setD(rs.getString("d"));
             question.setAnswer(rs.getString("answer"));
+            question.setSetId(rs.getInt("set_id"));
+            return question;
+        });
+    }
+
+    public List<Questions> getAllRecords() {
+        String sql = "SELECT * FROM question";
+        return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
+            Questions question = new Questions();
+            question.setId(rs.getInt("id"));
+            question.setQuestion(rs.getString("question"));
+            question.setA(rs.getString("a"));
+            question.setB(rs.getString("b"));
+            question.setC(rs.getString("c"));
+            question.setD(rs.getString("d"));
+            question.setAnswer(rs.getString("answer"));
+            question.setSetId(rs.getInt("set_id"));
             return question;
         });
     }
@@ -54,20 +71,20 @@ public class QuestionsDao {
         String sql = "SELECT * FROM question WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{qid}, (rs, rowNum) -> {
             Questions question = new Questions();
-            question.setId(rs.getInt("id")); 
+            question.setId(rs.getInt("id"));
             question.setQuestion(rs.getString("question"));
             question.setA(rs.getString("a"));
             question.setB(rs.getString("b"));
             question.setC(rs.getString("c"));
             question.setD(rs.getString("d"));
             question.setAnswer(rs.getString("answer"));
+            question.setSetId(rs.getInt("set_id"));
             return question;
         });
     }
-    
-    public int updateQuestion(int qid, String newQuestion, String optA, String optB, String optC, String optD, String answer) {
-        String sql = "UPDATE question SET question = ?, a = ?, b = ?, c = ?, d = ?, answer = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, newQuestion, optA, optB, optC, optD, answer, qid);
+    public int updateQuestion(int qid, String newQuestion, String optA, String optB, String optC, String optD, String answer, int set_id) {
+        String sql = "UPDATE question SET question = ?, a = ?, b = ?, c = ?, d = ?, answer = ?, set_id = ? WHERE id = ?";
+        return jdbcTemplate.update(sql, newQuestion, optA, optB, optC, optD, answer, set_id, qid); // Include set_id parameter
     }
     
 }
