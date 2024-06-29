@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+    <link href="${pageContext.request.contextPath}/bootstrap.min.css" rel="stylesheet" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
@@ -42,7 +41,7 @@
             <h1>Welcome, ${sessionScope.adminUsername}</h1>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Add Question</h5>
@@ -51,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">View Questions</h5>
@@ -60,7 +59,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Question Sets</h5>
+                        <p class="card-text">Manage question sets.</p>
+                        <a href="${pageContext.request.contextPath}/admin/questionSets" class="btn btn-primary">Go to Question Sets</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Logout</h5>
@@ -71,6 +79,6 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="${pageContext.request.contextPath}/bootstrap.bundle.min.js"></script>
 </body>
 </html>
