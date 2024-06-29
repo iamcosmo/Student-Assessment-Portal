@@ -23,6 +23,12 @@ public class HomeController {
     public String register() {
         return "register";
     }
+    
+    @RequestMapping("/")
+    public String home()
+    {
+    	return "home";
+    }
 
     @PostMapping("/registerUser")
     public String registerUser(@RequestParam("name") String name, 
@@ -39,6 +45,12 @@ public class HomeController {
         }
     }
     
+    @GetMapping("/TrialsJSP")
+    public String showTrialsJSPPage()
+    {
+    	return "TrialsJSP";
+    }
+    
     @GetMapping("/registerSuccess")
     public String showRegistrationSuccessPage() {
         return "registerSuccess";
@@ -47,11 +59,6 @@ public class HomeController {
     @GetMapping("/login")
     public String login() {
         return "login";
-    }
-    
-    @GetMapping("/profile")
-    public String profile() {
-        return "profile";
     }
 
     @PostMapping("/loginUser")
@@ -67,7 +74,7 @@ public class HomeController {
                 session.setAttribute("adminUsername", user.getEmail());
                 return "redirect:/admin/dashboard";
             } else {
-                return "redirect:/index.jsp";
+                return "redirect:/";
             }
         } else {
             model.addAttribute("errorMessage", "Invalid email, password, or user type.");
@@ -78,6 +85,6 @@ public class HomeController {
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/index.jsp";
+        return "redirect:/";
     }
 }
