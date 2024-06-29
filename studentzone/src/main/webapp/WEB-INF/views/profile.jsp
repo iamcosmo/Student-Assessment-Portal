@@ -18,14 +18,14 @@
     rel="stylesheet" />
 
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="${pageContext.request.contextPath}/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="${pageContext.request.contextPath}/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
 
   <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet" />
+  <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet" />
 </head>
 
 <body class="index-page">
@@ -38,7 +38,7 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.jsp" class="active">Home</a></li>
+          <li><a href="<c:url value='/'/>" class="active">Home</a></li>
           <li><a href="about.jsp">About</a></li>
           <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
           <li><a href="results.jsp">Results</a></li>
@@ -79,18 +79,18 @@
   <main class="main">
     <!-- Hero Section -->
     <section id="hero" class="hero section" >
-      <img src="assets/img/img_h_7.jpg" alt="hero" data-aos="fade-in" />
+      <img src="${pageContext.request.contextPath}/assets/img/img_h_7.jpg" alt="hero" data-aos="fade-in" />
       <div class="container" style="color:black;margin-bottom:5%">
         <div class="row">
           <div class="col-xl-4" style="height:100%">
 			  <div class="card" style="border: none; box-shadow: none;">
 			    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center" style="text-align: center;">
-			      <h4 style="color: black; margin: 15px 0 5px; font-size: 22px;">Kevin Anderson</h4>
+			      <h4 style="color: black; margin: 15px 0 5px; font-size: 22px;">${userDetails.fullName}</h4>
 			      <p style="color: gray; font-size: 16px; margin-bottom: 10px;"> Student</p>
 			      <div class="social-links mt-2" style="display: flex; justify-content: center; gap: 15px;">
-			        <a href="#" class="github" style="font-size: 20px; color: #333;"><i class="bi bi-github"></i></a>
-			        <a href="#" class="instagram" style="font-size: 20px; color: #333;"><i class="bi bi-instagram"></i></a>
-			        <a href="#" class="linkedin" style="font-size: 20px; color: #333;"><i class="bi bi-linkedin"></i></a>
+			        <a href="${userDetails.gitHubProfile}" class="github" style="font-size: 20px; color: #333;"><i class="bi bi-github"></i></a>
+			        <a href="${userDetails.instagramProfile}" class="instagram" style="font-size: 20px; color: #333;"><i class="bi bi-instagram"></i></a>
+			        <a href="${userDetails.linkedInProfile}" class="linkedin" style="font-size: 20px; color: #333;"><i class="bi bi-linkedin"></i></a>
 			      </div>
 			    </div>
 			  </div>
@@ -138,40 +138,37 @@
                   >
                     <h5 class="card-title">About</h5>
                     <p class="fst-italic" style="color:grey; font-size:15px; margin-bottom:1%">
-                      Sunt est soluta temporibus accusantium neque nam maiores
-                      cumque temporibus. Tempora libero non est unde veniam est
-                      qui dolor. Ut sunt iure rerum quae quisquam autem eveniet
-                      perspiciatis odit. Fuga sequi sed ea saepe at unde.
+                      ${userDetails.about}
                     </p>
 
                     <h5 class="card-title">Profile Details</h5>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Full Name</div>
-                      <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                      <div class="col-lg-9 col-md-8">${userDetails.fullName}</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Country</div>
-                      <div class="col-lg-9 col-md-8">USA</div>
+                      <div class="col-lg-9 col-md-8">${userDetails.country}</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Address</div>
                       <div class="col-lg-9 col-md-8">
-                        A108 Adam Street, New York, NY 535022
+                        ${userDetails.address}
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Phone</div>
-                      <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                      <div class="col-lg-9 col-md-8">(+91) ${userDetails.phone}</div>
                     </div>
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Email</div>
                       <div class="col-lg-9 col-md-8">
-                        k.anderson@example.com
+                        ${userDetails.email}
                       </div>
                     </div>
 
@@ -179,7 +176,7 @@
                       <div class="col-lg-3 col-md-4 label">
                         College/University
                       </div>
-                      <div class="col-lg-9 col-md-8">silicon University</div>
+                      <div class="col-lg-9 col-md-8">${userDetails.college}</div>
                     </div>
                   </div>
 
@@ -188,7 +185,7 @@
                     id="profile-edit"
                   >
                     <!-- Profile Edit Form -->
-                    <form>                      
+                    <form action="<c:url value='/student/editProfile'/>">                      
                       <div class="row mb-3">
                         <label
                           for="fullName"
@@ -201,7 +198,7 @@
                             type="text"
                             class="form-control"
                             id="fullName"
-                            value="Kevin Anderson"
+                            placeholder="${userDetails.fullName}"
                           />
                         </div>
                       </div>
@@ -218,8 +215,7 @@
                             class="form-control"
                             id="about"
                             style="height: 100px"
-                          >
-Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea
+                          >${userDetails.about} </textarea
                           >
                         </div>
                       </div>
@@ -236,7 +232,7 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="text"
                             class="form-control"
                             id="Country"
-                            value="USA"
+                            placeholder="${userDetails.country }"
                           />
                         </div>
                       </div>
@@ -253,7 +249,7 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="text"
                             class="form-control"
                             id="Address"
-                            value="A108 Adam Street, New York, NY 535022"
+                            placeholder="${userDetails.address }"
                           />
                         </div>
                       </div>
@@ -270,7 +266,7 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="text"
                             class="form-control"
                             id="Phone"
-                            value="(436) 486-3538 x29071"
+                            placeholder="${userDetails.phone}"
                           />
                         </div>
                       </div>
@@ -287,7 +283,7 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="email"
                             class="form-control"
                             id="Email"
-                            value="k.anderson@example.com"
+                            placeholder="${userDetails.email}"
                           />
                         </div>
                       </div>
@@ -304,7 +300,7 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="text"
                             class="form-control"
                             id="github"
-                            value="https://github.com/#"
+                            placeholder="${userDetails.gitHubProfile}"
                           />
                         </div>
                       </div>
@@ -321,7 +317,7 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="text"
                             class="form-control"
                             id="Instagram"
-                            value="https://instagram.com/#"
+                            placeholder="${userDetails.instagramProfile}"
                           />
                         </div>
                       </div>
@@ -338,7 +334,7 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
                             type="text"
                             class="form-control"
                             id="Linkedin"
-                            value="https://linkedin.com/#"
+                            placeholder="${userDetails.linkedInProfile}"
                           />
                         </div>
                       </div>
@@ -486,15 +482,15 @@ Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Temp
   </a>
 
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/php-email-form/validate.js"></script>
 
   <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 </body>
 </html>

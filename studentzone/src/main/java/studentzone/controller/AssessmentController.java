@@ -6,7 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import studentzone.model.SubjectInterest;
 import studentzone.model.User;
+import studentzone.model.UserDetails;
 import studentzone.service.SubjectInterestService;
+import studentzone.service.UserDetailsService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -15,12 +17,14 @@ import jakarta.servlet.http.HttpSession;
 public class AssessmentController {
 
     private final SubjectInterestService subjectInterestService;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    public AssessmentController(SubjectInterestService subjectInterestService) {
+    public AssessmentController(SubjectInterestService subjectInterestService, UserDetailsService userDetailsService) {
         this.subjectInterestService = subjectInterestService;
+        this.userDetailsService = userDetailsService;
     }
-
+    
     @GetMapping("/assessment")
     public String showAssessmentPage(HttpSession session, Model model) {
         // Check if user is logged in
@@ -44,7 +48,7 @@ public class AssessmentController {
         model.addAttribute("userEmail", userEmail);
         model.addAttribute("subjectInterest", subjectInterest);
 
-        // Return assessment.jsp view
+
         return "student/assessment";
     }
 
@@ -56,7 +60,7 @@ public class AssessmentController {
     @PostMapping("/submitSubjectForm")
     public String submitSubjectForm(@RequestParam("subjects") String[] subjects,
                                     HttpSession session) {
-        // Assuming you have a method to save subject interests in SubjectInterestService
+        
         User user = (User) session.getAttribute("user");
         if (user != null) {
             String userEmail = user.getEmail();
@@ -67,6 +71,27 @@ public class AssessmentController {
         }
         return "redirect:/student/assessment";
     }
-
-    // Additional methods for handling subject form submission and other functionalities can be added here
+    
+    @GetMapping("/profile")
+    public String profile(HttpSession session, Model model) {
+    	
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        
+        UserDetails userDetails = userDetailsService.findByEmail(user.getEmail()); 
+        if(userDetails==null)
+        {
+        	System.out.println("user Not found in Profile Page");
+        	userDetailsService.createUserProfile(user.getEmail(),user.getName());
+        	System.out.println("User Profile Created");
+        	userDetails = userDetailsService.findByEmail(user.getEmail());
+        }
+       
+        model.addAttribute("userDetails", userDetails);
+        return "profile";
+    }
+    
+        
 }
