@@ -48,6 +48,11 @@ public class HomeController {
     public String login() {
         return "login";
     }
+    
+    @GetMapping("/profile")
+    public String profile() {
+        return "profile";
+    }
 
     @PostMapping("/loginUser")
     public String loginUser(@RequestParam("email") String email, 

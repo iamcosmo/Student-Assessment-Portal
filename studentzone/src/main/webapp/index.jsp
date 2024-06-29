@@ -81,7 +81,7 @@
 	    						</i>
 						  </button>
 						  <ul class="dropdown-menu">
-						    <li><a class="dropdown-item" href="#">Profile</a></li>
+						    <li><a class="dropdown-item" href="<c:url value='profile'/>">Profile</a></li>
 						    <li><a class="dropdown-item" href="#">Another action</a></li>
 						  </ul>
 						</div>   
