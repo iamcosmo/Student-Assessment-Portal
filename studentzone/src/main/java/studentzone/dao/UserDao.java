@@ -68,9 +68,9 @@ public class UserDao {
         boolean validated = false;
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(FIND_USER_PASSWORD_SQL, email);
         while (rowSet.next()) {
-        	System.out.println(" validation statement Executed");
+        	
             if (currentPassword.equals(rowSet.getString("password"))) { // Correct column name
-                System.out.println("validated");
+                
             	validated = true;
             }
         }
@@ -80,7 +80,7 @@ public class UserDao {
     public String changePassword(String email, String newPassword)
     {
     	try {
-    		System.out.println("begin updating ");
+    		
     		jdbcTemplate.update(UPDATE_USER_PASSWORD_SQL,newPassword,email); 	    	
     	}
     	catch (DataIntegrityViolationException e) {
@@ -104,7 +104,7 @@ public class UserDao {
             System.err.println("Password update failed due to an unexpected error: " + e.getMessage());
             return "Update Failed";
         }
-    	System.out.println("Updated..Finally");
+    	
     	return "updated";
     }
 }
