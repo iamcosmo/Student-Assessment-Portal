@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import  org.springframework.stereotype.Repository;
-import org.springframework.jdbc.core.RowMapper;
+import  org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import studentzone.model.QuestionSet;
 
@@ -15,9 +15,17 @@ public class QuestionSetDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // public List<QuestionSet> getAllSets() {
+    //     String sql = "SELECT * FROM question_set";
+    //     return jdbcTemplate.query(sql, (rs, rowNum) -> new QuestionSet(rs.getInt("id"), rs.getString("name")));
+    // }
     public List<QuestionSet> getAllSets() {
         String sql = "SELECT * FROM question_set";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new QuestionSet(rs.getInt("id"), rs.getString("name")));
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new QuestionSet(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getInt("question_count") 
+        ));
     }
 
     public boolean insertSet(QuestionSet set) {
@@ -34,18 +42,7 @@ public class QuestionSetDao {
         String deleteSetSql = "DELETE FROM question_set WHERE id = ?";
         return jdbcTemplate.update(deleteSetSql, id) > 0;
     }
-    // public boolean deleteSet(int id) {
-    //     // any related questions
-    //     String countQuestionsSql = "SELECT COUNT(*) FROM question WHERE set_id = ?";
-    //     int count = jdbcTemplate.queryForObject(countQuestionsSql, Integer.class, id);
-        
-    //     if (count > 0) {
-    //         return false; //  throw an exception indicating related questions exist
-    //     }
-    //     String deleteSetSql = "DELETE FROM question_set WHERE id = ?";
-    //     return jdbcTemplate.update(deleteSetSql, id) > 0;
-    // }
-    
+  
 
     public boolean updateSet(QuestionSet set) {
         String sql = "UPDATE question_set SET name = ? WHERE id = ?";
@@ -60,9 +57,19 @@ public class QuestionSetDao {
                 QuestionSet set = new QuestionSet();
                 set.setId(rs.getInt("id"));
                 set.setName(rs.getString("name"));
+                set.setQuestionCount(rs.getInt("question_count"));
                 return set;
             }
         });
+    }
+    public void incrementQuestionCount(int setId) {
+        String sql = "UPDATE question_set SET question_count = question_count + 1 WHERE id = ?";
+        jdbcTemplate.update(sql, setId);
+    }
+
+    public void decrementQuestionCount(int setId) {
+        String sql = "UPDATE question_set SET question_count = question_count - 1 WHERE id = ?";
+        jdbcTemplate.update(sql, setId);
     }
     
 }

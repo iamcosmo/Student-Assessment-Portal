@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import studentzone.model.Questions;
 
@@ -17,16 +16,20 @@ public class QuestionsDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Transactional
-    public boolean insertQuestion(Questions question) {
-        String sql = "INSERT INTO question (question, a, b, c, d, answer, set_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try {
-            int result = jdbcTemplate.update(sql, question.getQuestion(), question.getA(), question.getB(), question.getC(), question.getD(), question.getAnswer(), question.getSetId());
-            return result > 0;
-        } catch (DataAccessException e) {
+public boolean insertQuestion(Questions question) {
+    String sql = "INSERT INTO question (question, a, b, c, d, answer, set_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    try {
+        int result = jdbcTemplate.update(sql, question.getQuestion(), question.getA(), question.getB(), question.getC(), question.getD(), question.getAnswer(), question.getSetId());
+        if (result > 0) {
+            incrementQuestionCount(question.getSetId());
+            return true;
+        } else {
             return false;
         }
+    } catch (DataAccessException e) {
+        return false;
     }
+}
 
     @SuppressWarnings("deprecation")
     public List<Questions> getAllRecordsBySetId(int setId) {
@@ -61,10 +64,10 @@ public class QuestionsDao {
         });
     }
 
-    public int deleteRecord(int qid) {
-        String sql = "DELETE FROM question WHERE id = ?";
-        return jdbcTemplate.update(sql, qid);
-    }
+    // public int deleteRecord(int qid) {
+    //     String sql = "DELETE FROM question WHERE id = ?";
+    //     return jdbcTemplate.update(sql, qid);
+    // }
 
     @SuppressWarnings("deprecation")
     public Questions getRecordById(int qid) {
@@ -86,5 +89,27 @@ public class QuestionsDao {
         String sql = "UPDATE question SET question = ?, a = ?, b = ?, c = ?, d = ?, answer = ?, set_id = ? WHERE id = ?";
         return jdbcTemplate.update(sql, newQuestion, optA, optB, optC, optD, answer, set_id, qid); // Include set_id parameter
     }
+
+
+
+public int deleteRecord(int qid) {
+    Questions question = getRecordById(qid);
+    String sql = "DELETE FROM question WHERE id = ?";
+    int result = jdbcTemplate.update(sql, qid);
+    if (result > 0) {
+        decrementQuestionCount(question.getSetId());
+    }
+    return result;
+}
+
+private void incrementQuestionCount(int setId) {
+    String sql = "UPDATE question_set SET question_count = question_count + 1 WHERE id = ?";
+    jdbcTemplate.update(sql, setId);
+}
+
+private void decrementQuestionCount(int setId) {
+    String sql = "UPDATE question_set SET question_count = question_count - 1 WHERE id = ?";
+    jdbcTemplate.update(sql, setId);
+}
     
 }
