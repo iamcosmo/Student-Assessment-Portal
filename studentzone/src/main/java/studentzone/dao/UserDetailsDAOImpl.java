@@ -66,7 +66,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO
 	}
 	
 	@Override
-	public void update(UserDetails userDetails) {
+	public UserDetails update(UserDetails userDetails) {
 		
 		String email = userDetails.getEmail();
 		
@@ -74,7 +74,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO
 		
 		String fullName = userDetails.getFullName()==""?currentUserDetails.getFullName():userDetails.getFullName();
 		String about=userDetails.getAbout()==""?currentUserDetails.getAbout():userDetails.getAbout();
-		String address=userDetails.getAddress();
+		String address=userDetails.getAddress()==""?currentUserDetails.getAddress():userDetails.getAddress();
 		String gitHubProfile=userDetails.getGitHubProfile()==""?currentUserDetails.getGitHubProfile():userDetails.getGitHubProfile();
 		String linkedInProfile=userDetails.getLinkedInProfile()==""?currentUserDetails.getLinkedInProfile():userDetails.getLinkedInProfile();
 		String instagramProfile=userDetails.getInstagramProfile()==""?currentUserDetails.getInstagramProfile():userDetails.getInstagramProfile();
@@ -82,7 +82,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO
 		String phone=userDetails.getPhone()==""?currentUserDetails.getPhone():userDetails.getPhone();
 		String college=userDetails.getCollege()==""?currentUserDetails.getCollege():userDetails.getCollege();
 		jdbcTemplate.update(UPDATE_PROFILE_SQL,fullName,about,country,address,phone,gitHubProfile,instagramProfile,linkedInProfile,college,email);			
-		
+		return currentUserDetails = findByEmail(email);
 	}
 
 

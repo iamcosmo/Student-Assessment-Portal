@@ -11,7 +11,7 @@
     </c:if>
     
      <!-- Link to go back to index.jsp -->
-    <p><a href="${pageContext.request.contextPath}/index.jsp">Go back to Home</a></p>
+    <p><a href="${pageContext.request.contextPath}/home.jsp">Go back to Home</a></p>
     
     <!-- Display question sets here -->
     <!-- Display question sets here -->

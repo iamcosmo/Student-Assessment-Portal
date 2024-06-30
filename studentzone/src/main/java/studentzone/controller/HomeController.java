@@ -11,13 +11,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import studentzone.model.User;
+import studentzone.model.UserDetails;
 import studentzone.service.UserService;
+import studentzone.service.UserDetailsService;
 
 @Controller
 public class HomeController {
+	
+	private final UserService userService;
+	private final UserDetailsService userDetailsService;
 
     @Autowired
-    private UserService userService;
+    public HomeController(UserService userService, UserDetailsService userDetailsService) {
+        this.userService = userService;
+        this.userDetailsService = userDetailsService;
+    }
 
     @RequestMapping("/register")
     public String register() {
@@ -70,10 +78,17 @@ public class HomeController {
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            if (userType == 1) {
+            if (userType == 1) 
+            {
                 session.setAttribute("adminUsername", user.getEmail());
                 return "redirect:/admin/dashboard";
-            } else {
+            } else 
+            {            	
+            	UserDetails userDetails = userDetailsService.findByEmail(user.getEmail());
+            	if(userDetails!=null)
+            	{
+            		session.setAttribute("userProfile", userDetails);
+            	}
                 return "redirect:/";
             }
         } else {
