@@ -26,6 +26,70 @@
 
   <!-- Main CSS File -->
   <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet" />
+  
+  <style>
+  		.card {
+		  background-color: #fff;
+		  border-radius: 10px;
+		  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		  overflow: hidden;
+		}
+		
+		.card-header {
+		  background-color: black;
+		  color: #fff;
+		  padding: 10px 15px;
+		}
+		
+		.card-header .nav-tabs .nav-link {
+		  color: #fff;
+		  border: none;
+		}
+		
+		.card-header .nav-tabs .nav-link.active {
+		  background-color: #413543;
+		  border: none;
+		}
+		
+		.card-title {
+		  color: #1A120B;
+		  border-bottom: 2px solid #1A120B;
+		  display: inline-block;
+		  padding-bottom: 5px;
+		  margin-bottom: 15px;
+		}
+		
+		.label {
+		  color: #333;
+		  font-weight: bold;
+		}
+		
+		
+		.tab-content {
+		  background-color: #f9f9f9;
+		  border-radius: 10px;
+		  padding: 20px;
+		}
+		
+		.row {
+		  margin-bottom: 10px;
+		}
+		
+		.form-control {
+		  border-radius: 5px;
+		}
+		
+		.btn-primary {
+		  background-color: #007bff;
+		  border: none;
+		}
+		
+		.btn-primary:hover {
+		  background-color: #0056b3;
+		}
+		  		
+  </style>
+  
 </head>
 
 <body class="index-page">
@@ -62,7 +126,7 @@
 						  		<i class="bi bi-person-circle" 
 	                    			style="font-size: 1.5rem;
 	    							cursor: pointer;
-	    							color: black;">
+	    							color: white;">
 	    						</i>
 						  </button>
 
@@ -96,338 +160,153 @@
 			  </div>
 			</div>
           <div class="col-xl-8">
-            <div class="card" >
-  				<div class="card-header">
-                <!-- Bordered Tabs -->
-    			<ul class="nav nav-tabs card-header-tabs">
-                  <li class="nav-item">
-                    <button
-                      class="nav-link active"
-                      data-bs-toggle="tab"
-                      data-bs-target="#profile-overview"
-                    >
-                      Overview
-                    </button>
-                  </li>
+			  <div class="card">
+			    <div class="card-header">
+			      <!-- Bordered Tabs -->
+			      <ul class="nav nav-tabs card-header-tabs">
+			        <li class="nav-item">
+			          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">
+			            Overview
+			          </button>
+			        </li>
+			        <li class="nav-item">
+			          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">
+			            Edit Profile
+			          </button>
+			        </li>
+			        <li class="nav-item">
+			          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">
+			            Change Password
+			          </button>
+			        </li>
+			      </ul>
+			    </div>
+			    <div class="tab-content pt-2 card-body">
+			      <div class="tab-pane fade show active profile-overview" id="profile-overview">
+			        <h5 class="card-title">About</h5>
+			        <p class="fst-italic" style="color: #20262E;font-size: 18px;margin-bottom: 4%;">
+			          ${userDetails.about}
+			        </p>
+			        <h5 class="card-title">Profile Details</h5>
+			        <div class="row mb-3">
+			          <div class="col-lg-3 col-md-4 label">Full Name</div>
+			          <div class="col-lg-9 col-md-8">${userDetails.fullName}</div>
+			        </div>
+			        <div class="row mb-3">
+			          <div class="col-lg-3 col-md-4 label">Country</div>
+			          <div class="col-lg-9 col-md-8">${userDetails.country}</div>
+			        </div>
+			        <div class="row mb-3">
+			          <div class="col-lg-3 col-md-4 label">Address</div>
+			          <div class="col-lg-9 col-md-8">${userDetails.address}</div>
+			        </div>
+			        <div class="row mb-3">
+			          <div class="col-lg-3 col-md-4 label">Phone</div>
+			          <div class="col-lg-9 col-md-8">(+91) ${userDetails.phone}</div>
+			        </div>
+			        <div class="row mb-3">
+			          <div class="col-lg-3 col-md-4 label">Email</div>
+			          <div class="col-lg-9 col-md-8">${userDetails.email}</div>
+			        </div>
+			        <div class="row mb-3">
+			          <div class="col-lg-3 col-md-4 label">College/University</div>
+			          <div class="col-lg-9 col-md-8">${userDetails.college}</div>
+			        </div>
+			      </div>
+			      <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+			        <!-- Profile Edit Form -->
+			        <form action="<c:url value='/student/updateProfile'/>" method="post">
+			          <div class="row mb-3">
+			            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="fullName" type="text" class="form-control" id="fullName" placeholder="${userDetails.fullName}" />
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+			            <div class="col-md-8 col-lg-9">
+			              <textarea name="about" class="form-control" id="about" style="height: 100px; color: #686D76">${userDetails.about}</textarea>
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="country" type="text" class="form-control" id="Country" placeholder="${userDetails.country}" />
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="address" type="text" class="form-control" id="Address" placeholder="${userDetails.address}" />
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="phone" type="text" class="form-control" id="Phone" placeholder="${userDetails.phone}" />
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="github" class="col-md-4 col-lg-3 col-form-label">GitHub Profile</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="github" type="text" class="form-control" id="github" placeholder="${userDetails.gitHubProfile}" />
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="instagram" type="text" class="form-control" id="Instagram" placeholder="${userDetails.instagramProfile}" />
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="linkedin" type="text" class="form-control" id="Linkedin" placeholder="${userDetails.linkedInProfile}" />
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="college" class="col-md-4 col-lg-3 col-form-label">College</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="college" type="text" class="form-control" id="college" placeholder="${userDetails.college}" />
+			            </div>
+			          </div>
+			          <div class="text-center">
+			            <button type="submit" class="btn btn-primary">Save Changes</button>
+			          </div>
+			        </form>
+			        <!-- End Profile Edit Form -->
+			      </div>
+			      <div class="tab-pane fade pt-3" id="profile-change-password">
+			        <!-- Change Password Form -->
+			        <form action="<c:url value='/student/changePassword'/>" method="post">
+			          <div class="row mb-3">
+			            <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="password" type="password" class="form-control" id="currentPassword" />
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="newpassword" type="password" class="form-control" id="newPassword" />
+			            </div>
+			          </div>
+			          <div class="row mb-3">
+			            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+			            <div class="col-md-8 col-lg-9">
+			              <input name="renewpassword" type="password" class="form-control" id="renewPassword" />
+			            </div>
+			          </div>
+			          <div class="text-center">
+			            <button type="submit" class="btn btn-primary">Change Password</button>
+			          </div>
+			        </form>
+			        <!-- End Change Password Form -->
+			      </div>
+			    </div>
+			  </div>
+			</div>
 
-                  <li class="nav-item">
-                    <button
-                      class="nav-link"
-                      data-bs-toggle="tab"
-                      data-bs-target="#profile-edit"
-                    >
-                      Edit Profile
-                    </button>
-                  </li>
-
-                  <li class="nav-item">
-                    <button
-                      class="nav-link"
-                      data-bs-toggle="tab"
-                      data-bs-target="#profile-change-password"
-                    >
-                      Change Password
-                    </button>
-                  </li>
-                </ul>
-                <div class="tab-content pt-2">
-                  <div
-                    class="tab-pane fade show active profile-overview"
-                    id="profile-overview"
-                    style="margin-top:2%; margin-bottom:5%"
-                  >
-                    <h5 class="card-title">About</h5>
-                    <p class="fst-italic" style="color:grey; font-size:15px; margin-bottom:1%">
-                      ${userDetails.about}
-                    </p>
-
-                    <h5 class="card-title">Profile Details</h5>
-
-                    <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Full Name</div>
-                      <div class="col-lg-9 col-md-8">${userDetails.fullName}</div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Country</div>
-                      <div class="col-lg-9 col-md-8">${userDetails.country}</div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Address</div>
-                      <div class="col-lg-9 col-md-8">
-                        ${userDetails.address}
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Phone</div>
-                      <div class="col-lg-9 col-md-8">(+91) ${userDetails.phone}</div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Email</div>
-                      <div class="col-lg-9 col-md-8">
-                        ${userDetails.email}
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-lg-3 col-md-4 label">
-                        College/University
-                      </div>
-                      <div class="col-lg-9 col-md-8">${userDetails.college}</div>
-                    </div>
-                  </div>
-
-                  <div
-                    class="tab-pane fade profile-edit pt-3"
-                    id="profile-edit"
-                  >
-                    <!-- Profile Edit Form -->
-                    <form action="<c:url value='/student/updateProfile'/>" method="post">                      
-                      <div class="row mb-3">
-                        <label
-                          for="fullName"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Full Name</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="fullName"
-                            type="text"
-                            class="form-control"
-                            id="fullName"
-                            placeholder="${userDetails.fullName}"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label
-                          for="about"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >About</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <textarea
-                            name="about"
-                            class="form-control"
-                            id="about"
-                            style="height: 100px"
-                          >${userDetails.about} </textarea
-                          >
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label
-                          for="Country"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Country</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="country"
-                            type="text"
-                            class="form-control"
-                            id="Country"
-                            placeholder="${userDetails.country }"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label
-                          for="Address"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Address</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="address"
-                            type="text"
-                            class="form-control"
-                            id="Address"
-                            placeholder="${userDetails.address }"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label
-                          for="Phone"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Phone</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="phone"
-                            type="text"
-                            class="form-control"
-                            id="Phone"
-                            placeholder="${userDetails.phone}"
-                          />
-                        </div>
-                      </div>
-
-                    <!-- <div class="row mb-3">
-                        <label
-                          for="Email"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Email</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="email"
-                            type="email"
-                            class="form-control"
-                            id="Email"
-                            placeholder="${userDetails.email}"
-                          />
-                        </div>
-                      </div>-->
-
-                      <div class="row mb-3">
-                        <label
-                          for="github"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >GitHub Profile</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="github"
-                            type="text"
-                            class="form-control"
-                            id="github"
-                            placeholder="${userDetails.gitHubProfile}"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label
-                          for="Instagram"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Instagram Profile</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="instagram"
-                            type="text"
-                            class="form-control"
-                            id="Instagram"
-                            placeholder="${userDetails.instagramProfile}"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label
-                          for="Linkedin"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Linkedin Profile</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="linkedin"
-                            type="text"
-                            class="form-control"
-                            id="Linkedin"
-                            placeholder="${userDetails.linkedInProfile}"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div class="row mb-3">
-                        <label
-                          for="college"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >College</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="college"
-                            type="text"
-                            class="form-control"
-                            id="college"
-                            placeholder="${userDetails.college}"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="text-center">
-                        <button type="submit" class="btn btn-primary">
-                          Save Changes
-                        </button>
-                      </div>
-                    </form>
-                    <!-- End Profile Edit Form -->
-                  </div>
-
-                  <div class="tab-pane fade pt-3" id="profile-change-password">
-                    <!-- Change Password Form -->
-                    <form action="<c:url value='/student/changePassword'/>" method="post">
-                      <div class="row mb-3">
-                        <label
-                          for="currentPassword"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Current Password</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="password"
-                            type="password"
-                            class="form-control"
-                            id="currentPassword"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label
-                          for="newPassword"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >New Password</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="newpassword"
-                            type="password"
-                            class="form-control"
-                            id="newPassword"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label
-                          for="renewPassword"
-                          class="col-md-4 col-lg-3 col-form-label"
-                          >Re-enter New Password</label
-                        >
-                        <div class="col-md-8 col-lg-9">
-                          <input
-                            name="renewpassword"
-                            type="password"
-                            class="form-control"
-                            id="renewPassword"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="text-center">
-                        <button type="submit" class="btn btn-primary">
-                          Change Password
-                        </button>
-                      </div>
-                    </form>
-                    <!-- End Change Password Form -->
-                  </div>
-                </div>
-                <!-- End Bordered Tabs -->
-              </div>
-            </div>
           </div>
         </div>
       </div>
