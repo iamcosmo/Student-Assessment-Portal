@@ -20,4 +20,13 @@ public class UserService {
         String lowercaseEmail = email.toLowerCase();
         return userDao.validateUser(lowercaseEmail, password, usertype);
     }
+    
+    public boolean validateUserPassword(String email, String currPassword)
+    {
+    	return userDao.validateUserPassword(email, currPassword);
+    }
+    public String changeUserPassword(String email, String newPassword)
+    {
+    	return userDao.changePassword(email, newPassword);
+    }
 }
