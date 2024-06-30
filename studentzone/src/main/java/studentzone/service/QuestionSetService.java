@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import studentzone.dao.QuestionSetDao;
-import studentzone.model.QuestionSet;;
+import studentzone.dao.QuestionsDao;
+import  studentzone.model.QuestionSet;
 
 @Service
 public class QuestionSetService {
     @Autowired
     private QuestionSetDao questionSetDao;
+    @Autowired
+    private QuestionsDao questionsDao;
 
     public List<QuestionSet> getAllSets() { return questionSetDao.getAllSets(); }
 
@@ -24,4 +27,6 @@ public class QuestionSetService {
     public QuestionSet getSetById(int setId) {
         return questionSetDao.getSetById(setId);
     }
+
+    
 }

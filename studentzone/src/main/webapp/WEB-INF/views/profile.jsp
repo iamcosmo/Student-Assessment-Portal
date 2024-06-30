@@ -62,7 +62,7 @@
 						  		<i class="bi bi-person-circle" 
 	                    			style="font-size: 1.5rem;
 	    							cursor: pointer;
-	    							color: white;">
+	    							color: black;">
 	    						</i>
 						  </button>
 
@@ -367,12 +367,15 @@
 
                   <div class="tab-pane fade pt-3" id="profile-change-password">
                     <!-- Change Password Form -->
+<<<<<<< HEAD
                     <c:if test="${not empty errorMessage}">
 		              	<p style="color: red">${errorMessage}</p>
 		            </c:if>
 			        <c:if test="${not empty successMessage}">
 	              		<p style="color: red">${successMessage}</p>
 	            	</c:if>
+=======
+>>>>>>> refs/heads/main
                     <form action="<c:url value='/student/changePassword'/>" method="post">
                       <div class="row mb-3">
                         <label

@@ -77,7 +77,7 @@
 						  		<i class="bi bi-person-circle" 
 	                    			style="font-size: 1.5rem;
 	    							cursor: pointer;
-	    							color: white;">
+	    							color: black;">
 	    						</i>
 						  </button>
 						  <ul class="dropdown-menu">
