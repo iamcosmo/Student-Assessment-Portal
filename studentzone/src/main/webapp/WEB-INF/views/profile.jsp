@@ -185,7 +185,7 @@
                     id="profile-edit"
                   >
                     <!-- Profile Edit Form -->
-                    <form action="<c:url value='/student/editProfile'/>">                      
+                    <form action="<c:url value='/student/updateProfile'/>" method="post">                      
                       <div class="row mb-3">
                         <label
                           for="fullName"
@@ -271,7 +271,7 @@
                         </div>
                       </div>
 
-                      <div class="row mb-3">
+                    <!-- <div class="row mb-3">
                         <label
                           for="Email"
                           class="col-md-4 col-lg-3 col-form-label"
@@ -286,11 +286,11 @@
                             placeholder="${userDetails.email}"
                           />
                         </div>
-                      </div>
+                      </div>-->
 
                       <div class="row mb-3">
                         <label
-                          for="Twitter"
+                          for="github"
                           class="col-md-4 col-lg-3 col-form-label"
                           >GitHub Profile</label
                         >
@@ -335,6 +335,23 @@
                             class="form-control"
                             id="Linkedin"
                             placeholder="${userDetails.linkedInProfile}"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div class="row mb-3">
+                        <label
+                          for="college"
+                          class="col-md-4 col-lg-3 col-form-label"
+                          >College</label
+                        >
+                        <div class="col-md-8 col-lg-9">
+                          <input
+                            name="college"
+                            type="text"
+                            class="form-control"
+                            id="college"
+                            placeholder="${userDetails.college}"
                           />
                         </div>
                       </div>

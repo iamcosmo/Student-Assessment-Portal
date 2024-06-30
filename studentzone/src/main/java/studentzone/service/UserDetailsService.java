@@ -3,6 +3,8 @@ package studentzone.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import studentzone.dao.UserDetailsDAO;
 import studentzone.model.UserDetails;
 
@@ -33,6 +35,14 @@ public class UserDetailsService {
 			userDetails = new UserDetails(email.toLowerCase(),fullName,about,country,address,phone,gitHubProfile,instagramProfile,linkedInProfile,college);
 			userDetailsDAO.create(userDetails);
 		}
+	}
+	
+	public void updateUserProfile(String email,String fullName,String country,
+			String college,String phone,String about,String gitHubProfile,
+    		String igProfile,String linkedInProfile,String address)
+	{
+		UserDetails userDetails = new UserDetails(email.toLowerCase(),fullName,about,country,address,phone,gitHubProfile,igProfile,linkedInProfile,college);
+		userDetailsDAO.update(userDetails);		
 	}
 
 }

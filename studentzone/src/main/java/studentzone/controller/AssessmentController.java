@@ -93,5 +93,29 @@ public class AssessmentController {
         return "profile";
     }
     
+    @PostMapping("/updateProfile")
+    public String updateUserProfile(@RequestParam("fullName") String fullName, 
+    		@RequestParam("country") String country,
+    		@RequestParam("college") String college,
+    		@RequestParam("phone") String phone,
+    		@RequestParam("about") String about,
+    		@RequestParam("github") String gitHubProfile,
+    		@RequestParam("instagram") String igProfile,
+    		@RequestParam("linkedin") String linkedInProfile,
+    		@RequestParam("address") String address,
+            HttpSession session)
+    {
+    	System.out.println("Name: "+fullName+"country: "+country+" college: "+college+" phone: "+phone+" about: "+about+" gitHubProfile: "+gitHubProfile+" linkedin: "+linkedInProfile+" address: "+address+" ig: "+igProfile);
+    	User user = (User) session.getAttribute("user");
+    	if(user==null)
+    	{
+    		return "redirect:/login";
+    	}
+    	
+    	userDetailsService.updateUserProfile(user.getEmail(),fullName, country, college, phone, about, gitHubProfile, igProfile, linkedInProfile, address);
+    	
+    	return "redirect:/student/profile";
+    }
+    
         
 }
