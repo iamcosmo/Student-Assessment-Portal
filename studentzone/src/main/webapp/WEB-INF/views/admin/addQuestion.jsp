@@ -22,6 +22,7 @@
 <div class="container">
     <h2>Add New Question</h2>
     <form:form action="${pageContext.request.contextPath}/admin/addQuestion" method="post" modelAttribute="question">
+        <form:hidden path="setId" value="${param.setId}"/>
         <div class="form-group">
             <label for="question">Question:</label>
             <form:input path="question" id="question" class="form-control"/>
@@ -52,7 +53,7 @@
             </form:select>
         </div>
         <button type="submit" class="btn btn-primary">Save Question</button>
-        <a href="${pageContext.request.contextPath}/admin/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+        <a href="${pageContext.request.contextPath}/admin/QuestionList?setId=${param.setId}" class="btn btn-secondary">Back to Question List</a>
     </form:form>
     <div>
         <font color="red">${msg}</font>
