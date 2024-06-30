@@ -86,6 +86,7 @@ public class AdminController {
         model.addAttribute("questionList", questionList);
         return "admin/QuestionList";
     }
+  
     @PostMapping("/updateQuestion")
     public String updateQuestion(@RequestParam("id") int id,
                                  @RequestParam("question") String question,
@@ -186,6 +187,7 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("msg", "Failed to Add Set!");
         }
         return "redirect:/admin/questionSets";
+
     }
 
 }

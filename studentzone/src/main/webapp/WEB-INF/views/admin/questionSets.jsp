@@ -43,6 +43,7 @@
         <c:forEach var="set" items="${sets}">
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <span>${set.name}</span>
+            <span>Total questions: ${set.questionCount}</span>
                 <span>
                     <a href="${pageContext.request.contextPath}/admin/QuestionList?setId=${set.id}" class="btn btn-primary btn-sm">View Questions</a>
                     <a href="${pageContext.request.contextPath}/admin/addQuestion?setId=${set.id}" class="btn btn-success btn-sm">Add Question</a>
