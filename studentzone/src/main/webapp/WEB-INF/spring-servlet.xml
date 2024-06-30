@@ -27,7 +27,7 @@
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/studentzone"/>
         <property name="username" value="root"/>
-        <property name="password" value="010101"/>
+        <property name="password" value="Mydbms22#2001"/>
     </bean>
 
     <!-- JDBC Template -->

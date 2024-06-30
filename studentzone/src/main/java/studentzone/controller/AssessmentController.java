@@ -9,19 +9,21 @@ import studentzone.model.User;
 import studentzone.model.UserDetails;
 import studentzone.service.SubjectInterestService;
 import studentzone.service.UserDetailsService;
-
+import studentzone.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/student")
 public class AssessmentController {
 
+	private final UserService userService;
     private final SubjectInterestService subjectInterestService;
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public AssessmentController(SubjectInterestService subjectInterestService, UserDetailsService userDetailsService) {
-        this.subjectInterestService = subjectInterestService;
+    public AssessmentController(UserService userService, SubjectInterestService subjectInterestService, UserDetailsService userDetailsService) {
+        this.userService = userService;
+    	this.subjectInterestService = subjectInterestService;
         this.userDetailsService = userDetailsService;
     }
     
@@ -80,13 +82,18 @@ public class AssessmentController {
             return "redirect:/login";
         }
         
-        UserDetails userDetails = userDetailsService.findByEmail(user.getEmail()); 
+        UserDetails userDetails = (UserDetails) session.getAttribute("userProfile");
+        
         if(userDetails==null)
         {
-        	System.out.println("user Not found in Profile Page");
-        	userDetailsService.createUserProfile(user.getEmail(),user.getName());
-        	System.out.println("User Profile Created");
-        	userDetails = userDetailsService.findByEmail(user.getEmail());
+	        userDetails = userDetailsService.findByEmail(user.getEmail()); 
+	        if(userDetails==null)
+	        {
+	        	System.out.println("user Not found in Profile Page");
+	        	userDetailsService.createUserProfile(user.getEmail(),user.getName());
+	        	System.out.println("User Profile Created");
+	        	userDetails = userDetailsService.findByEmail(user.getEmail());
+	        }
         }
        
         model.addAttribute("userDetails", userDetails);
@@ -112,9 +119,35 @@ public class AssessmentController {
     		return "redirect:/login";
     	}
     	
-    	userDetailsService.updateUserProfile(user.getEmail(),fullName, country, college, phone, about, gitHubProfile, igProfile, linkedInProfile, address);
+    	UserDetails userDeatails = userDetailsService.updateUserProfile(user.getEmail(),fullName, country, college, phone, about, gitHubProfile, igProfile, linkedInProfile, address);
     	
+    	session.removeAttribute("userProfile");
+    	session.setAttribute("userProfile", userDeatails);
     	return "redirect:/student/profile";
+    }
+    
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestParam("password") String currPassword, 
+                                 @RequestParam("newpassword") String newPassword, 
+                                 @RequestParam("renewpassword") String reNewPassword, 
+                                 HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (!userService.validateUserPassword(user.getEmail(), currPassword)) {
+            model.addAttribute("errorMessage", "Current password doesn't match!!");
+        } else if (!newPassword.equals(reNewPassword)) {
+            model.addAttribute("errorMessage", "New password and Re-entered new password don't match!!");
+        } else {
+            String updateMessage = userService.changeUserPassword(user.getEmail(), newPassword);
+            if ("updated".equals(updateMessage)) {
+                model.addAttribute("successMessage", "Password Updated");
+            } else {
+                model.addAttribute("errorMessage", updateMessage);
+            }
+        }
+        System.out.println("Redirecting back to Profile page!");
+        UserDetails userDetails = userDetailsService.findByEmail(user.getEmail());        
+        session.setAttribute("userProfile", userDetails);
+        return "redirect:/student/profile";
     }
     
         

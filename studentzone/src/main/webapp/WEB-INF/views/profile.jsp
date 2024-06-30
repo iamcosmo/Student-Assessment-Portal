@@ -367,7 +367,13 @@
 
                   <div class="tab-pane fade pt-3" id="profile-change-password">
                     <!-- Change Password Form -->
-                    <form>
+                    <c:if test="${not empty errorMessage}">
+		              	<p style="color: red">${errorMessage}</p>
+		            </c:if>
+			        <c:if test="${not empty successMessage}">
+	              		<p style="color: red">${successMessage}</p>
+	            	</c:if>
+                    <form action="<c:url value='/student/changePassword'/>" method="post">
                       <div class="row mb-3">
                         <label
                           for="currentPassword"

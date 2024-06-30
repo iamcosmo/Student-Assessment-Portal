@@ -37,12 +37,14 @@ public class UserDetailsService {
 		}
 	}
 	
-	public void updateUserProfile(String email,String fullName,String country,
+	public UserDetails updateUserProfile(String email,String fullName,String country,
 			String college,String phone,String about,String gitHubProfile,
     		String igProfile,String linkedInProfile,String address)
 	{
 		UserDetails userDetails = new UserDetails(email.toLowerCase(),fullName,about,country,address,phone,gitHubProfile,igProfile,linkedInProfile,college);
-		userDetailsDAO.update(userDetails);		
+		return userDetails = userDetailsDAO.update(userDetails);		
 	}
+	
+	
 
 }
