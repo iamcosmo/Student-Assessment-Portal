@@ -17,7 +17,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO
 	
 	private static final String FIND_BY_EMAIL_SQL = "SELECT * FROM user_details WHERE Email = ?";
 	private static final String CREATE_DEFAULT_PROFILE_SQL = "INSERT INTO user_details (Email,FullName,About,Country,Address,Phone,GitHubProfile,InstagramProfile,LinkedInProfile,College) VALUES(?,?,?,?,?,?,?,?,?,?)";
-	
+	private static final String UPDATE_PROFILE_SQL = "UPDATE user_details SET FullName = ?, About = ?, Country = ?, Address = ?, Phone = ?, GitHubProfile = ?, InstagramProfile = ?, LinkedInProfile = ?, College = ? WHERE Email = ?";
 	@Override
 	public UserDetails findByEmail(String email)
 	{
@@ -43,8 +43,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO
 		
 		if(userDetails!=null)
 		{
-			System.out.println("Not Null ");
-						
+			System.out.println("Not Null ");						
 		}
 		
 		return userDetails;		
@@ -63,6 +62,26 @@ public class UserDetailsDAOImpl implements UserDetailsDAO
 		String phone=userDetails.getPhone();
 		String college=userDetails.getCollege();
 		jdbcTemplate.update(CREATE_DEFAULT_PROFILE_SQL,email,fullName,about,country,address,phone,gitHubProfile,instagramProfile,linkedInProfile,college);			
+		
+	}
+	
+	@Override
+	public void update(UserDetails userDetails) {
+		
+		String email = userDetails.getEmail();
+		
+		UserDetails currentUserDetails = findByEmail(email);
+		
+		String fullName = userDetails.getFullName()==""?currentUserDetails.getFullName():userDetails.getFullName();
+		String about=userDetails.getAbout()==""?currentUserDetails.getAbout():userDetails.getAbout();
+		String address=userDetails.getAddress();
+		String gitHubProfile=userDetails.getGitHubProfile()==""?currentUserDetails.getGitHubProfile():userDetails.getGitHubProfile();
+		String linkedInProfile=userDetails.getLinkedInProfile()==""?currentUserDetails.getLinkedInProfile():userDetails.getLinkedInProfile();
+		String instagramProfile=userDetails.getInstagramProfile()==""?currentUserDetails.getInstagramProfile():userDetails.getInstagramProfile();
+		String country=userDetails.getCountry()==""?currentUserDetails.getCountry():userDetails.getCountry();
+		String phone=userDetails.getPhone()==""?currentUserDetails.getPhone():userDetails.getPhone();
+		String college=userDetails.getCollege()==""?currentUserDetails.getCollege():userDetails.getCollege();
+		jdbcTemplate.update(UPDATE_PROFILE_SQL,fullName,about,country,address,phone,gitHubProfile,instagramProfile,linkedInProfile,college,email);			
 		
 	}
 
