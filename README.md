@@ -32,6 +32,25 @@ CREATE TABLE users (
 );
 ```
 
+### Users Table Error handlings
+
+```sql
+
+DELIMITER $$
+
+CREATE TRIGGER before_insert_users
+BEFORE INSERT ON users
+FOR EACH ROW
+BEGIN
+    IF NEW.dob > CURDATE() - INTERVAL 16 YEAR THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Date of birth indicates user is younger than 16 years';
+    END IF;
+END$$
+
+DELIMITER ;
+```
+
 ### User_Details Table
 
 ```sql
