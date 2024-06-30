@@ -62,7 +62,7 @@
 						  		<i class="bi bi-person-circle" 
 	                    			style="font-size: 1.5rem;
 	    							cursor: pointer;
-	    							color: white;">
+	    							color: black;">
 	    						</i>
 						  </button>
 
@@ -367,7 +367,7 @@
 
                   <div class="tab-pane fade pt-3" id="profile-change-password">
                     <!-- Change Password Form -->
-                    <form>
+                    <form action="<c:url value='/student/changePassword'/>" method="post">
                       <div class="row mb-3">
                         <label
                           for="currentPassword"
