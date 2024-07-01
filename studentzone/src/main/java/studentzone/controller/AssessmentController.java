@@ -27,10 +27,15 @@ public class AssessmentController {
         this.userDetailsService = userDetailsService;
     }
     
+    public User isUserLoggedIn(HttpSession session)
+    {    	
+    	return (User) session.getAttribute("user");
+    }
+    
     @GetMapping("/assessment")
     public String showAssessmentPage(HttpSession session, Model model) {
         // Check if user is logged in
-        User user = (User) session.getAttribute("user");
+        User user = isUserLoggedIn(session);
         if (user == null) {
             // Redirect to login if not logged in
             return "redirect:/login";
@@ -63,7 +68,7 @@ public class AssessmentController {
     public String submitSubjectForm(@RequestParam("subjects") String[] subjects,
                                     HttpSession session) {
         
-        User user = (User) session.getAttribute("user");
+        User user = isUserLoggedIn(session);
         if (user != null) {
             String userEmail = user.getEmail();
             subjectInterestService.saveSubjectInterests(userEmail, subjects);
@@ -77,7 +82,7 @@ public class AssessmentController {
     @GetMapping("/profile")
     public String profile(HttpSession session, Model model) {
     	
-        User user = (User) session.getAttribute("user");
+        User user = isUserLoggedIn(session);
         if (user == null) {
             return "redirect:/login";
         }
@@ -113,7 +118,7 @@ public class AssessmentController {
             HttpSession session)
     {
     	System.out.println("Name: "+fullName+"country: "+country+" college: "+college+" phone: "+phone+" about: "+about+" gitHubProfile: "+gitHubProfile+" linkedin: "+linkedInProfile+" address: "+address+" ig: "+igProfile);
-    	User user = (User) session.getAttribute("user");
+    	User user = isUserLoggedIn(session);
     	if(user==null)
     	{
     		return "redirect:/login";
@@ -131,7 +136,7 @@ public class AssessmentController {
                                  @RequestParam("newpassword") String newPassword, 
                                  @RequestParam("renewpassword") String reNewPassword, 
                                  HttpSession session, Model model) {
-        User user = (User) session.getAttribute("user");
+        User user = isUserLoggedIn(session);
         if (!userService.validateUserPassword(user.getEmail(), currPassword)) {
             model.addAttribute("errorMessage", "Current password doesn't match!!");
         } else if (!newPassword.equals(reNewPassword)) {

@@ -42,7 +42,7 @@
 
 	        <nav id="navmenu" class="navmenu">
 	          <ul>
-	            <li><a href="index.jsp" class="active">Home</a></li>
+	            <li><a href="<c:url value='/'/>" class="active">Home</a></li>
 	            <li><a href="about.jsp">About</a></li>
 	            <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
 	            <li><a href="results.jsp">Results</a></li>

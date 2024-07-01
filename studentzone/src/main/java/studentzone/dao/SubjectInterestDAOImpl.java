@@ -16,9 +16,8 @@ public class SubjectInterestDAOImpl implements SubjectInterestDAO {
     private JdbcTemplate jdbcTemplate;
 
     private static final String SELECT_BY_EMAIL_SQL = "SELECT * FROM subject_interest WHERE student_email = ?";
-    private static final String INSERT_SUBJECT_INTEREST_SQL = "INSERT INTO subject_interest (student_email) VALUES (?)";
     private static final String INSERT_SUBJECT_SQL = "INSERT INTO subject_interest (student_email, subjects) VALUES (?, ?)";
-    private static final String DELETE_SUBJECTS_SQL = "DELETE FROM subject_interest WHERE student_email = ?";
+
     
 
     @Override
@@ -44,13 +43,16 @@ public class SubjectInterestDAOImpl implements SubjectInterestDAO {
 
     @Override
     public void save(SubjectInterest subjectInterest) {
-        jdbcTemplate.update(INSERT_SUBJECT_INTEREST_SQL, subjectInterest.getStudentEmail());
-        System.out.println("Insertion of email complete!!");
-        jdbcTemplate.update(DELETE_SUBJECTS_SQL, subjectInterest.getStudentEmail());
-        System.out.println("Deletion complete of the above!!");
-        String finalSubjects = "";
+        String finalSubjects = "#";
         for (String subject : subjectInterest.getSubjects()) {
-        	finalSubjects = finalSubjects+","+subject;
+        	if(finalSubjects.equals("#"))
+        	{
+        		finalSubjects = subject;
+        	}
+        	else
+        	{
+        		finalSubjects = finalSubjects+","+subject;
+        	}
         }
         jdbcTemplate.update(INSERT_SUBJECT_SQL, subjectInterest.getStudentEmail(), finalSubjects);
     }
