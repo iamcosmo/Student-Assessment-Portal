@@ -66,7 +66,7 @@
 
 	        <nav id="navmenu" class="navmenu">
 	          <ul>
-	            <li><a href="index.jsp" class="active">Home</a></li>
+	            <li><a href="<c:url value='/'/>" class="active">Home</a></li>
 	            <li><a href="about.jsp">About</a></li>
 	            <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
 	            <li><a href="results.jsp">Results</a></li>
@@ -119,11 +119,11 @@
             <c:if test="${not empty errorMessage}">
               <p style="color: red">${errorMessage}</p>
             </c:if>
-            <form>
-		      <div class="mb-3">
+            <form action="${pageContext.request.contextPath}/student/submitSubjectForm" method="post">
+		      <!-- <div class="mb-3">
 		        <label for="inputEmail" class="form-label">Email:</label>
 		        <input type="email" id="inputEmail" class="form-control" aria-describedby="emailHelpBlock" required />
-		      </div>
+		      </div> -->
 		      <div class="mb-3">
 		        <label for="inputSubject" class="form-label">Subjects interested:</label>
 		        <button type="button" class="btn btn-secondary ms-2" onclick="addSubjectField()">
