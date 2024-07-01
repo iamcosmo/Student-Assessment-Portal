@@ -12,8 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import studentzone.model.User;
 import studentzone.model.UserDetails;
-import studentzone.service.UserService;
 import studentzone.service.UserDetailsService;
+import studentzone.service.UserService;
 
 @Controller
 public class HomeController {
@@ -81,7 +81,7 @@ public class HomeController {
             if (userType == 1) 
             {
                 session.setAttribute("adminUsername", user.getEmail());
-                return "redirect:/admin/dashboard";
+                return "redirect:/admin/questionSets";
             } else 
             {            	
             	UserDetails userDetails = userDetailsService.findByEmail(user.getEmail());
