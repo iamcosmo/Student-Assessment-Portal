@@ -11,11 +11,16 @@ import studentzone.service.SubjectInterestService;
 import studentzone.service.UserDetailsService;
 import studentzone.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import studentzone.service.QuestionSetService;
+import studentzone.model.QuestionSet;
+import java.util.List;
 
 @Controller
 @RequestMapping("/student")
 public class AssessmentController {
-
+	
+	@Autowired
+	private QuestionSetService questionSetService;
 	private final UserService userService;
     private final SubjectInterestService subjectInterestService;
     private final UserDetailsService userDetailsService;
@@ -34,28 +39,24 @@ public class AssessmentController {
     
     @GetMapping("/assessment")
     public String showAssessmentPage(HttpSession session, Model model) {
-        // Check if user is logged in
+        
         User user = isUserLoggedIn(session);
         if (user == null) {
-            // Redirect to login if not logged in
             return "redirect:/login";
         }
-
-        // Retrieve user email
         String userEmail = user.getEmail();
-
-        // Check if user has filled subject interests
+        
         SubjectInterest subjectInterest = subjectInterestService.findByEmail(userEmail);
         if (subjectInterest == null) {
-            // Redirect to subject form if subjects not filled
             return "redirect:/student/subjectform";
         }
-
-        // Populate model attributes for the assessment page
+        
         model.addAttribute("userEmail", userEmail);
         model.addAttribute("subjectInterest", subjectInterest);
-
-
+        
+        List<QuestionSet> questionSetList = questionSetService.getAllSets();
+        
+    	model.addAttribute("qslist",questionSetList);        
         return "student/assessment";
     }
 
@@ -153,7 +154,6 @@ public class AssessmentController {
         UserDetails userDetails = userDetailsService.findByEmail(user.getEmail());        
         session.setAttribute("userProfile", userDetails);
         return "redirect:/student/profile";
-    }
-    
+    }  
         
 }
