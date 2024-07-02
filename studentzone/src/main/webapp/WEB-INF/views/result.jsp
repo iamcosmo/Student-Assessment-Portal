@@ -256,7 +256,7 @@
 	      <!-- Hero Section -->
 	      <section id="hero" class="hero section">
 	        <img
-	          src="assets/img/features-light-2.jpg"
+	          src="assets/img/photo1.avif"
 	          alt="hero"
 	          data-aos="fade-in"
 	        />

@@ -164,7 +164,7 @@
   <main class="main">
     <!-- Hero Section -->
     <section id="hero" class="hero section">
-      <img src="<c:url value='/assets/img/features-light-2.jpg'/>" alt="hero" data-aos="fade-in" />
+      <img src="<c:url value='/assets/img/phot01.avif'/>" alt="hero" data-aos="fade-in" />
       <div class="container" style="color:black">
         <div class="row justify-content-center">
           <div class="col-xl-6 p-4" style="background-color: white; box-shadow: -5px 5px 10px black; margin-top:-4%">
