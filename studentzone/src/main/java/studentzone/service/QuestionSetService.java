@@ -10,6 +10,7 @@ import studentzone.dao.QuestionSetDao;
 import studentzone.dao.QuestionsDao;
 import  studentzone.model.QuestionSet;
 import studentzone.model.SubjectTagSetId;
+import studentzone.model.UserSubjectTag;
 
 @Service
 public class QuestionSetService {
@@ -45,6 +46,11 @@ public class QuestionSetService {
 
     public QuestionSet getSetById(int setId) {
         return questionSetDao.getSetById(setId);
+    }
+    
+    public List<QuestionSet> getFilteredQuestionSetByTagIds(List<UserSubjectTag> tagObjs)
+    {
+    	return questionSetDao.getFilteredQuestionSetsByTagIds(tagObjs);
     }
 
     
