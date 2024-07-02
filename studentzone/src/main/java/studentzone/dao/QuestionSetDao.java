@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,15 +17,13 @@ import org.springframework.stereotype.Repository;
 import java.sql.Statement;
 
 import studentzone.model.QuestionSet;
+import studentzone.model.UserSubjectTag;
 
 
 @Repository
 public class QuestionSetDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
-    private static final String FIND_QUESTION_SET_ID_WITH_TAG_SQL="SELECT * FROM subjecttag_setid WHERE subject_tag_id=?)";
-    private static final String FIND_QUESTION_SET_FILTERED_SQL="SELECT * FROM question_set WHERE id=?";
     
     
     public List<QuestionSet> getAllSets() {
@@ -35,20 +35,34 @@ public class QuestionSetDao {
         ));
     }
     
-    public List<QuestionSet> getTagFilteredSets(int [] userTagIds)
-    {
-    	List<QuestionSet> tagFilteredSets = new ArrayList<>();
-    	for(int i=0; i<userTagIds.length; i++)
-    	{
-    		SqlRowSet rowSet = jdbcTemplate.queryForRowSet(FIND_QUESTION_SET_ID_WITH_TAG_SQL, userTagIds);
-    		while(rowSet.next())
-    		{
-    			QuestionSet questionSetFiltered = new QuestionSet();
-    			questionSetFiltered.setId(rowSet.getInt("set_id"));
-    		}
-    	}
-    	
-    	return tagFilteredSets;
+    public List<QuestionSet> getFilteredQuestionSetsByTagIds(List<UserSubjectTag> userSubjectTags) {
+  
+        List<Integer> tagIds = new ArrayList<>();
+        for (UserSubjectTag userSubjectTag : userSubjectTags) {
+            tagIds.add(userSubjectTag.getTagId());
+        }
+
+        String tagIdsString = tagIds.stream()
+                                    .map(String::valueOf)
+                                    .collect(Collectors.joining(", "));
+
+        String sql = "SELECT DISTINCT qs.id, qs.name, qs.question_count " +
+                     "FROM question_set qs " +
+                     "JOIN subjecttag_setid st ON qs.id = st.set_id " +
+                     "WHERE st.subject_tag_id IN (" + tagIdsString + ")";
+
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql);
+
+        List<QuestionSet> questionSets = new ArrayList<>();
+        while (rowSet.next()) {
+            QuestionSet questionSet = new QuestionSet();
+            questionSet.setId(rowSet.getInt("id"));
+            questionSet.setName(rowSet.getString("name"));
+            questionSet.setQuestionCount(rowSet.getInt("question_count"));
+            questionSets.add(questionSet);
+        }
+
+        return questionSets;
     }
 
    public QuestionSetDao(JdbcTemplate jdbcTemplate) {

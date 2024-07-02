@@ -64,6 +64,13 @@ public class AssessmentController {
             set.setTags(questionSetService.getTagsForSet(set.getId()));
         }
         model.addAttribute("setswithtags", questionSetList);
+        
+        List<QuestionSet> questionSetListTagFiltered = questionSetService.getFilteredQuestionSetByTagIds(userSubTagList);
+        for(QuestionSet set: questionSetListTagFiltered)
+        {
+        	set.setTags(questionSetService.getTagsForSet(set.getId()));
+        }
+        model.addAttribute("filteredsetswithtags",questionSetListTagFiltered);
         return "student/assessment";
     }
 
