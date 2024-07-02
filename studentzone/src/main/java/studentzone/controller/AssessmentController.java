@@ -4,15 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import studentzone.model.SubjectInterest;
 import studentzone.model.User;
 import studentzone.model.UserDetails;
-import studentzone.service.SubjectInterestService;
+import studentzone.model.UserSubjectTag;
 import studentzone.service.UserDetailsService;
 import studentzone.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import studentzone.service.QuestionSetService;
 import studentzone.service.SubjectTagService;
+import studentzone.service.UserSubjectTagService;
 import studentzone.model.SubjectTag;
 import studentzone.model.QuestionSet;
 import java.util.List;
@@ -24,15 +24,16 @@ public class AssessmentController {
 	@Autowired
 	private QuestionSetService questionSetService;
 	private final UserService userService;
+	private final UserSubjectTagService userSubjectTagService;
 	private final SubjectTagService subjectTagService;
-    private final SubjectInterestService subjectInterestService;
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public AssessmentController(UserService userService,SubjectTagService subjectTagService, SubjectInterestService subjectInterestService, UserDetailsService userDetailsService) {
+    public AssessmentController(UserService userService,UserSubjectTagService userSubjectTagService,SubjectTagService subjectTagService, UserDetailsService userDetailsService) {
         this.userService = userService;
+        this.userSubjectTagService = userSubjectTagService;
         this.subjectTagService = subjectTagService;
-    	this.subjectInterestService = subjectInterestService;
+    	
         this.userDetailsService = userDetailsService;
     }
     
@@ -50,13 +51,13 @@ public class AssessmentController {
         }
         String userEmail = user.getEmail();
         
-        SubjectInterest subjectInterest = subjectInterestService.findByEmail(userEmail);
-        if (subjectInterest == null) {
+        List<UserSubjectTag> userSubTagList = userSubjectTagService.findUserTags(userEmail);
+        if (userSubTagList == null||userSubTagList.size()==0) {
             return "redirect:/student/subjectform";
         }
         
         model.addAttribute("userEmail", userEmail);
-        model.addAttribute("subjectInterest", subjectInterest);
+        model.addAttribute("subjectInterest", userSubTagList);
         
         List<QuestionSet> questionSetList = questionSetService.getAllSets();
         for (QuestionSet set : questionSetList) {
@@ -74,13 +75,16 @@ public class AssessmentController {
     }
 
     @PostMapping("/submitSubjectForm")
-    public String submitSubjectForm(@RequestParam("subjects") String[] subjects,
+    public String submitSubjectForm(@RequestParam("subjects") int[] subjectIds,
                                     HttpSession session) {
-        
+        for(int i=0; i<subjectIds.length; i++)  
+        {
+        	System.out.println("subject id: "+subjectIds[i]);
+        }
         User user = isUserLoggedIn(session);
         if (user != null) {
             String userEmail = user.getEmail();
-            subjectInterestService.saveSubjectInterests(userEmail, subjects);
+            userSubjectTagService.saveUserSubjectTags(userEmail, subjectIds);
         }else
         {
         	return "redirect:/login";
