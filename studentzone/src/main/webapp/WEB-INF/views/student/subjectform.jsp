@@ -14,15 +14,15 @@
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
     rel="stylesheet" />
 
   <!-- Vendor CSS Files -->
   <link href="<c:url value='/assets/vendor/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet" />
   <link href="<c:url value='/assets/vendor/bootstrap-icons/bootstrap-icons.css'/>" rel="stylesheet" />
-<link href="<c:url value='/assets/vendor/aos/aos.css'/>" rel="stylesheet" />
-<link href="<c:url value='/assets/vendor/glightbox/css/glightbox.min.css'/>" rel="stylesheet" />
-<link href="<c:url value='/assets/vendor/swiper/swiper-bundle.min.css'/>" rel="stylesheet" />
+  <link href="<c:url value='/assets/vendor/aos/aos.css'/>" rel="stylesheet" />
+  <link href="<c:url value='/assets/vendor/glightbox/css/glightbox.min.css'/>" rel="stylesheet" />
+  <link href="<c:url value='/assets/vendor/swiper/swiper-bundle.min.css'/>" rel="stylesheet" />
 
   <!-- Main CSS File -->
   <link href="<c:url value='/assets/css/main.css'/>" rel="stylesheet" />
@@ -79,7 +79,7 @@
 	                    <li><a href="<c:url value='/login'/>">Login</a></li>
 	                    <li><a href="<c:url value='/register'/>">Register</a></li>
 	                </c:otherwise>
-	            </c:choose>
+	             </c:choose>
 	          </ul>
 	          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
 	        </nav> 
@@ -120,10 +120,6 @@
               <p style="color: red">${errorMessage}</p>
             </c:if>
             <form action="${pageContext.request.contextPath}/student/submitSubjectForm" method="post">
-		      <!-- <div class="mb-3">
-		        <label for="inputEmail" class="form-label">Email:</label>
-		        <input type="email" id="inputEmail" class="form-control" aria-describedby="emailHelpBlock" required />
-		      </div> -->
 		      <div class="mb-3">
 		        <label for="inputSubject" class="form-label">Subjects interested:</label>
 		        <button type="button" class="btn btn-secondary ms-2" onclick="addSubjectField()">
@@ -135,15 +131,9 @@
 				    <span class="subject-number">1.</span>
 				    <select id="inputSubject1" name="subjects" class="form-control" required>
 				      <option value="" disabled selected>Select a subject</option>
-				      <option value="Mathematics">Mathematics</option>
-				      <option value="Science">Science</option>
-			          <option value="History">History</option>
-			          <option value="Literature">Literature</option>
-			          <option value="Art">Art</option>
-			          <option value="Music">Music</option>
-			          <option value="Physical Education">Physical Education</option>
-			          <option value="Computer Science">Computer Science</option>
-			          <option value="Economics">Economics</option>
+				      <c:forEach var="subject" items="${subtags}">
+				        <option value="${subject.getId()}">${subject.getName()}</option>
+				      </c:forEach>
 			       	</select>
 		        </div>
 		      </div>
@@ -193,105 +183,107 @@
         <div class="col-lg-2 col-6 footer-links">
           <h4>Our Services</h4>
           <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Web design</a></li>
+            <li><a href="#">Web development</a></li>
+            <li><a href="#">Product management</a></li>
             <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
+            <li><a href="#">Graphic design</a></li>
           </ul>
         </div>
 
         <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
           <h4>Contact Us</h4>
-          <p>Silicon University</p>
-          <p>Bhubaneswar, Odisha</p>
-          <p>751010</p>
-          <p class="mt-4">
-            <strong>Phone:</strong> <span>+91 1234567809</span>
+          <p>
+            123 Street Name <br />
+            City, State, 12345 <br />
+            United States <br /><br />
+            <strong>Phone:</strong> +1 123 456 7890<br />
+            <strong>Email:</strong> info@example.com<br />
           </p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
         </div>
       </div>
     </div>
   </footer>
   <!-- /Footer Section -->
 
-  <!-- Scroll to Top -->
-  <a href="#" class="scroll-top d-flex align-items-center justify-content-center">
-    <i class="bi bi-arrow-up-short"></i>
-  </a>
 
+	<!-- Scroll to Top -->
+	  <a href="#" class="scroll-top d-flex align-items-center justify-content-center">
+	    <i class="bi bi-arrow-up-short"></i>
+	  </a>
   <!-- Vendor JS Files -->
-	<script src="<c:url value='/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
+  <script src="<c:url value='/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/aos/aos.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/glightbox/js/glightbox.min.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/purecounter/purecounter_vanilla.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/swiper/swiper-bundle.min.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/isotope-layout/isotope.pkgd.min.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/php-email-form/validate.js'/>"></script>
-	
-	<script>
-	    let subjectCount = 1;
-	    
-	    function addSubjectField() {
-	      subjectCount++;
-	      const container = document.getElementById('subjectFields');
-	      const div = document.createElement('div');
-	      div.className = 'subject-row';
-	      div.setAttribute('id', 'subjectRow' + subjectCount);
-	      
-	      const number = document.createElement('span');
-	      number.className = 'subject-number';
-	      number.textContent = subjectCount + '. ';
-	      
-	      
-	      const select = document.createElement('select');
-	      select.name = 'subjects';
-	      select.className = 'form-control';
-	      select.required = true;
-	      
-	      const options = ['Mathematics', 'Science', 'History', 'Literature', 'Art', 'Music', 'Physical Education', 'Computer Science', 'Economics'];
-	      options.forEach(function(optionText) {
-	        const option = document.createElement('option');
-	        option.value = optionText;
-	        option.textContent = optionText;
-	        select.appendChild(option);
-	      });
-	      
-	      const removeButton = document.createElement('button');
-	      removeButton.type = 'button';
-	      removeButton.className = 'btn btn-danger ms-2';
-	      removeButton.onclick = function() {
-	        removeSubjectField('subjectRow' + subjectCount);
-	      };
-	      removeButton.innerHTML = '<i class="bi bi-trash"></i>';
-	      
-	      div.appendChild(number);
-	      div.appendChild(select);
-	      div.appendChild(removeButton);
-	      container.appendChild(div);
-	    }
-	    
-	    function removeSubjectField(id) {
-	      const field = document.getElementById(id);
-	      if (field) {
-	        field.remove();
-	        subjectCount--;
-	        updateSubjectNumbers();
-	      }
-	    }
-	    
-	    function updateSubjectNumbers() {
-	      const rows = document.getElementsByClassName('subject-row');
-	      for (let i = 0; i < rows.length; i++) {
-	        const number = rows[i].getElementsByClassName('subject-number')[0];
-	        number.textContent = (i + 1) + '.';
-	      }
-	    }
-	  </script>
-  
-<!-- Main JS File -->
-	<script src="<c:url value='/assets/js/main.js'/>"></script>
 
+  <!-- Main JS File -->
+  <script src="<c:url value='/assets/js/main.js'/>"></script>
+  
+  <!-- Generate JavaScript array from JSP -->
+  <script>
+    const subjects = [];
+    <c:forEach var="subject" items="${subtags}">
+      subjects.push({ id: '${subject.getId()}', name: '${subject.getName()}' });
+    </c:forEach>
+  </script>
+
+  <script>
+    let subjectCount = 1;
+
+    function addSubjectField() {
+      subjectCount++;
+      const subjectFields = document.getElementById('subjectFields');
+      const newSubjectRow = document.createElement('div');
+      newSubjectRow.className = 'subject-row';
+      newSubjectRow.id = 'subjectRow' + subjectCount;
+      
+      const newSubjectNumber = document.createElement('span');
+      newSubjectNumber.className = 'subject-number';
+      newSubjectNumber.innerText = subjectCount + '.';
+      newSubjectRow.appendChild(newSubjectNumber);
+      
+      const newSelect = document.createElement('select');
+      newSelect.id = 'inputSubject' + subjectCount;
+      newSelect.name = 'subjects';
+      newSelect.className = 'form-control';
+      newSelect.required = true;
+      
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      defaultOption.innerText = 'Select a subject';
+      newSelect.appendChild(defaultOption);
+      
+      subjects.forEach(subject => {
+        const option = document.createElement('option');
+        option.value = subject.id;
+        option.innerText = subject.name;
+        newSelect.appendChild(option);
+      });
+      
+      newSubjectRow.appendChild(newSelect);
+      
+      const deleteButton = document.createElement('button');
+      deleteButton.type = 'button';
+      deleteButton.className = 'btn btn-danger ms-2';
+      deleteButton.innerHTML = '<i class="bi bi-trash"></i>';
+      deleteButton.onclick = function() { removeSubjectField('subjectRow' + subjectCount); };
+      newSubjectRow.appendChild(deleteButton);
+      
+      subjectFields.appendChild(newSubjectRow);
+    }
+
+    function removeSubjectField(rowId) {
+      const row = document.getElementById(rowId);
+      if (row) {
+        row.remove();
+      }
+    }
+  </script>
 </body>
 </html>

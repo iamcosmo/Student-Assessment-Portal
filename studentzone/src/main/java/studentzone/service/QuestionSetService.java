@@ -16,8 +16,6 @@ public class QuestionSetService {
     @Autowired
     private QuestionSetDao questionSetDao;
     @Autowired
-    private QuestionsDao questionsDao;
-    @Autowired
     private SubjectTagSetIdService subjectTagSetIdService;
 
     public List<QuestionSet> getAllSets() { return questionSetDao.getAllSets(); }
