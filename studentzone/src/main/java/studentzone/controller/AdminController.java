@@ -16,8 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import studentzone.model.QuestionSet;
 import studentzone.model.Questions;
+import studentzone.model.SubjectTag;
+import studentzone.model.SubjectTagSetId;
 import studentzone.service.QuestionService;
 import studentzone.service.QuestionSetService;
+import studentzone.service.SubjectTagService;
+import studentzone.service.SubjectTagSetIdService;
 
 @Controller
 @RequestMapping("/admin")
@@ -29,14 +33,20 @@ public class AdminController {
     @Autowired
     private QuestionSetService questionSetService;
 
+    @Autowired
+    private SubjectTagSetIdService subjectTagSetIdService;
+
+    @Autowired
+    private SubjectTagService subjectTagService;
+
+    private boolean isAdminLoggedIn(HttpSession session) {
+        return session.getAttribute("adminUsername") != null;
+    }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login?msg=Logged Out Successfully!";
-    }
-
-    private boolean isAdminLoggedIn(HttpSession session) {
-        return session.getAttribute("adminUsername") != null;
     }
 
     @GetMapping("/dashboard")
@@ -86,7 +96,7 @@ public class AdminController {
         model.addAttribute("questionList", questionList);
         return "admin/QuestionList";
     }
-  
+
     @PostMapping("/updateQuestion")
     public String updateQuestion(@RequestParam("id") int id,
                                  @RequestParam("question") String question,
@@ -109,8 +119,6 @@ public class AdminController {
         }
         return "redirect:/admin/QuestionList?setId=" + setId;
     }
-    
-
 
     @GetMapping("/deleteQuestion/{qid}")
     public String deleteQuestion(@PathVariable("qid") int qid, @RequestParam(value = "setId", required = false) Integer setId, HttpSession session, RedirectAttributes redirectAttributes) {
@@ -123,18 +131,11 @@ public class AdminController {
         } else {
             redirectAttributes.addFlashAttribute("msg", "Failed to Delete Question!");
         }
-            return "redirect:/admin/QuestionList?setId=" + setId;
-        
-    
-    }
-    @GetMapping("/questionSets")
-    public String showQuestionSets(Model model) {
-        List<QuestionSet> sets = questionSetService.getAllSets();
-        model.addAttribute("sets", sets);
-        return "admin/questionSets";
+        return "redirect:/admin/QuestionList?setId=" + setId;
     }
 
   
+
     @GetMapping("/deleteQuestionSet")
     public String deleteQuestionSet(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
         boolean status = questionSetService.deleteSet(id);
@@ -145,49 +146,82 @@ public class AdminController {
         }
         return "redirect:/admin/questionSets";
     }
+    
 
     @GetMapping("/editQuestionSet")
     public String editQuestionSet(@RequestParam("setId") int setId, Model model, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return "redirect:/admin/login";
+            return "redirect:/login";
         }
         QuestionSet set = questionSetService.getSetById(setId);
         model.addAttribute("set", set);
+        model.addAttribute("subjectTags", subjectTagService.getAllSubjectTags());
         return "admin/editQuestionSet";
     }
-    
 
     @PostMapping("/updateSet")
-    public String updateQuestionSet(@RequestParam("id") int id, @RequestParam("name") String name, RedirectAttributes redirectAttributes) {
+    public String updateQuestionSet(@RequestParam("id") int id, 
+                                    @RequestParam("name") String name, 
+                                    @RequestParam("subjectTags") List<Integer> subjectTags, 
+                                    RedirectAttributes redirectAttributes) {
         QuestionSet set = new QuestionSet();
         set.setId(id);
         set.setName(name);
         boolean status = questionSetService.updateSet(set);
         if (status) {
+            // Remove existing mappings
+            List<SubjectTagSetId> existingMappings = subjectTagSetIdService.getAllSubjectTagSetIds();
+            for (SubjectTagSetId existingMapping : existingMappings) {
+                if (existingMapping.getSetId() == id) {
+                    subjectTagSetIdService.deleteSubjectTagSetId(id, existingMapping.getSubjectTagId());
+                }
+            }
+            // Add new mappings
+            for (Integer subjectTagId : subjectTags) {
+                SubjectTagSetId subjectTagSetId = new SubjectTagSetId();
+                subjectTagSetId.setSetId(id);
+                subjectTagSetId.setSubjectTagId(subjectTagId);
+                subjectTagSetIdService.addSubjectTagSetId(subjectTagSetId);
+            }
             redirectAttributes.addFlashAttribute("msg", "Set Updated Successfully!");
         } else {
             redirectAttributes.addFlashAttribute("msg", "Failed to Update Set!");
         }
         return "redirect:/admin/questionSets";
     }
-    @GetMapping("/addQuestionSet")
+      @GetMapping("/addQuestionSet")
     public String showAddQuestionSetFormPage(Model model) {
+        List<SubjectTag> subjectTags = subjectTagService.getAllSubjectTags();
         model.addAttribute("questionSet", new QuestionSet());
+        model.addAttribute("subjectTags", subjectTags);
         return "admin/addQuestionSet";
     }
 
     @PostMapping("/addQuestionSet")
-    public String addQuestionSet(@RequestParam("name") String name, RedirectAttributes redirectAttributes) {
+    public String addQuestionSet(@RequestParam("name") String name,
+                                 @RequestParam("subjectTags") List<Integer> subjectTags,
+                                 RedirectAttributes redirectAttributes) {
         QuestionSet set = new QuestionSet();
         set.setName(name);
-        boolean status = questionSetService.addSet(set);
+        set.setQuestionCount(0); // Initialize question count to 0 or any other appropriate value
+
+        boolean status = questionSetService.addSetWithTags(set, subjectTags);
         if (status) {
             redirectAttributes.addFlashAttribute("msg", "Set Added Successfully!");
         } else {
             redirectAttributes.addFlashAttribute("msg", "Failed to Add Set!");
         }
         return "redirect:/admin/questionSets";
-
     }
 
-}
+    @GetMapping("/questionSets")
+    public String showQuestionSets(Model model) {
+        List<QuestionSet> sets = questionSetService.getAllSets();
+        for (QuestionSet set : sets) {
+            set.setTags(questionSetService.getTagsForSet(set.getId()));
+        }
+        model.addAttribute("sets", sets);
+        return "admin/questionSets";
+    }
+    
+}    

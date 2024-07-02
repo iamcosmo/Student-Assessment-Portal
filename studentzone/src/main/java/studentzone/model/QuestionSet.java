@@ -1,10 +1,13 @@
 package studentzone.model;
 
+import java.util.List;
+
 public class QuestionSet {
     private int id;
     private String name;
-    private int questionCount; 
-
+    private int questionCount;
+    private List<Integer> subjectTags; 
+    private transient List<String> tags; // Transient field for tags
 
     public QuestionSet() {}
 
@@ -19,11 +22,27 @@ public class QuestionSet {
         this.name = name;
     }
 
-    // Getters and setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public int getQuestionCount() { return questionCount; }
     public void setQuestionCount(int questionCount) { this.questionCount = questionCount; }
+    
+    public List<Integer> getSubjectTags() {
+        return subjectTags;
+    }
+
+    public void setSubjectTags(List<Integer> subjectTags) {
+        this.subjectTags = subjectTags;
+    }
+
+    // Getter and Setter for tags
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 }
