@@ -1,4 +1,5 @@
 package studentzone.dao;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -6,7 +7,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import  org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import java.sql.Statement;
 
 import studentzone.model.QuestionSet;
 
@@ -15,10 +19,7 @@ public class QuestionSetDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // public List<QuestionSet> getAllSets() {
-    //     String sql = "SELECT * FROM question_set";
-    //     return jdbcTemplate.query(sql, (rs, rowNum) -> new QuestionSet(rs.getInt("id"), rs.getString("name")));
-    // }
+ 
     public List<QuestionSet> getAllSets() {
         String sql = "SELECT * FROM question_set";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new QuestionSet(
@@ -28,19 +29,37 @@ public class QuestionSetDao {
         ));
     }
 
-    public boolean insertSet(QuestionSet set) {
-        String sql = "INSERT INTO question_set (name) VALUES (?)";
-        return jdbcTemplate.update(sql, set.getName()) > 0;
+   public QuestionSetDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
+    public int insertSet(QuestionSet set) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "INSERT INTO question_set (name, question_count) VALUES (?, ?)";
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, set.getName());
+            ps.setInt(2, set.getQuestionCount());
+            return ps;
+        }, keyHolder);
+        return keyHolder.getKey().intValue() ;
+    }
+
+    @SuppressWarnings("deprecation")
+    public List<String> getTagsForSet(int setId) {
+        String sql = "SELECT st.name FROM subject_tag st INNER JOIN subjecttag_setid stsi ON st.id = stsi.subject_tag_id WHERE stsi.set_id = ?";
+        return jdbcTemplate.queryForList(sql, new Object[]{setId}, String.class);
+    }
     public boolean deleteSet(int id) {
        
-        String deleteQuestionsSql = "DELETE FROM question WHERE set_id = ?";
-        jdbcTemplate.update(deleteQuestionsSql, id);
         
-        
-        String deleteSetSql = "DELETE FROM question_set WHERE id = ?";
-        return jdbcTemplate.update(deleteSetSql, id) > 0;
+        String deleteSubjectTagSetIdSql = "DELETE FROM subjecttag_setid WHERE set_id = ?";
+        jdbcTemplate.update(deleteSubjectTagSetIdSql, id);
+
+        // Then delete from question_set
+        String deleteQuestionSetSql = "DELETE FROM question_set WHERE id = ?";
+        jdbcTemplate.update(deleteQuestionSetSql, id);
+        return jdbcTemplate.update(deleteQuestionSetSql, id) > 0;
     }
   
 

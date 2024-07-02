@@ -102,4 +102,9 @@ public class HomeController {
         session.invalidate();
         return "redirect:/";
     }
+    
+    @GetMapping("/result")
+    public String result() {
+        return "result";
+    }
 }

@@ -51,26 +51,26 @@
             list-style: none;
             padding: 0;
         }
+
         .menu li a {
             text-decoration: none;
             color: #333;
             display: flex;
             align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .menu li a:hover {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            color: #fff; 
-            background-color: #ff5a5f; 
+        .menu li a:hover,
+        .menu li.active a {
+            background-color: #007bff;
+            color: #fff;
         }
-        
 
         .menu li {
             margin: 20px 0;
-        }
-        
-        .menu li.active a {
-            color: #ff5a5f;
         }
 
         /* Main Content Styles */
@@ -200,8 +200,9 @@
         .analytics .card-body {
             text-align: center;
         }
-        
-        a, u {
+
+        a,
+        u {
             text-decoration: none;
         }
     </style>
@@ -221,7 +222,7 @@
                     <li class="active"><a href="${pageContext.request.contextPath}/admin/dashboard" class="btn btn-primary return-dashboard">Dashboard</a></li>
                     <li><a href="${pageContext.request.contextPath}/admin/addQuestionSet" class="btn btn-primary add-set-button">Add Questionset</a></li>
                     <li><a href="${pageContext.request.contextPath}/admin/Analytics">Analytics</a></li>
-                    <li><a href="${pageContext.request.contextPath}/students">Students<span class="notification">14</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/students">Students</a></li>
                     <li><a href="${pageContext.request.contextPath}/admin/reports">Reports</a></li>
                     <li><a href="${pageContext.request.contextPath}/admin/logout" class="btn btn-primary">Logout</a></li>
                 </ul>
@@ -231,8 +232,8 @@
             <header class="header">
                 <div class="title">Dashboard</div>
                 <div class="date-picker">
-        <fmt:formatDate value="<%= new java.util.Date() %>" pattern="MM/dd/yyyy" />
-    </div>
+                    <fmt:formatDate value="<%= new java.util.Date() %>" pattern="MM/dd/yyyy" />
+                </div>
                 <div class="user-settings">
                     <div class="theme-toggle"></div>
                     <div class="user-info">
@@ -245,7 +246,13 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">${set.name}</h5>
-                            <p class="card-text">Questions: ${set.questionCount}</p>
+                            <span class="card-text">Questions: ${set.questionCount}</span>
+                            <p class="card-text">
+                                Tags:
+                                <c:forEach var="tag" items="${set.tags}" varStatus="status">
+                                    ${tag}<c:if test="${!status.last}">, </c:if>
+                                </c:forEach>
+                            </p>
                             <a href="${pageContext.request.contextPath}/admin/editQuestionSet?setId=${set.id}" class="btn btn-primary">Edit</a>
                             <a href="${pageContext.request.contextPath}/admin/deleteQuestionSet?id=${set.id}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this question set?')">Delete</a>
                             <a href="${pageContext.request.contextPath}/admin/QuestionList?setId=${set.id}" class="btn btn-secondary">Question List</a>

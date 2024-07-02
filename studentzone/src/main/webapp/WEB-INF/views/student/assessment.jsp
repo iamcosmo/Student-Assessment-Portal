@@ -27,6 +27,55 @@
   <!-- Main CSS File -->
   <link href="<c:url value='/assets/css/main.css'/>" rel="stylesheet" />
   
+  <style>
+      .hero img {
+        z-index: 2;
+      }
+      .custom-column {
+        background-image: url(https://plus.unsplash.com/premium_photo-1673795754011-de6766149646?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1pbi1zYW1lLXNlcmllc3wzfHx8ZW58MHx8fHx8); /* Background image */
+        background-size: cover; /* Ensure the image covers the entire area */
+        background-position: center; /* Center the image */
+        color: black; /* White text */
+        text-align: center; /* Centered text */
+        padding: 20px; /* Padding */
+        border-radius: 10px; /* Rounded corners */
+        position: relative; /* Needed for overlay */
+        font-family: Georgia, "Times New Roman", Times, serif, Times, serif;
+        box-shadow: -5px 5px 10px black;
+      }
+      .custom-column:hover {
+        transform: translateY(-10px); /* Lift effect on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+      }
+      .custom-column .content {
+        position: relative; /* Position content above overlay */
+        z-index: 2; /* Ensure content is above overlay */
+      }
+      .custom-column .title {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+        text-align: left;
+      }
+      .custom-column .subtitle {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        font-weight: 500;
+        text-align: left;
+        font-style: oblique;
+      }
+      .custom-column .start-btn {
+        background-color: white; /* Button background color */
+        color: black; /* Button text color */
+        border: none; /* Remove border */
+        padding: 10px 20px; /* Button padding */
+        border-radius: 5px; /* Rounded button corners */
+        text-decoration: none; /* Remove underline */
+        float: right;
+        font-weight: 600;
+      }
+    </style>
+  
 </head>
 
 <body class="index-page">
@@ -86,11 +135,188 @@
     <!-- Hero Section -->
     <section id="hero" class="hero section">
       <img src="<c:url value='/assets/img/features-light-2.jpg'/>" alt="hero" data-aos="fade-in" />
-      <div class="container" style="color:black">
-        <div class="row justify-content-center">
-         Hiiii
+      <div class="container" style="margin-top: -3%">
+          <div class="row">
+            <div class="col-lg-12">
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="home-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#home-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="home-tab-pane"
+                    aria-selected="true"
+                    style="
+                      font-weight: 800;
+                      font-family: Georgia, Times, serif;
+                      color: black;
+                    "
+                  >
+                    All Sets
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="profile-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#profile-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="profile-tab-pane"
+                    aria-selected="false"
+                    style="
+                      font-weight: 800;
+                      font-family: Georgia, Times, serif;
+                      color: black;
+                    "
+                  >
+                    Your Subject Sets
+                  </button>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent" style="margin-top: 3%">
+                <div
+                  class="tab-pane fade show active"
+                  id="home-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="home-tab"
+                  tabindex="0"
+                >
+                  <div class="container">
+                    <div class="row g-4">
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="profile-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="profile-tab"
+                  tabindex="0"
+                >
+                  <div class="container">
+                    <div class="row g-4">
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-4 custom-column">
+                          <div class="title">Test Course</div>
+                          <div class="subtitle">
+                            Subject Tag
+                            <a href="#" class="start-btn">Start Learning</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
     </section>
     <!-- /Hero Section -->
   </main>
