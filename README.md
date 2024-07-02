@@ -200,3 +200,15 @@ INSERT INTO question (question, a, b, c, d, answer, set_id) VALUES
 
 5. **Administrator Login**:
    - Login as an administrator to manage question sets and questions
+
+
+**Question count**
+   -ALTER TABLE question_set
+   -ADD COLUMN question_count INT;
+
+**subject intrest table**
+   CREATE TABLE subject_interest (
+    student_email VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL PRIMARY KEY,
+    subjects TEXT,
+    FOREIGN KEY (student_email) REFERENCES users(email)
+   );
