@@ -2,6 +2,7 @@ package studentzone.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +10,22 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import  org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import java.sql.Statement;
 
 import studentzone.model.QuestionSet;
 
+
 @Repository
 public class QuestionSetDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
- 
+    
+    private static final String FIND_QUESTION_SET_ID_WITH_TAG_SQL="SELECT * FROM subjecttag_setid WHERE subject_tag_id=?)";
+    private static final String FIND_QUESTION_SET_FILTERED_SQL="SELECT * FROM question_set WHERE id=?";
+    
+    
     public List<QuestionSet> getAllSets() {
         String sql = "SELECT * FROM question_set";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new QuestionSet(
@@ -27,6 +33,22 @@ public class QuestionSetDao {
                 rs.getString("name"),
                 rs.getInt("question_count") 
         ));
+    }
+    
+    public List<QuestionSet> getTagFilteredSets(int [] userTagIds)
+    {
+    	List<QuestionSet> tagFilteredSets = new ArrayList<>();
+    	for(int i=0; i<userTagIds.length; i++)
+    	{
+    		SqlRowSet rowSet = jdbcTemplate.queryForRowSet(FIND_QUESTION_SET_ID_WITH_TAG_SQL, userTagIds);
+    		while(rowSet.next())
+    		{
+    			QuestionSet questionSetFiltered = new QuestionSet();
+    			questionSetFiltered.setId(rowSet.getInt("set_id"));
+    		}
+    	}
+    	
+    	return tagFilteredSets;
     }
 
    public QuestionSetDao(JdbcTemplate jdbcTemplate) {
