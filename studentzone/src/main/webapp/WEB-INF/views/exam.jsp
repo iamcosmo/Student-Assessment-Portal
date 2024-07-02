@@ -35,12 +35,13 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 80%;
+        height: 70%;
         text-align: center;
         background-color: #f8f9fa;
-        margin-top: -3%;
+        margin-top: -9%;
         width: 80%;
         margin-left: 10%;
+        box-shadow: -5px 5px 10px black;
       }
 
       .start-screen img {
@@ -64,7 +65,7 @@
       .start-screen .btn-start {
         font-size: 1.25rem;
         padding: 10px 30px;
-        margin-bottom: 5%;
+        margin-bottom: 8%;
       }
 
       #questions-container {
@@ -136,12 +137,13 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 80%;
+        height: 70%;
         text-align: center;
         background-color: #f8f9fa;
-        margin-top: -3%;
+        margin-top: -9%;
         width: 80%;
         margin-left: 10%;
+        box-shadow: -5px 5px 10px black;
       }
 
       .submission-message img {
@@ -175,58 +177,6 @@
   </head>
 
   <body class="index-page">
-     <header id="header" class="header d-flex align-items-center fixed-top">
-		<div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-	        <a
-	          href="index.jsp"
-	          class="logo d-flex align-items-center me-auto me-xl-0"
-	        >
-	          <h1 class="sitename">StudentZone</h1>
-	          <span></span>
-	        </a>
-
-	        <nav id="navmenu" class="navmenu">
-	          <ul>
-	            <li><a href="<c:url value='/'/>" class="active">Home</a></li>
-	            <li><a href="about.jsp">About</a></li>
-	            <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
-	            <li><a href="results.jsp">Results</a></li>
-	            <li><a href="analyze.jsp">Analyze</a></li>
-	            <c:choose>
-	                <c:when test="${not empty sessionScope.user}">
-	                    <li><a href="<c:url value='/logout'/>">Logout</a></li>
-	                </c:when>
-	                <c:otherwise>
-	                    <li><a href="<c:url value='/login'/>">Login</a></li>
-	                    <li><a href="<c:url value='/register'/>">Register</a></li>
-	                </c:otherwise>
-	            </c:choose>
-	          </ul>
-	          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-	        </nav> 
-	        <c:choose>
-	                <c:when test="${not empty sessionScope.user}">
-	                    <div class="dropdown">
-						  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border: none">
-						  		<i class="bi bi-person-circle" 
-	                    			style="font-size: 1.5rem;
-	    							cursor: pointer;
-	    							color: black;">
-	    						</i>
-						  </button>
-						  <ul class="dropdown-menu">
-						    <li><a class="dropdown-item" href="<c:url value='/student/profile'/>">Profile</a></li>
-						    <li><a class="dropdown-item" href="#">Another action</a></li>
-						  </ul>
-						</div>   
-	                </c:when>
-	                <c:otherwise>
-						<a class="btn-getstarted" href="<c:url value='/register'/>">Register</a>
-	                </c:otherwise>
-	        </c:choose>     
-        </div>
-    </header>
-
     <main class="main">
       <!-- Hero Section -->
       <section id="hero" class="hero section">
@@ -313,66 +263,7 @@
       <!-- /Hero Section -->
     </main>
 
-    <!-- Footer Section -->
-    <footer id="footer" class="footer position-relative">
-      <div class="container footer-top">
-        <div class="row gy-4">
-          <div class="col-lg-5 col-md-12 footer-about">
-            <a href="index.html" class="logo d-flex align-items-center">
-              <span class="sitename">StudentZone</span>
-            </a>
-            <p>
-              ExamPrep Portal is dedicated to helping students achieve their
-              academic goals with high-quality resources and support.
-            </p>
-
-            <div class="social-links d-flex mt-4">
-              <a href=""><i class="bi bi-twitter-x"></i></a>
-              <a href=""><i class="bi bi-facebook"></i></a>
-              <a href=""><i class="bi bi-instagram"></i></a>
-              <a href=""><i class="bi bi-linkedin"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-6 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">About us</a></li>
-              <li><a href="#">Services</a></li>
-              <li><a href="#">Terms of service</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-6 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="#">Web Design</a></li>
-              <li><a href="#">Web Development</a></li>
-              <li><a href="#">Product Management</a></li>
-              <li><a href="#">Marketing</a></li>
-              <li><a href="#">Graphic Design</a></li>
-            </ul>
-          </div>
-
-          <div
-            class="col-lg-3 col-md-12 footer-contact text-center text-md-start"
-          >
-            <h4>Contact Us</h4>
-            <p>Silicon University</p>
-            <p>Bhubaneswar, Odisha</p>
-            <p>751010</p>
-            <p class="mt-4">
-              <strong>Phone:</strong> <span>+91 1234567809</span>
-            </p>
-            <p><strong>Email:</strong> <span>info@example.com</span></p>
-          </div>
-        </div>
-      </div>
-    </footer>
-    <!-- /Footer Section -->
-
+   
     <!-- Scroll to Top -->
     <a
       href="#"
@@ -381,6 +272,7 @@
       <i class="bi bi-arrow-up-short"></i>
     </a>
 <!-- Vendor JS Files -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="<c:url value='/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/aos/aos.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/glightbox/js/glightbox.min.js'/>"></script>
@@ -388,13 +280,11 @@
 	<script src="<c:url value='/assets/vendor/swiper/swiper-bundle.min.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/isotope-layout/isotope.pkgd.min.js'/>"></script>
 	<script src="<c:url value='/assets/vendor/php-email-form/validate.js'/>"></script>
-	    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	
   
 <!-- Main JS File -->
-	<script src="<c:url value='/assets/js/main.js'/>"></script>
 
-    <script>
+     <script>
       $(document).ready(function () {
         const totalQuestions = 20;
         const examDuration = 5 * 60 * 60; // 5 hours in seconds
@@ -524,6 +414,7 @@
         $("#finish-button").on("click", finishExam);
       });
     </script>
+    
   </body>
 </html>
     
