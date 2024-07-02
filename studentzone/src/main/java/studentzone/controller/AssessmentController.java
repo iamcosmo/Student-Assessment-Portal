@@ -12,6 +12,8 @@ import studentzone.service.UserDetailsService;
 import studentzone.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import studentzone.service.QuestionSetService;
+import studentzone.service.SubjectTagService;
+import studentzone.model.SubjectTag;
 import studentzone.model.QuestionSet;
 import java.util.List;
 
@@ -22,12 +24,14 @@ public class AssessmentController {
 	@Autowired
 	private QuestionSetService questionSetService;
 	private final UserService userService;
+	private final SubjectTagService subjectTagService;
     private final SubjectInterestService subjectInterestService;
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public AssessmentController(UserService userService, SubjectInterestService subjectInterestService, UserDetailsService userDetailsService) {
+    public AssessmentController(UserService userService,SubjectTagService subjectTagService, SubjectInterestService subjectInterestService, UserDetailsService userDetailsService) {
         this.userService = userService;
+        this.subjectTagService = subjectTagService;
     	this.subjectInterestService = subjectInterestService;
         this.userDetailsService = userDetailsService;
     }
@@ -55,13 +59,17 @@ public class AssessmentController {
         model.addAttribute("subjectInterest", subjectInterest);
         
         List<QuestionSet> questionSetList = questionSetService.getAllSets();
-        
-    	model.addAttribute("qslist",questionSetList);        
+        for (QuestionSet set : questionSetList) {
+            set.setTags(questionSetService.getTagsForSet(set.getId()));
+        }
+        model.addAttribute("setswithtags", questionSetList);
         return "student/assessment";
     }
 
     @GetMapping("/subjectform")
-    public String showSubjectForm() {
+    public String showSubjectForm(Model model) {
+    	List<SubjectTag> allSubjectTags = subjectTagService.getAllSubjectTags();
+    	model.addAttribute("subtags",allSubjectTags);
         return "student/subjectform";
     }
 

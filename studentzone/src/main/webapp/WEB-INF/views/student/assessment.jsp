@@ -188,61 +188,18 @@
                 >
                   <div class="container">
                     <div class="row g-4">
+                    <c:forEach var="set" items="${setswithtags}">
                       <div class="col-6">
                         <div class="p-4 custom-column">
-                          <div class="title">Test Course</div>
+                          <div class="title">${set.getName()}</div>
                           <div class="subtitle">
-                            Subject Tag
+                            Subject Tags: <c:forEach var="tag" items="${set.getTags()}"><span class="badge bg-primary me-2">${tag}</span>
+</c:forEach>
                             <a href="#" class="start-btn">Start Learning</a>
                           </div>
                         </div>
                       </div>
-                      <div class="col-6">
-                        <div class="p-4 custom-column">
-                          <div class="title">Test Course</div>
-                          <div class="subtitle">
-                            Subject Tag
-                            <a href="#" class="start-btn">Start Learning</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="p-4 custom-column">
-                          <div class="title">Test Course</div>
-
-                          <div class="subtitle">
-                            Subject Tag
-                            <a href="#" class="start-btn">Start Learning</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="p-4 custom-column">
-                          <div class="title">Test Course</div>
-                          <div class="subtitle">
-                            Subject Tag
-                            <a href="#" class="start-btn">Start Learning</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="p-4 custom-column">
-                          <div class="title">Test Course</div>
-                          <div class="subtitle">
-                            Subject Tag
-                            <a href="#" class="start-btn">Start Learning</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="p-4 custom-column">
-                          <div class="title">Test Course</div>
-                          <div class="subtitle">
-                            Subject Tag
-                            <a href="#" class="start-btn">Start Learning</a>
-                          </div>
-                        </div>
-                      </div>
+                      </c:forEach>
                     </div>
                   </div>
                 </div>
