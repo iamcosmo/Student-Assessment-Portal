@@ -37,4 +37,10 @@ public class QuestionService {
     public int updateQuestion(int qid, String newQuestion, String optA, String optB, String optC, String optD, String answer,int set_id) {
         return questionsDao.updateQuestion(qid, newQuestion, optA, optB, optC, optD, answer,set_id);
     }
+ 
+
+    public void deleteQuestionsBySetId(int setId) {
+        questionsDao.deleteQuestionsBySetId(setId);
+    }
 }
+

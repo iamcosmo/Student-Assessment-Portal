@@ -10,15 +10,22 @@
 </head>
 <body>
 <c:if test="${empty sessionScope.adminUsername}">
-    <% response.sendRedirect("AdminLogin.jsp?msg2=Please Login as Admin to Continue"); %>
+    <c:redirect url="AdminLogin.jsp?msg2=Please Login as Admin to Continue"/>
 </c:if>
 <div class="container mt-5">
+    <div class="row justify-content-between mb-4">
+        <div class="col-md-6">
+            <h2>Question List</h2>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="${pageContext.request.contextPath}/admin/questionSets" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+    <c:if test="${not empty msg}">
+        <div class="alert alert-info text-center">${msg}</div>
+    </c:if>
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <h2 class="mb-4 text-center">Question List</h2>
-            <c:if test="${not empty msg}">
-                <div class="alert alert-info text-center">${msg}</div>
-            </c:if>
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
@@ -34,7 +41,7 @@
                 <tbody>
                     <c:forEach items="${questionList}" var="question">
                         <tr>
-                            <form method="post" action="${pageContext.request.contextPath}/admin/updateQuestion">
+                            <form method="post" action="<c:url value='/admin/updateQuestion' />">
                                 <input type="hidden" name="id" value="${question.id}"/>
                                 <input type="hidden" name="set_id" value="${question.setId}"/>
                                 <td><input type="text" name="question" value="${question.question}" class="form-control"/></td>
@@ -45,7 +52,7 @@
                                 <td><input type="text" name="answer" value="${question.answer}" class="form-control"/></td>
                                 <td>
                                     <button type="submit" class="btn btn-primary btn-sm">Update</button>
-                                    <a href="${pageContext.request.contextPath}/admin/deleteQuestion/${question.id}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this question?')">Delete</a>
+                                    <a href="<c:url value='/admin/deleteQuestion/${question.id}' />" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this question?')">Delete</a>
                                 </td>
                             </form>
                         </tr>
@@ -53,8 +60,8 @@
                 </tbody>
             </table>
             <div class="mt-3 text-center">
-                <a href="${pageContext.request.contextPath}/admin/addQuestion" class="btn btn-success">Add New Question</a>
-                <a href="${pageContext.request.contextPath}/admin/logout" class="btn btn-secondary">Logout</a>
+                <a href="<c:url value='/admin/addQuestion' />" class="btn btn-success">Add New Question</a>
+                <a href="<c:url value='/admin/logout' />" class="btn btn-secondary">Logout</a>
             </div>
         </div>
     </div>

@@ -63,8 +63,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        .menu li a:hover,
-        .menu li.active a {
+        .menu li a:hover{
             background-color: #007bff;
             color: #fff;
         }
@@ -268,12 +267,12 @@
             <a href="${pageContext.request.contextPath}/admin/addQuestionSet" class="btn btn-primary add-set-button">Add New Set</a>
         </main>
         <aside class="right-sidebar">
-            <section class="recent-update">
+             <section class="recent-update">
                 <div class="section-title">Recent Update</div>
                 <ul>
-                    <li>Updated Question in Java Set</li>
-                    <li>Deleted Question from C++ Set</li>
-                    <li>Added new Question to Python Set</li>
+                    <c:forEach var="update" items="${recentUpdates}">
+                        <li>${update.message} - <fmt:formatDate value="${update.date}" pattern="MM/dd/yyyy HH:mm" /></li>
+                    </c:forEach>
                 </ul>
             </section>
             <section class="analytics">

@@ -4,11 +4,14 @@
 <html>
 <head>
     <title>Edit Question Set</title>
-    <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css' />">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="<c:url value='/assets/vendor/bootstrap/css/bootstrap.min.css' />">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
         }
         .card {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -17,6 +20,11 @@
         .card-header {
             background-color: #007bff;
             color: #fff;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+        }
+        .card-body {
+            padding: 20px;
         }
         .btn-primary {
             background-color: #007bff;
@@ -26,16 +34,21 @@
             background-color: #0056b3;
             border-color: #0056b3;
         }
-        .dropdown-menu {
-            max-height: 200px;
-            overflow-y: auto;
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #ffffff;
         }
         .tag {
             display: inline-block;
             background-color: #e9ecef;
             border-radius: 20px;
             padding: 5px 10px;
-            margin: 2px;
+            margin-right: 5px;
         }
         .tag a {
             margin-left: 8px;
@@ -45,12 +58,28 @@
         .tag a:hover {
             color: #dc3545;
         }
+        .available-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        .available-tag {
+            cursor: pointer;
+        }
+        .available-tag:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <a href="${pageContext.request.contextPath}/admin/questionSets" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
                 <div class="card">
                     <div class="card-header text-center">
                         <h2>Edit Question Set</h2>
@@ -64,13 +93,20 @@
                             </div>
                             <div class="mb-3">
                                 <label for="subjectTags" class="form-label">Subject Tags:</label>
-                                <form:select path="subjectTags" id="subjectTags" class="selectpicker form-control" multiple="true" data-live-search="true">
-                                    <form:options items="${subjectTags}" itemValue="id" itemLabel="name"/>
-                                </form:select>
+                                <div class="available-tags">
+                                    <c:forEach var="tag" items="${subjectTags}">
+                                        <span class="tag available-tag" data-id="${tag.id}">${tag.name}</span>
+                                    </c:forEach>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <h5>Selected Tags:</h5>
-                                <div id="selectedTags" class="form-control"></div>
+                                <div id="selectedTags" class="tag-container">
+                                    <c:forEach var="tag" items="${selectedTags}">
+                                        <span class="tag" data-id="${tag.id}">${tag.name} <a href="#" class="remove-tag">&times;</a></span>
+                                        <input type="hidden" name="subjectTags" value="${tag.id}" class="hidden-input" />
+                                    </c:forEach>
+                                </div>
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">Update Set</button>
@@ -83,44 +119,30 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.selectpicker').selectpicker();
-
-            function updateSelectedTags() {
-                var selectedOptions = $('#subjectTags').find('option:selected');
-                var selectedTags = [];
-                selectedOptions.each(function() {
-                    selectedTags.push({ id: $(this).val(), name: $(this).text() });
-                });
-
-                var selectedTagsContainer = $('#selectedTags');
-                selectedTagsContainer.empty();
-                selectedTags.forEach(function(tag) {
-                    selectedTagsContainer.append(
-                        '<span class="tag">' + tag.name + ' <a href="#" class="remove-tag" data-id="' + tag.id + '">&times;</a></span>'
+            // Add tag to selected tags
+            $(document).on('click', '.available-tag', function() {
+                var tagId = $(this).data('id');
+                var tagName = $(this).text();
+                
+                if (!$('#selectedTags').find('.tag[data-id="' + tagId + '"]').length) {
+                    $('#selectedTags').append(
+                        '<span class="tag" data-id="' + tagId + '">' + tagName + ' <a href="#" class="remove-tag">&times;</a></span>'
                     );
-                });
-            }
-
-            $('#subjectTags').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-                updateSelectedTags();
+                    $('#selectedTags').append(
+                        '<input type="hidden" name="subjectTags" value="' + tagId + '" class="hidden-input" />'
+                    );
+                }
             });
 
+            // Remove tag from selected tags
             $(document).on('click', '.remove-tag', function(e) {
                 e.preventDefault();
-                var tagId = $(this).data('id');
-                $('#subjectTags option[value="' + tagId + '"]').prop('selected', false);
-                $('.selectpicker').selectpicker('refresh');
-                updateSelectedTags();
+                var tagId = $(this).closest('.tag').data('id');
+                $(this).closest('.tag').remove();
+                $('.hidden-input[value="' + tagId + '"]').remove();
             });
-
-            // Initially populate selected tags if any are pre-selected
-            updateSelectedTags();
         });
     </script>
 </body>
