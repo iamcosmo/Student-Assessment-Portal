@@ -4,26 +4,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import studentzone.model.SubjectInterest;
 import studentzone.model.User;
 import studentzone.model.UserDetails;
-import studentzone.service.SubjectInterestService;
+import studentzone.model.UserSubjectTag;
 import studentzone.service.UserDetailsService;
 import studentzone.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import studentzone.service.QuestionSetService;
+import studentzone.service.SubjectTagService;
+import studentzone.service.UserSubjectTagService;
+import studentzone.model.SubjectTag;
+import studentzone.model.QuestionSet;
+import java.util.List;
 
 @Controller
 @RequestMapping("/student")
 public class AssessmentController {
-
+	
+	@Autowired
+	private QuestionSetService questionSetService;
 	private final UserService userService;
-    private final SubjectInterestService subjectInterestService;
+	private final UserSubjectTagService userSubjectTagService;
+	private final SubjectTagService subjectTagService;
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public AssessmentController(UserService userService, SubjectInterestService subjectInterestService, UserDetailsService userDetailsService) {
+    public AssessmentController(UserService userService,UserSubjectTagService userSubjectTagService,SubjectTagService subjectTagService, UserDetailsService userDetailsService) {
         this.userService = userService;
-    	this.subjectInterestService = subjectInterestService;
+        this.userSubjectTagService = userSubjectTagService;
+        this.subjectTagService = subjectTagService;
+    	
         this.userDetailsService = userDetailsService;
     }
     
@@ -34,44 +44,54 @@ public class AssessmentController {
     
     @GetMapping("/assessment")
     public String showAssessmentPage(HttpSession session, Model model) {
-        // Check if user is logged in
+        
         User user = isUserLoggedIn(session);
         if (user == null) {
-            // Redirect to login if not logged in
             return "redirect:/login";
         }
-
-        // Retrieve user email
         String userEmail = user.getEmail();
-
-        // Check if user has filled subject interests
-        SubjectInterest subjectInterest = subjectInterestService.findByEmail(userEmail);
-        if (subjectInterest == null) {
-            // Redirect to subject form if subjects not filled
+        
+        List<UserSubjectTag> userSubTagList = userSubjectTagService.findUserTags(userEmail);
+        if (userSubTagList == null||userSubTagList.size()==0) {
             return "redirect:/student/subjectform";
         }
-
-        // Populate model attributes for the assessment page
+        
         model.addAttribute("userEmail", userEmail);
-        model.addAttribute("subjectInterest", subjectInterest);
-
-
+        model.addAttribute("subjectInterest", userSubTagList);
+        
+        List<QuestionSet> questionSetList = questionSetService.getAllSets();
+        for (QuestionSet set : questionSetList) {
+            set.setTags(questionSetService.getTagsForSet(set.getId()));
+        }
+        model.addAttribute("setswithtags", questionSetList);
+        
+        List<QuestionSet> questionSetListTagFiltered = questionSetService.getFilteredQuestionSetByTagIds(userSubTagList);
+        for(QuestionSet set: questionSetListTagFiltered)
+        {
+        	set.setTags(questionSetService.getTagsForSet(set.getId()));
+        }
+        model.addAttribute("filteredsetswithtags",questionSetListTagFiltered);
         return "student/assessment";
     }
 
     @GetMapping("/subjectform")
-    public String showSubjectForm() {
+    public String showSubjectForm(Model model) {
+    	List<SubjectTag> allSubjectTags = subjectTagService.getAllSubjectTags();
+    	model.addAttribute("subtags",allSubjectTags);
         return "student/subjectform";
     }
 
     @PostMapping("/submitSubjectForm")
-    public String submitSubjectForm(@RequestParam("subjects") String[] subjects,
+    public String submitSubjectForm(@RequestParam("subjects") int[] subjectIds,
                                     HttpSession session) {
-        
+        for(int i=0; i<subjectIds.length; i++)  
+        {
+        	System.out.println("subject id: "+subjectIds[i]);
+        }
         User user = isUserLoggedIn(session);
         if (user != null) {
             String userEmail = user.getEmail();
-            subjectInterestService.saveSubjectInterests(userEmail, subjects);
+            userSubjectTagService.saveUserSubjectTags(userEmail, subjectIds);
         }else
         {
         	return "redirect:/login";
@@ -153,7 +173,13 @@ public class AssessmentController {
         UserDetails userDetails = userDetailsService.findByEmail(user.getEmail());        
         session.setAttribute("userProfile", userDetails);
         return "redirect:/student/profile";
-    }
+    } 
     
+    @PostMapping("/beginexam")
+    public String startAssessment(@RequestParam("setid") int setId)
+    {
+    	System.out.println("SetId fetched is: "+setId);
+    	return "redirect:/student/assessment";    	
+    }
         
 }

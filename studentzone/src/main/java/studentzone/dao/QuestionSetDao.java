@@ -2,24 +2,30 @@ package studentzone.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import  org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import java.sql.Statement;
 
 import studentzone.model.QuestionSet;
+import studentzone.model.UserSubjectTag;
+
 
 @Repository
 public class QuestionSetDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
- 
+    
+    
     public List<QuestionSet> getAllSets() {
         String sql = "SELECT * FROM question_set";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new QuestionSet(
@@ -27,6 +33,36 @@ public class QuestionSetDao {
                 rs.getString("name"),
                 rs.getInt("question_count") 
         ));
+    }
+    
+    public List<QuestionSet> getFilteredQuestionSetsByTagIds(List<UserSubjectTag> userSubjectTags) {
+  
+        List<Integer> tagIds = new ArrayList<>();
+        for (UserSubjectTag userSubjectTag : userSubjectTags) {
+            tagIds.add(userSubjectTag.getTagId());
+        }
+
+        String tagIdsString = tagIds.stream()
+                                    .map(String::valueOf)
+                                    .collect(Collectors.joining(", "));
+
+        String sql = "SELECT DISTINCT qs.id, qs.name, qs.question_count " +
+                     "FROM question_set qs " +
+                     "JOIN subjecttag_setid st ON qs.id = st.set_id " +
+                     "WHERE st.subject_tag_id IN (" + tagIdsString + ")";
+
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql);
+
+        List<QuestionSet> questionSets = new ArrayList<>();
+        while (rowSet.next()) {
+            QuestionSet questionSet = new QuestionSet();
+            questionSet.setId(rowSet.getInt("id"));
+            questionSet.setName(rowSet.getString("name"));
+            questionSet.setQuestionCount(rowSet.getInt("question_count"));
+            questionSets.add(questionSet);
+        }
+
+        return questionSets;
     }
 
    public QuestionSetDao(JdbcTemplate jdbcTemplate) {

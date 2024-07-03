@@ -107,4 +107,9 @@ public class HomeController {
     public String result() {
         return "result";
     }
+    
+    @GetMapping("/exam")
+    public String exam() {
+        return "student/exam";
+    }
 }

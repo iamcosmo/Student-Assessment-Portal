@@ -97,7 +97,38 @@ ALTER TABLE question
 ADD COLUMN set_id INT,
 ADD FOREIGN KEY (set_id) REFERENCES question_set(id);
 ```
+### Subject_tag Table
 
+```sql
+CREATE TABLE subject_tag (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       name VARCHAR(255) NOT NULL
+     );
+```
+
+### Subjecttag_setid Table
+
+```sql
+ CREATE TABLE subjecttag_setid (
+        set_id INT,
+        subject_tag_id INT,
+        PRIMARY KEY (set_id, subject_tag_id),
+        FOREIGN KEY (set_id) REFERENCES question_set(id),
+        FOREIGN KEY (subject_tag_id) REFERENCES subject_tag(id)
+    );
+```
+
+### User_subject_tag Table
+
+```sql
+CREATE TABLE user_subject_tag (
+    user_email VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    tag_id INT NOT NULL,
+    PRIMARY KEY (user_email, tag_id),
+    FOREIGN KEY (user_email) REFERENCES users(email),
+    FOREIGN KEY (tag_id) REFERENCES subject_tag(id)
+);
+```
 ## Getting Started
 
 To run the Student Assessment Portal locally or deploy it:
@@ -212,3 +243,18 @@ INSERT INTO question (question, a, b, c, d, answer, set_id) VALUES
     subjects TEXT,
     FOREIGN KEY (student_email) REFERENCES users(email)
    );
+   
+**subject_tag table**
+   CREATE TABLE subject_tag (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       name VARCHAR(255) NOT NULL
+     );
+     **subjecttag_setid table**
+    CREATE TABLE subjecttag_setid (
+        set_id INT,
+        subject_tag_id INT,
+        PRIMARY KEY (set_id, subject_tag_id),
+        FOREIGN KEY (set_id) REFERENCES question_set(id),
+        FOREIGN KEY (subject_tag_id) REFERENCES subject_tag(id)
+    );
+
