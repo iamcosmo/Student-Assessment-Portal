@@ -84,9 +84,6 @@
 			  transition: 0.3s;
 			}
   		
-      .hero img {
-        z-index: 2;
-      }
       .custom-column {
         background-image: url(https://plus.unsplash.com/premium_photo-1673795754011-de6766149646?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1pbi1zYW1lLXNlcmllc3wzfHx8ZW58MHx8fHx8); /* Background image */
         background-size: cover; /* Ensure the image covers the entire area */
@@ -124,11 +121,12 @@
         background-color: white; /* Button background color */
         color: black; /* Button text color */
         border: none; /* Remove border */
-        padding: 10px 20px; /* Button padding */
+        padding: 5px 10px; /* Button padding */
         border-radius: 5px; /* Rounded button corners */
         text-decoration: none; /* Remove underline */
         float: right;
         font-weight: 600;
+        box-shadow: -2px 2px 5px black;
       }
     </style>
   
@@ -188,8 +186,8 @@
   <main class="main">
     <!-- Hero Section -->
     <section id="hero" class="hero section">
-      <img src="<c:url value='/assets/img/features-light-2.jpg'/>" alt="hero" data-aos="fade-in" />
-      <div class="container" style="margin-top: -3%">
+      <img src="<c:url value='/assets/img/photo1.avif'/>" alt="hero" data-aos="fade-in" />
+      <div class="container" style="margin-top: -15%">
           <div class="row">
             <div class="col-lg-12">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -252,7 +250,7 @@
 </c:forEach>
                             <form action="<c:url value='/student/beginexam'/>" method="post" class="mb-6">
                               <input type="hidden" name="setid" value="${set.id}" />
-                              <button type="submit" class="start-btn">Start Learning</button>
+                              <button type="submit" class="start-btn">Start</button>
                             </form>
                           </div>
                         </div>
