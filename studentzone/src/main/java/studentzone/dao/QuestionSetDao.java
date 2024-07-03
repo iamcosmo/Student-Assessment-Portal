@@ -107,10 +107,7 @@ public class QuestionSetDao {
     }
   
 
-    // public boolean updateSet(QuestionSet set) {
-    //     String sql = "UPDATE question_set SET name = ? WHERE id = ?";
-    //     return jdbcTemplate.update(sql, set.getName(), set.getId()) > 0;
-    // }
+
     public boolean updateSet(QuestionSet questionSet) {
         String sql = "UPDATE question_set SET name = ? WHERE id = ?";
         boolean result = jdbcTemplate.update(sql, questionSet.getName(), questionSet.getId()) > 0;

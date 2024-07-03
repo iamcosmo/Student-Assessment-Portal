@@ -4,7 +4,7 @@ public class SubjectTagSetId {
     private int setId;
     private int subjectTagId;
 
-    // Constructor
+
     public SubjectTagSetId() {
     }
 
@@ -13,7 +13,6 @@ public class SubjectTagSetId {
         this.subjectTagId = subjectTagId;
     }
 
-    // Getters and Setters
     public int getSetId() {
         return setId;
     }
@@ -30,7 +29,6 @@ public class SubjectTagSetId {
         this.subjectTagId = subjectTagId;
     }
 
-    // toString method
     @Override
     public String toString() {
         return "SubjectTagSetId{" +

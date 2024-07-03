@@ -8,8 +8,6 @@ public class Questions {
     private String c;
     private String d;
     private String answer;
-
-    // Getters and setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     
@@ -31,7 +29,7 @@ public class Questions {
     public String getAnswer() { return answer; }
     public void setAnswer(String answer) { this.answer = answer; }
 
-    private int setId; // Foreign key to QuestionSet
+    private int setId; 
     public int getSetId() { return setId; }
     public void setSetId(int setId) { this.setId = setId; }
 

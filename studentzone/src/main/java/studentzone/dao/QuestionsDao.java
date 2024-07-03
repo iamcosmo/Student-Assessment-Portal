@@ -92,17 +92,6 @@ public boolean insertQuestion(Questions question) {
         return jdbcTemplate.update(sql, newQuestion, optA, optB, optC, optD, answer, set_id, qid); // Include set_id parameter
     }
 
-
-
-// public int deleteRecord(int qid) {
-//     Questions question = getRecordById(qid);
-//     String sql = "DELETE FROM question WHERE id = ?";
-//     int result = jdbcTemplate.update(sql, qid);
-//     if (result > 0) {
-//         decrementQuestionCount(question.getSetId());
-//     }
-//     return result;
-// }
 @SuppressWarnings("deprecation")
 public int deleteRecord(int qid) {
     String getSetIdSql = "SELECT set_id FROM question WHERE id = ?";

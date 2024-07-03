@@ -7,7 +7,7 @@ public class QuestionSet {
     private String name;
     private int questionCount;
     private List<Integer> subjectTags; 
-    private transient List<String> tags; // Transient field for tags
+    private transient List<String> tags;
 
     public QuestionSet() {}
 
@@ -36,8 +36,6 @@ public class QuestionSet {
     public void setSubjectTags(List<Integer> subjectTags) {
         this.subjectTags = subjectTags;
     }
-
-    // Getter and Setter for tags
     public List<String> getTags() {
         return tags;
     }

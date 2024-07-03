@@ -121,7 +121,7 @@
 
     <script>
         $(document).ready(function() {
-            // Add tag to selected tags
+           
             $(document).on('click', '.available-tag', function() {
                 var tagId = $(this).data('id');
                 var tagName = $(this).text();
@@ -136,7 +136,7 @@
                 }
             });
 
-            // Remove tag from selected tags
+           
             $(document).on('click', '.remove-tag', function(e) {
                 e.preventDefault();
                 var tagId = $(this).closest('.tag').data('id');

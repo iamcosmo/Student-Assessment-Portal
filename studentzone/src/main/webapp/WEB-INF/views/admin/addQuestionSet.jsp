@@ -85,7 +85,7 @@
                         <h2>Add Question Set</h2>
                     </div>
                     <div class="card-body">
-                        <form:form action="${pageContext.request.contextPath}/admin/addQuestionSet" method="post" modelAttribute="questionSet">
+                        <form:form id="addQuestionSetForm" action="${pageContext.request.contextPath}/admin/addQuestionSet" method="post" modelAttribute="questionSet">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Set Name:</label>
                                 <form:input path="name" id="name" class="form-control"/>
@@ -114,7 +114,7 @@
 
     <script>
         $(document).ready(function() {
-            // Add tag to selected tags
+
             $(document).on('click', '.available-tag', function() {
                 var tagId = $(this).data('id');
                 var tagName = $(this).text();
@@ -129,12 +129,33 @@
                 }
             });
 
-            // Remove tag from selected tags
+           
             $(document).on('click', '.remove-tag', function(e) {
                 e.preventDefault();
                 var tagId = $(this).closest('.tag').data('id');
                 $(this).closest('.tag').remove();
                 $('.hidden-input[value="' + tagId + '"]').remove();
+            });
+
+         
+            $('#addQuestionSetForm').submit(function(e) {
+                var isValid = true;
+                var setName = $('#name').val().trim();
+                var selectedTags = $('#selectedTags .tag').length;
+
+                if (setName === "") {
+                    isValid = false;
+                    alert('Set Name is required.');
+                }
+
+                if (selectedTags === 0) {
+                    isValid = false;
+                    alert('At least one Subject Tag is required.');
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                }
             });
         });
     </script>

@@ -27,23 +27,6 @@ public class SubjectTagDao {
     }
     
 
-    // public boolean insertSubjectTag(SubjectTag subjectTag) {
-    //     String sql = "INSERT INTO subject_tag (name) VALUES (?)";
-    //     return jdbcTemplate.update(sql, subjectTag.getName()) > 0;
-    // }
-
-    // public boolean deleteSubjectTag(int id) {
-    //     String deleteReferencesSql = "DELETE FROM subjecttag_setid WHERE subject_tag_id = ?";
-    //     jdbcTemplate.update(deleteReferencesSql, id);
-        
-    //     String deleteSubjectTagSql = "DELETE FROM subject_tag WHERE id = ?";
-    //     return jdbcTemplate.update(deleteSubjectTagSql, id) > 0;
-    // }
-    
-    // public boolean updateSubjectTag(SubjectTag subjectTag) {
-    //     String sql = "UPDATE subject_tag SET name = ? WHERE id = ?";
-    //     return jdbcTemplate.update(sql, subjectTag.getName(), subjectTag.getId()) > 0;
-    // }
 
     public boolean insertSubjectTag(SubjectTag subjectTag) {
         String sql = "INSERT INTO subject_tag (name) VALUES (?)";
@@ -56,6 +39,7 @@ public class SubjectTagDao {
 
     public boolean deleteSubjectTag(int id) {
         String getNameSql = "SELECT name FROM subject_tag WHERE id = ?";
+        @SuppressWarnings("deprecation")
         String name = jdbcTemplate.queryForObject(getNameSql, new Object[]{id}, String.class);
         String sql = "DELETE FROM subject_tag WHERE id = ?";
         boolean result = jdbcTemplate.update(sql, id) > 0;
@@ -83,5 +67,10 @@ public class SubjectTagDao {
             subjectTag.setName(rs.getString("name"));
             return subjectTag;
         });
+    }
+    public boolean isSubjectTagInUse(int tagId) {
+        String query = "SELECT COUNT(*) FROM subjecttag_setid WHERE subject_tag_id = ?";
+        int count = jdbcTemplate.queryForObject(query, Integer.class, tagId);
+        return count > 0;
     }
 }
