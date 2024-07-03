@@ -129,6 +129,46 @@ CREATE TABLE user_subject_tag (
     FOREIGN KEY (tag_id) REFERENCES subject_tag(id)
 );
 ```
+
+### Exams Table
+```sql
+CREATE TABLE exams (
+    EID INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    QSID INT NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    finish_time TIMESTAMP NOT NULL,
+    score INT DEFAULT 0 NOT NULL,
+    FOREIGN KEY (email) REFERENCES users(email),
+    FOREIGN KEY (QSID) REFERENCES question_set(id)
+);
+```
+
+### Responses Table
+```sql
+CREATE TABLE responses (
+    EID INT NOT NULL,
+    QID INT NOT NULL,
+    user_response CHAR(1) DEFAULT 'x' NOT NULL,
+    is_match BOOLEAN NOT NULL,
+    marks INT NOT NULL,
+    PRIMARY KEY (EID, QID),
+    FOREIGN KEY (EID) REFERENCES exams(EID),
+    FOREIGN KEY (QID) REFERENCES question(id)
+);
+```
+
+### Recent_updates Table
+
+```sql
+CREATE TABLE recent_updates (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          message VARCHAR(255),
+          date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+```
+
+
 ## Getting Started
 
 To run the Student Assessment Portal locally or deploy it:
