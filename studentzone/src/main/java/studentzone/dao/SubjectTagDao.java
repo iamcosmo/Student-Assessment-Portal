@@ -30,10 +30,13 @@ public class SubjectTagDao {
     }
 
     public boolean deleteSubjectTag(int id) {
-        String sql = "DELETE FROM subject_tag WHERE id = ?";
-        return jdbcTemplate.update(sql, id) > 0;
+        String deleteReferencesSql = "DELETE FROM subjecttag_setid WHERE subject_tag_id = ?";
+        jdbcTemplate.update(deleteReferencesSql, id);
+        
+        String deleteSubjectTagSql = "DELETE FROM subject_tag WHERE id = ?";
+        return jdbcTemplate.update(deleteSubjectTagSql, id) > 0;
     }
-
+    
     public boolean updateSubjectTag(SubjectTag subjectTag) {
         String sql = "UPDATE subject_tag SET name = ? WHERE id = ?";
         return jdbcTemplate.update(sql, subjectTag.getName(), subjectTag.getId()) > 0;

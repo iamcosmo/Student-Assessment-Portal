@@ -221,6 +221,7 @@
                 <ul>
                     <li class="active"><a href="${pageContext.request.contextPath}/admin/dashboard" class="btn btn-primary return-dashboard">Dashboard</a></li>
                     <li><a href="${pageContext.request.contextPath}/admin/addQuestionSet" class="btn btn-primary add-set-button">Add Questionset</a></li>
+                        <li><a href="${pageContext.request.contextPath}/admin/subjectTags" class="btn btn-primary">Manage Subject Tags</a></li>
                     <li><a href="${pageContext.request.contextPath}/admin/Analytics">Analytics</a></li>
                     <li><a href="${pageContext.request.contextPath}/students">Students</a></li>
                     <li><a href="${pageContext.request.contextPath}/admin/reports">Reports</a></li>
