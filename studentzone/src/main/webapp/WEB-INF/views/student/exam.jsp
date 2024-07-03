@@ -181,7 +181,7 @@
       <!-- Hero Section -->
       <section id="hero" class="hero section">
         <img
-          src="./assets/img/features-light-2.jpg"
+          src="<c:url value='/assets/img/features-light-2.jpg'/>"
           alt="hero"
         />
         <div class="container">
@@ -285,85 +285,87 @@
 <!-- Main JS File -->
 
      <script>
-      $(document).ready(function () {
-        const totalQuestions = 20;
-        const examDuration = 5 * 60 * 60; // 5 hours in seconds
-        let currentTime = 0;
-        let timerInterval;
+  $(document).ready(function () {
+    const totalQuestions = 20;
+    const examDuration = 5 * 60 * 60; // 5 hours in seconds
+    let currentTime = 0;
+    let timerInterval;
 
-        function startExam() {
-          $("#header").addClass("d-none");
-          $("#footer").addClass("d-none");
-          $("#start-screen").addClass("d-none");
-          $("#exam-screen").removeClass("d-none");
-          $("body").addClass("exam-mode");
-          openFullscreen();
-          startTimer();
-          renderQuestions();
-          renderNavigator();
-        }
-        function finishExam() {
-          if (confirm("Are you sure you want to finish the exam?")) {
-            closeFullscreen();
-            $("body").removeClass("exam-mode");
-            $("#exam-screen").addClass("d-none"); // Hide exam screen
-            $("#submission-message").removeClass("d-none").fadeIn(); // Show submission message
-          }
-        }
+    function startExam() {
+      $("#header").addClass("d-none");
+      $("#footer").addClass("d-none");
+      $("#start-screen").addClass("d-none");
+      $("#exam-screen").removeClass("d-none");
+      $("body").addClass("exam-mode");
+      openFullscreen();
+      startTimer();
+      renderQuestions();
+      renderNavigator();
+    }
 
-        function startTimer() {
-          timerInterval = setInterval(function () {
-            currentTime++;
-            let hours = Math.floor(currentTime / 3600);
-            let minutes = Math.floor((currentTime % 3600) / 60);
-            let seconds = currentTime % 60;
-            $("#timer").text(
-              `Time: ${hours.toString().padStart(2, "0")}:${minutes
-                .toString()
-                .padStart(2, "0")}:${seconds
-                .toString()
-                .padStart(2, "0")} / 05:00:00`
-            );
-            if (currentTime >= examDuration) {
-              finishExam();
-            }
-          }, 1000);
-        }
+    function finishExam() {
+      if (confirm("Are you sure you want to finish the exam?")) {
+        closeFullscreen();
+        clearInterval(timerInterval); // Clear the timer interval
+        $("body").removeClass("exam-mode");
+        $("#exam-screen").addClass("d-none"); // Hide exam screen
+        $("#submission-message").removeClass("d-none").fadeIn(); // Show submission message
+      }
+    }
 
-        function openFullscreen() {
-          if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen();
-          } else if (document.documentElement.mozRequestFullScreen) {
-            /* Firefox */
-            document.documentElement.mozRequestFullScreen();
-          } else if (document.documentElement.webkitRequestFullscreen) {
-            /* Chrome, Safari and Opera */
-            document.documentElement.webkitRequestFullscreen();
-          } else if (document.documentElement.msRequestFullscreen) {
-            /* IE/Edge */
-            document.documentElement.msRequestFullscreen();
-          }
+    function startTimer() {
+      timerInterval = setInterval(function () {
+        currentTime++;
+        let hours = Math.floor(currentTime / 3600);
+        let minutes = Math.floor((currentTime % 3600) / 60);
+        let seconds = currentTime % 60;
+        $("#timer").text(
+          `Time: ${hours.toString().padStart(2, "0")}:${minutes
+            .toString()
+            .padStart(2, "0")}:${seconds
+            .toString()
+            .padStart(2, "0")} / 05:00:00`
+        );
+        if (currentTime >= examDuration) {
+          finishExam();
         }
+      }, 1000);
+    }
 
-        function closeFullscreen() {
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          } else if (document.mozCancelFullScreen) {
-            /* Firefox */
-            document.mozCancelFullScreen();
-          } else if (document.webkitExitFullscreen) {
-            /* Chrome, Safari and Opera */
-            document.webkitExitFullscreen();
-          } else if (document.msExitFullscreen) {
-            /* IE/Edge */
-            document.msExitFullscreen();
-          }
-        }
+    function openFullscreen() {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) {
+        /* Firefox */
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        /* Chrome, Safari and Opera */
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) {
+        /* IE/Edge */
+        document.documentElement.msRequestFullscreen();
+      }
+    }
 
-        function renderQuestions() {
-          let questionsContainer = $("#questions-container");
-          for (let i = 1; i <= totalQuestions; i++) {
-            let questionHtml = `
+    function closeFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        /* Firefox */
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        /* IE/Edge */
+        document.msExitFullscreen();
+      }
+    }
+
+    function renderQuestions() {
+      let questionsContainer = $("#questions-container");
+      for (let i = 1; i <= totalQuestions; i++) {
+        let questionHtml = `
           <div class="question" style="color:black">
               <h5 style="color:black">Question ${i}</h5>
               <p style="color:black">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -385,35 +387,36 @@
               </div>
           </div>
       `;
-            questionsContainer.append(questionHtml);
-          }
-        }
+        questionsContainer.append(questionHtml);
+      }
+    }
 
-        function renderNavigator() {
-          let questionButtons = $("#question-buttons");
-          for (let i = 1; i <= totalQuestions; i++) {
-            let buttonHtml = `<button id="nav-btn-${i}" class="btn btn-secondary unanswered" onclick="scrollToQuestion(${i})">${i}</button>`;
-            questionButtons.append(buttonHtml);
-          }
-        }
+    function renderNavigator() {
+      let questionButtons = $("#question-buttons");
+      for (let i = 1; i <= totalQuestions; i++) {
+        let buttonHtml = `<button id="nav-btn-${i}" class="btn btn-secondary unanswered" onclick="scrollToQuestion(${i})">${i}</button>`;
+        questionButtons.append(buttonHtml);
+      }
+    }
 
-        window.scrollToQuestion = function (questionNumber) {
-          let questionPosition = $(
-            `#questions-container .question:nth-child(${questionNumber})`
-          ).offset().top;
-          $("html, body").animate({ scrollTop: questionPosition }, 500);
-        };
+    window.scrollToQuestion = function (questionNumber) {
+      let questionPosition = $(
+        `#questions-container .question:nth-child(${questionNumber})`
+      ).offset().top;
+      $("html, body").animate({ scrollTop: questionPosition }, 500);
+    };
 
-        window.updateNavigator = function (questionNumber) {
-          $(`#nav-btn-${questionNumber}`)
-            .removeClass("unanswered")
-            .addClass("answered");
-        };
+    window.updateNavigator = function (questionNumber) {
+      $(`#nav-btn-${questionNumber}`)
+        .removeClass("unanswered")
+        .addClass("answered");
+    };
 
-        $("#start-button").on("click", startExam);
-        $("#finish-button").on("click", finishExam);
-      });
-    </script>
+    $("#start-button").on("click", startExam);
+    $("#finish-button").on("click", finishExam);
+  });
+</script>
+
     
   </body>
 </html>
