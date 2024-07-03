@@ -41,6 +41,9 @@
             <div class="card">
                 <div class="card-header text-center">
                     <h2>Question List</h2>
+                          <span class="d-flex justify-content-between align-items-center mb-3">
+                <a href="${pageContext.request.contextPath}/admin/questionSets" class="btn btn-secondary">Back to Dashboard</a>
+                 </span>
                 </div>
                 <div class="card-body">
                     <c:if test="${not empty msg}">

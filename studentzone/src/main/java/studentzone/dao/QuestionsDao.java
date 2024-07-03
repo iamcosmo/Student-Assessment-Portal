@@ -12,12 +12,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import studentzone.model.Questions;
+import studentzone.service.RecentUpdateService;
 
 @Repository
 public class QuestionsDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+        @Autowired
+    private RecentUpdateService recentUpdateService;
 
 public boolean insertQuestion(Questions question) {
     String sql = "INSERT INTO question (question, a, b, c, d, answer, set_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -25,6 +28,7 @@ public boolean insertQuestion(Questions question) {
         int result = jdbcTemplate.update(sql, question.getQuestion(), question.getA(), question.getB(), question.getC(), question.getD(), question.getAnswer(), question.getSetId());
         if (result > 0) {
             incrementQuestionCount(question.getSetId());
+            recentUpdateService.addRecentUpdate("Added new question in set ID: " + question.getSetId());
             return true;
         } else {
             return false;
@@ -67,10 +71,7 @@ public boolean insertQuestion(Questions question) {
         });
     }
 
-    // public int deleteRecord(int qid) {
-    //     String sql = "DELETE FROM question WHERE id = ?";
-    //     return jdbcTemplate.update(sql, qid);
-    // }
+
 
     @SuppressWarnings("deprecation")
     public Questions getRecordById(int qid) {
@@ -90,6 +91,7 @@ public boolean insertQuestion(Questions question) {
     }
     public int updateQuestion(int qid, String newQuestion, String optA, String optB, String optC, String optD, String answer, int set_id) {
         String sql = "UPDATE question SET question = ?, a = ?, b = ?, c = ?, d = ?, answer = ?, set_id = ? WHERE id = ?";
+        recentUpdateService.addRecentUpdate("Updated question in set ID: " + set_id);
         return jdbcTemplate.update(sql, newQuestion, optA, optB, optC, optD, answer, set_id, qid); // Include set_id parameter
     }
     
@@ -115,12 +117,23 @@ public boolean insertQuestion(Questions question) {
 
 
 
+// public int deleteRecord(int qid) {
+//     Questions question = getRecordById(qid);
+//     String sql = "DELETE FROM question WHERE id = ?";
+//     int result = jdbcTemplate.update(sql, qid);
+//     if (result > 0) {
+//         decrementQuestionCount(question.getSetId());
+//     }
+//     return result;
+// }
+@SuppressWarnings("deprecation")
 public int deleteRecord(int qid) {
-    Questions question = getRecordById(qid);
+    String getSetIdSql = "SELECT set_id FROM question WHERE id = ?";
+    int setId = jdbcTemplate.queryForObject(getSetIdSql, new Object[]{qid}, Integer.class);
     String sql = "DELETE FROM question WHERE id = ?";
-    int result = jdbcTemplate.update(sql, qid);
-    if (result > 0) {
-        decrementQuestionCount(question.getSetId());
+    int result = jdbcTemplate.update(sql, qid) ;
+    if (result>0) {
+        recentUpdateService.addRecentUpdate("Deleted question from set ID: " + setId);
     }
     return result;
 }
@@ -132,6 +145,10 @@ private void incrementQuestionCount(int setId) {
 
 private void decrementQuestionCount(int setId) {
     String sql = "UPDATE question_set SET question_count = question_count - 1 WHERE id = ?";
+    jdbcTemplate.update(sql, setId);
+}
+public void deleteQuestionsBySetId(int setId) {
+    String sql = "DELETE FROM question WHERE set_id = ?";
     jdbcTemplate.update(sql, setId);
 }
     

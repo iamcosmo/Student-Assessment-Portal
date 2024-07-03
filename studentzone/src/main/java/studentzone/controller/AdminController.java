@@ -20,6 +20,7 @@ import studentzone.model.SubjectTag;
 import studentzone.model.SubjectTagSetId;
 import studentzone.service.QuestionService;
 import studentzone.service.QuestionSetService;
+import studentzone.service.RecentUpdateService;
 import studentzone.service.SubjectTagService;
 import studentzone.service.SubjectTagSetIdService;
 @Controller
@@ -37,6 +38,8 @@ public class AdminController {
 
     @Autowired
     private SubjectTagService subjectTagService;
+       @Autowired
+    private RecentUpdateService recentUpdateService;
 
     private boolean isAdminLoggedIn(HttpSession session) {
         return session.getAttribute("adminUsername") != null;
@@ -48,13 +51,13 @@ public class AdminController {
         return "redirect:/login?msg=Logged Out Successfully!";
     }
 
-    @GetMapping("/dashboard")
-    public String showDashboard(HttpSession session, Model model) {
-        if (!isAdminLoggedIn(session)) {
-            return "redirect:/login";
-        }
-        return "admin/dashboard";
-    }
+    // @GetMapping("/dashboard")
+    // public String showDashboard(HttpSession session, Model model) {
+    //     if (!isAdminLoggedIn(session)) {
+    //         return "redirect:/login";
+    //     }
+    //     return "admin/dashboard";
+    // }
 
     @GetMapping("/addQuestion")
     public String showAddQuestionForm(HttpSession session, Model model, @RequestParam("setId") int setId) {
@@ -135,17 +138,31 @@ public class AdminController {
 
   
 
-    @GetMapping("/deleteQuestionSet")
-    public String deleteQuestionSet(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
-        boolean status = questionSetService.deleteSet(id);
-        if (status) {
-            redirectAttributes.addFlashAttribute("msg", "Set Deleted Successfully!");
-        } else {
-            redirectAttributes.addFlashAttribute("msg", "Failed to Delete Set!");
-        }
-        return "redirect:/admin/questionSets";
-    }
+    // @GetMapping("/deleteQuestionSet")
+    // public String deleteQuestionSet(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+    //     boolean status = questionSetService.deleteSet(id);
+    //     if (status) {
+    //         redirectAttributes.addFlashAttribute("msg", "Set Deleted Successfully!");
+    //     } else {
+    //         redirectAttributes.addFlashAttribute("msg", "Failed to Delete Set!");
+    //     }
+    //     return "redirect:/admin/questionSets";
+    // }
     
+    @GetMapping("/deleteQuestionSet")
+public String deleteQuestionSet(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+    // Delete all questions associated with this set
+    questionService.deleteQuestionsBySetId(id);
+
+    // Now delete the question set
+    boolean status = questionSetService.deleteSet(id);
+    if (status) {
+        redirectAttributes.addFlashAttribute("msg", "Set Deleted Successfully!");
+    } else {
+        redirectAttributes.addFlashAttribute("msg", "Failed to Delete Set!");
+    }
+    return "redirect:/admin/questionSets";
+}
 
     @GetMapping("/editQuestionSet")
     public String editQuestionSet(@RequestParam("setId") int setId, Model model, HttpSession session) {
@@ -220,6 +237,7 @@ public class AdminController {
             set.setTags(questionSetService.getTagsForSet(set.getId()));
         }
         model.addAttribute("sets", sets);
+        model.addAttribute("recentUpdates", recentUpdateService.getRecentUpdates());
         return "admin/questionSets";
     }
     
