@@ -18,12 +18,15 @@ import java.sql.Statement;
 
 import studentzone.model.QuestionSet;
 import studentzone.model.UserSubjectTag;
+import studentzone.service.RecentUpdateService;
 
 
 @Repository
 public class QuestionSetDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+     @Autowired
+    private RecentUpdateService recentUpdateService;
     
     
     public List<QuestionSet> getAllSets() {
@@ -72,6 +75,7 @@ public class QuestionSetDao {
     public int insertSet(QuestionSet set) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO question_set (name, question_count) VALUES (?, ?)";
+            recentUpdateService.addRecentUpdate("Added new question set: " + set.getName());
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, set.getName());
@@ -86,23 +90,36 @@ public class QuestionSetDao {
         String sql = "SELECT st.name FROM subject_tag st INNER JOIN subjecttag_setid stsi ON st.id = stsi.subject_tag_id WHERE stsi.set_id = ?";
         return jdbcTemplate.queryForList(sql, new Object[]{setId}, String.class);
     }
+
+    @SuppressWarnings("deprecation")
     public boolean deleteSet(int id) {
-       
-        
         String deleteSubjectTagSetIdSql = "DELETE FROM subjecttag_setid WHERE set_id = ?";
+       
+        String getNameSql = "SELECT name FROM question_set WHERE id = ?";
+        String name = jdbcTemplate.queryForObject(getNameSql, new Object[]{id}, String.class);
+            recentUpdateService.addRecentUpdate("Deleted question set: " + name);//not checked
         jdbcTemplate.update(deleteSubjectTagSetIdSql, id);
 
-        // Then delete from question_set
         String deleteQuestionSetSql = "DELETE FROM question_set WHERE id = ?";
+        
         jdbcTemplate.update(deleteQuestionSetSql, id);
         return jdbcTemplate.update(deleteQuestionSetSql, id) > 0;
     }
   
 
-    public boolean updateSet(QuestionSet set) {
+    // public boolean updateSet(QuestionSet set) {
+    //     String sql = "UPDATE question_set SET name = ? WHERE id = ?";
+    //     return jdbcTemplate.update(sql, set.getName(), set.getId()) > 0;
+    // }
+    public boolean updateSet(QuestionSet questionSet) {
         String sql = "UPDATE question_set SET name = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, set.getName(), set.getId()) > 0;
+        boolean result = jdbcTemplate.update(sql, questionSet.getName(), questionSet.getId()) > 0;
+        if (result) {
+            recentUpdateService.addRecentUpdate("Updated question set: " + questionSet.getName());
+        }
+        return result;
     }
+
     @SuppressWarnings("deprecation")
     public QuestionSet getSetById(int id) {
         String sql = "SELECT * FROM question_set WHERE id = ?";
