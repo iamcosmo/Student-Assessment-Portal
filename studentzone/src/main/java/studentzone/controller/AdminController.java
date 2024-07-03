@@ -22,7 +22,6 @@ import studentzone.service.QuestionService;
 import studentzone.service.QuestionSetService;
 import studentzone.service.SubjectTagService;
 import studentzone.service.SubjectTagSetIdService;
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -224,4 +223,48 @@ public class AdminController {
         return "admin/questionSets";
     }
     
+   
+
+    @GetMapping("/subjectTags")
+    public String showSubjectTags(HttpSession session, Model model) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/login";
+        }
+        List<SubjectTag> subjectTags = subjectTagService.getAllSubjectTags();
+        model.addAttribute("subjectTags", subjectTags);
+        return "admin/subjectTags";
+    }
+
+    @PostMapping("/addSubjectTag")
+    public String addSubjectTag(@ModelAttribute SubjectTag subjectTag, RedirectAttributes redirectAttributes) {
+        boolean status = subjectTagService.addSubjectTag(subjectTag);
+        if (status) {
+            redirectAttributes.addFlashAttribute("msg", "Subject Tag Added Successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "Failed to Add Subject Tag!");
+        }
+        return "redirect:/admin/subjectTags";
+    }
+
+    @PostMapping("/editSubjectTag")
+    public String editSubjectTag(@ModelAttribute SubjectTag subjectTag, RedirectAttributes redirectAttributes) {
+        boolean status = subjectTagService.updateSubjectTag(subjectTag);
+        if (status) {
+            redirectAttributes.addFlashAttribute("msg", "Subject Tag Updated Successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "Failed to Update Subject Tag!");
+        }
+        return "redirect:/admin/subjectTags";
+    }
+
+    @GetMapping("/deleteSubjectTag")
+    public String deleteSubjectTag(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+        boolean status = subjectTagService.deleteSubjectTag(id);
+        if (status) {
+            redirectAttributes.addFlashAttribute("msg", "Subject Tag Deleted Successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "Failed to Delete Subject Tag!");
+        }
+        return "redirect:/admin/subjectTags";
+    }
 }    
