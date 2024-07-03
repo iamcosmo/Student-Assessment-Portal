@@ -173,6 +173,13 @@ public class AssessmentController {
         UserDetails userDetails = userDetailsService.findByEmail(user.getEmail());        
         session.setAttribute("userProfile", userDetails);
         return "redirect:/student/profile";
-    }  
+    } 
+    
+    @PostMapping("/beginexam")
+    public String startAssessment(@RequestParam("setid") int setId)
+    {
+    	System.out.println("SetId fetched is: "+setId);
+    	return "redirect:/student/assessment";    	
+    }
         
 }
