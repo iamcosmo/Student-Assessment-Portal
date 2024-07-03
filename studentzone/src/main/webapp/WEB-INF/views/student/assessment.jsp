@@ -187,7 +187,7 @@
     <!-- Hero Section -->
     <section id="hero" class="hero section">
       <img src="<c:url value='/assets/img/photo1.avif'/>" alt="hero" data-aos="fade-in" />
-      <div class="container" style="margin-top: -15%">
+      <div class="container" style="margin-top: -3%">
           <div class="row">
             <div class="col-lg-12">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
