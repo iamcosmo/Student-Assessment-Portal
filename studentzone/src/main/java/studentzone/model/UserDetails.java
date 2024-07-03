@@ -12,11 +12,10 @@ public class UserDetails {
     private String linkedInProfile;
     private String college;
 
-    // Default constructor
     public UserDetails() {
     }
 
-    // Parameterized constructor
+  
     public UserDetails(String email, String fullName, String about, String country, String address, String phone, String gitHubProfile, String instagramProfile, String linkedInProfile, String college) {
         this.email = email;
         this.fullName = fullName;
@@ -30,7 +29,7 @@ public class UserDetails {
         this.college = college;
     }
 
-    // Getters and Setters
+   
     public String getEmail() {
         return email;
     }

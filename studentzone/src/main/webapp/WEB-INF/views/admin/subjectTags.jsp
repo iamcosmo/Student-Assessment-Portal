@@ -38,14 +38,17 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-10">
-         <a href="${pageContext.request.contextPath}/admin/questionSets" class="btn btn-secondary">Back to Dashboard</a>
+            <a href="${pageContext.request.contextPath}/admin/questionSets" class="btn btn-secondary">Back to Dashboard</a>
             <div class="card">
                 <div class="card-header text-center">
                     <h2>Subject Tag List</h2>
                 </div>
                 <div class="card-body">
+                    <!-- Display alert messages -->
                     <c:if test="${not empty msg}">
-                        <div class="alert alert-info text-center">${msg}</div>
+                        <div class="alert alert-danger text-center">
+                            <p>${msg}</p>
+                        </div>
                     </c:if>
                     <div class="mb-3">
                         <form method="post" action="${pageContext.request.contextPath}/admin/addSubjectTag">

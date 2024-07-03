@@ -35,4 +35,7 @@ public class SubjectTagService {
     public SubjectTag getSubjectTagById(int id) {
         return subjectTagDao.getSubjectTagById(id);
     }
+    public boolean isSubjectTagInUse(int id) {
+        return subjectTagDao.isSubjectTagInUse(id);
+    }
 }

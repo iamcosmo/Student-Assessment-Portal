@@ -51,14 +51,6 @@ public class AdminController {
         return "redirect:/login?msg=Logged Out Successfully!";
     }
 
-    // @GetMapping("/dashboard")
-    // public String showDashboard(HttpSession session, Model model) {
-    //     if (!isAdminLoggedIn(session)) {
-    //         return "redirect:/login";
-    //     }
-    //     return "admin/dashboard";
-    // }
-
     @GetMapping("/addQuestion")
     public String showAddQuestionForm(HttpSession session, Model model, @RequestParam("setId") int setId) {
         if (!isAdminLoggedIn(session)) {
@@ -138,23 +130,10 @@ public class AdminController {
 
   
 
-    // @GetMapping("/deleteQuestionSet")
-    // public String deleteQuestionSet(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
-    //     boolean status = questionSetService.deleteSet(id);
-    //     if (status) {
-    //         redirectAttributes.addFlashAttribute("msg", "Set Deleted Successfully!");
-    //     } else {
-    //         redirectAttributes.addFlashAttribute("msg", "Failed to Delete Set!");
-    //     }
-    //     return "redirect:/admin/questionSets";
-    // }
     
     @GetMapping("/deleteQuestionSet")
 public String deleteQuestionSet(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
-    // Delete all questions associated with this set
     questionService.deleteQuestionsBySetId(id);
-
-    // Now delete the question set
     boolean status = questionSetService.deleteSet(id);
     if (status) {
         redirectAttributes.addFlashAttribute("msg", "Set Deleted Successfully!");
@@ -185,14 +164,12 @@ public String deleteQuestionSet(@RequestParam("id") int id, RedirectAttributes r
         set.setName(name);
         boolean status = questionSetService.updateSet(set);
         if (status) {
-            // Remove existing mappings
             List<SubjectTagSetId> existingMappings = subjectTagSetIdService.getAllSubjectTagSetIds();
             for (SubjectTagSetId existingMapping : existingMappings) {
                 if (existingMapping.getSetId() == id) {
                     subjectTagSetIdService.deleteSubjectTagSetId(id, existingMapping.getSubjectTagId());
                 }
             }
-            // Add new mappings
             for (Integer subjectTagId : subjectTags) {
                 SubjectTagSetId subjectTagSetId = new SubjectTagSetId();
                 subjectTagSetId.setSetId(id);
@@ -275,13 +252,15 @@ public String deleteQuestionSet(@RequestParam("id") int id, RedirectAttributes r
         return "redirect:/admin/subjectTags";
     }
 
+
     @GetMapping("/deleteSubjectTag")
     public String deleteSubjectTag(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
-        boolean status = subjectTagService.deleteSubjectTag(id);
-        if (status) {
-            redirectAttributes.addFlashAttribute("msg", "Subject Tag Deleted Successfully!");
+        if (subjectTagService.isSubjectTagInUse(id)) {
+           
+            redirectAttributes.addFlashAttribute("msg", "Can't delete tag. It is used in question sets. First delete the question sets using this tag.");
         } else {
-            redirectAttributes.addFlashAttribute("msg", "Failed to Delete Subject Tag!");
+            subjectTagService.deleteSubjectTag(id);
+            redirectAttributes.addFlashAttribute("msg", "Subject Tag Deleted Successfully!");
         }
         return "redirect:/admin/subjectTags";
     }
