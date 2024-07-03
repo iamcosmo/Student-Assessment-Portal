@@ -246,10 +246,14 @@
                       <div class="col-6">
                         <div class="p-4 custom-column">
                           <div class="title">${set.getName()}</div>
+                          <div class="subtitle">Total Questions: ${set.questionCount}</div>
                           <div class="subtitle">
                             Subject Tags: <c:forEach var="tag" items="${set.getTags()}"><span class="badge bg-primary me-2">${tag}</span>
 </c:forEach>
-                            <a href="#" class="start-btn">Start Learning</a>
+                            <form action="<c:url value='/student/beginexam'/>" method="post" class="mb-6">
+                              <input type="hidden" name="setid" value="${set.id}" />
+                              <button type="submit" class="start-btn">Start Learning</button>
+                            </form>
                           </div>
                         </div>
                       </div>
@@ -270,10 +274,14 @@
                       <div class="col-6">
                         <div class="p-4 custom-column">
                           <div class="title">${set.getName()}</div>
+                          <div class="subtitle">Total Questions: ${set.questionCount}</div>
                           <div class="subtitle">
                             Subject Tags: <c:forEach var="tag" items="${set.getTags()}"><span class="badge bg-primary me-2">${tag}</span>
 </c:forEach>
-                            <a href="#" class="start-btn">Start Learning</a>
+                            <form action="<c:url value='/student/beginexam'/>" method="post" class="mb-6">
+                              <input type="hidden" name="setid" value="${set.id}" />
+                              <button type="submit" class="start-btn">Start Learning</button>
+                            </form>
                           </div>
                         </div>
                       </div>

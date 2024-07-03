@@ -110,6 +110,6 @@ public class HomeController {
     
     @GetMapping("/exam")
     public String exam() {
-        return "exam";
+        return "student/exam";
     }
 }
