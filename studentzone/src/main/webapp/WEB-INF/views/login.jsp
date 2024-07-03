@@ -26,39 +26,116 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet" />
+  <style>
+    	:root {
+    	  --nav-font: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    	  "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    	  }
+    	  .header .logo h1 {
+			  font-size: 36px;
+			  margin-left: 20px;
+			  font-weight: 700;
+			  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+			  color: var(--heading-color);
+			  text-shadow: 3px 1px 2px white;
+		   }
+		   .header .btn-getstarted,
+			.header .btn-getstarted:focus {
+			  color: var(--contrast-color);
+			  background: var(--accent-color);
+			  font-size: 14px;
+			  padding: 8px 26px;
+			  margin-right: 30px;
+			  border-radius: 4px;
+			  transition: 0.3s;
+			}
+			/* Index Page Header
+			------------------------------*/
+			.index-page .header {
+			  --background-color: rgba(255, 255, 255, 0);
+			  --heading-color: #121212;
+			  --nav-color: rgb(0, 0, 0);
+			  --nav-hover-color: #ff1010;
+			}
+			
+			/* Index Page Header on Scroll
+			------------------------------*/
+			.index-page.scrolled .header {
+			  --background-color: #ffffff;
+			  --heading-color: #e84545;
+			  --nav-color: #020bff;
+			  --nav-hover-color: #e84545;
+			}
+			.navmenu ul {
+    			margin-right: 100px;
+    		}
+			
+			.navmenu a,
+			.navmenu a:focus {
+			  color: var(--nav-color);
+			  padding: 18px 15px;
+			  font-size: 18px;
+			  font-family: var(--nav-font);
+			  font-weight: 500;
+			  display: flex;
+			  align-items: center;
+			  justify-content: space-between;
+			  white-space: nowrap;
+			  transition: 0.3s;
+			}
+    </style>
 </head>
 
 <body class="index-page">
   <header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between container-xl">
-      <a href="index.jsp" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">StudentZone</h1>
-        <span></span>
-      </a>
+		<div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+	        <a
+	          href="index.jsp"
+	          class="logo d-flex align-items-center me-auto me-xl-0"
+	        >
+	          <h1 class="sitename">StudentZone</h1>
+	          <span></span>
+	        </a>
 
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="<c:url value='/'/>" class="active">Home</a></li>
-          <li><a href="about.jsp">About</a></li>
-          <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
-          <li><a href="results.jsp">Results</a></li>
-          <li><a href="analyze.jsp">Analyze</a></li>
-          <c:choose>
-            <c:when test="${not empty sessionScope.user}">
-              <li><a href="<c:url value='/logout'/>">Logout</a></li>
-            </c:when>
-            <c:otherwise>
-              <li><a href="<c:url value='/login'/>">Login</a></li>
-              <li><a href="<c:url value='/register'/>">Register</a></li>
-            </c:otherwise>
-          </c:choose>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="<c:url value='/register'/>">Register</a>
-    </div>
-  </header>
+	        <nav id="navmenu" class="navmenu">
+	          <ul>
+	            <li><a href="<c:url value='/'/>">Home</a></li>
+	            <li><a href="<c:url value='/exam'/>">About</a></li>
+	            <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
+	            <li><a href="<c:url value='/result'/>">Results</a></li>
+	            <c:choose>
+	                <c:when test="${not empty sessionScope.user}">
+	                    <li><a href="<c:url value='/logout'/>">Logout</a></li>
+	                </c:when>
+	                <c:otherwise>
+	                    <li><a href="<c:url value='/login'/>" class="active">Login</a></li>
+	                    <li><a href="<c:url value='/register'/>">Register</a></li>
+	                </c:otherwise>
+	            </c:choose>
+	          </ul>
+	          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+	        </nav> 
+	        <c:choose>
+	                <c:when test="${not empty sessionScope.user}">
+	                    <div class="dropdown">
+						  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border: none">
+						  		<i class="bi bi-person-circle" 
+	                    			style="font-size: 2rem;
+	    							cursor: pointer;
+	    							color: black;">
+	    						</i>
+						  </button>
+						  <ul class="dropdown-menu">
+						    <li><a class="dropdown-item" href="<c:url value='/student/profile'/>">Profile</a></li>
+						  </ul>
+						</div>   
+	                </c:when>
+	                <c:otherwise>
+						<a class="btn-getstarted" href="<c:url value='/register'/>">Register</a>
+	                </c:otherwise>
+	        </c:choose>     
+        </div>
+    </header>
 
   <main class="main">
     <!-- Hero Section -->
