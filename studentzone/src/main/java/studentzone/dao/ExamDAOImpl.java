@@ -1,30 +1,54 @@
 package studentzone.dao;
 
 import studentzone.model.Exam;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class ExamDAOImpl implements ExamDAO {
 
     private JdbcTemplate jdbcTemplate;
+    
+    private static final String MATCH_EXAM_SQL = "SELECT * FROM exams WHERE email = ? AND QSID = ?";
 
+    @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void saveExam(Exam exam) {
-        String sql = "INSERT INTO exams (email, QSID, startTime, finishTime, score) VALUES (?, ?, ?, ?, ?)";
+    	boolean check = false;
+    	SqlRowSet rowSet = jdbcTemplate.queryForRowSet(MATCH_EXAM_SQL, exam.getEmail(), exam.getQSID());
+    	while(rowSet.next())
+    	{
+    		if((rowSet.getString("email")).equals(exam.getEmail())&&rowSet.getInt("QSID")==exam.getQSID())
+    		{
+    			System.out.println("Cannot Insert same data again!!");
+    			check =true;
+    			break;
+    		}
+    	}
+    	if(check)
+    	{
+    		return;
+    	}
+    	
+        String sql = "INSERT INTO exams (email, QSID, start_time, finish_time, score) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, exam.getEmail(), exam.getQSID(), exam.getStartTime(), exam.getFinishTime(), exam.getScore());
     }
 
     @Override
     public void updateExam(Exam exam) {
-        String sql = "UPDATE exams SET email = ?, QSID = ?, startTime = ?, finishTime = ?, score = ? WHERE EID = ?";
+        String sql = "UPDATE exams SET email = ?, QSID = ?, start_time = ?, finish_time = ?, score = ? WHERE EID = ?";
         jdbcTemplate.update(sql, exam.getEmail(), exam.getQSID(), exam.getStartTime(), exam.getFinishTime(), exam.getScore(), exam.getEID());
     }
 
@@ -46,6 +70,29 @@ public class ExamDAOImpl implements ExamDAO {
         String sql = "DELETE FROM exams WHERE EID = ?";
         jdbcTemplate.update(sql, EID);
     }
+    
+    @Override
+    public int getExamIdBysetID_email(String email, int setid)
+    {
+    	 String sql = "SELECT EID FROM exams WHERE QSID = ? AND email=?";
+         
+         // Execute query and retrieve the EID
+         return jdbcTemplate.queryForObject(sql, Integer.class, setid, email);
+    	
+    }
+    
+    @Override
+    public void updateTotalScore(int eid, int newScore)
+    {
+    	try {
+            String sql = "UPDATE exams SET score = ? WHERE EID = ?";
+            int rowsUpdated = jdbcTemplate.update(sql, newScore, eid);
+            System.out.println(rowsUpdated + " row(s) updated for EID " + eid + ". New score: " + newScore);
+        } catch (Exception e) {
+            System.err.println("Error updating score for EID " + eid + ": " + e.getMessage());
+            e.printStackTrace(); // Print stack trace for detailed error analysis
+        }
+    }
 
     private static final class ExamRowMapper implements RowMapper<Exam> {
         @Override
@@ -60,4 +107,6 @@ public class ExamDAOImpl implements ExamDAO {
             return exam;
         }
     }
+    
+    
 }

@@ -1,0 +1,388 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Student Zone</title>
+     <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+      rel="stylesheet"
+    />
+    
+     <!-- Vendor CSS Files -->
+  <link href="<c:url value='/assets/vendor/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet" />
+  <link href="<c:url value='/assets/vendor/bootstrap-icons/bootstrap-icons.css'/>" rel="stylesheet" />
+<link href="<c:url value='/assets/vendor/aos/aos.css'/>" rel="stylesheet" />
+<link href="<c:url value='/assets/vendor/glightbox/css/glightbox.min.css'/>" rel="stylesheet" />
+<link href="<c:url value='/assets/vendor/swiper/swiper-bundle.min.css'/>" rel="stylesheet" />
+
+  <!-- Main CSS File -->
+  <link href="<c:url value='/assets/css/main.css'/>" rel="stylesheet" />
+  
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .timer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px;
+            border-bottom: 2px solid #ccc;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+        }
+        .left-section {
+            flex: 2;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        .right-section {
+            flex: 1;
+            padding: 20px;
+            background-color: #e9e9e9;
+            display: flex;
+            flex-direction: column;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options {
+            margin-bottom: 20px;
+        }
+        .buttons {
+            text-align: center;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+        }
+        .progress-box {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .progress-bar {
+            height: 30px;
+            margin: 5px 0;
+            background-color: #ccc;
+            cursor: pointer;
+            text-align: center;
+            line-height: 30px;
+        }
+        .progress-bar.marked {
+            background-color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+<div class="index-page">
+
+	 <div class="start-screen" id="start-screen">
+              <img
+                src="https://codescandy.com/geeks-bootstrap-5/assets/images/svg/survey-img.svg"
+                alt="Welcome to Quiz"
+              />
+              <h1>Welcome to Quiz</h1>
+              <p>
+                Engage live or asynchronously with quiz and poll questions that
+                participants complete at their own pace.
+              </p>
+              <div id="start-container">
+                <button id="start-button" class="btn-start btn btn-primary">
+                  Start Exam
+                </button>
+              </div>
+      </div>
+	<div id="exam-screen"
+              class="container-fluid exam-mode d-none p-0">
+	    <div class="timer">
+	        <h1>Countdown Timer</h1>
+	        <div id="countdown">Loading...</div>
+	        <button id="finish-button" class="btn btn-danger" type="button" onclick="finishExam()">Finish</button>
+	    </div>
+	    <div class="container">
+	        <div class="left-section">
+	            <form id="questionForm" action="<c:url value='/student/submitExam'/>" method="post">
+	            	<input type="hidden" name="start_time" id="start_time" />
+    				<input type="hidden" name="finish_time" id="finish_time" />
+	            	<input type="hidden" name="setid" value="${setid}" />
+	                <c:forEach var="question" items="${questionlist}" varStatus="status">
+	                    <div class="question" id="question-${status.index}" style="display: none;">
+	                    	<input type="hidden" name="qid" value="${question.id}" />
+	                        <h2>Question ${status.index + 1}:</h2>
+	                        <p>${question.question}</p>
+	                        <div class="options" >
+	                        	
+	                            <label><input type="radio" name="q${status.index}" value="a" onclick="markQuestion(${status.index})"> ${question.a}</label><br>
+	                            <label><input type="radio" name="q${status.index}" value="b" onclick="markQuestion(${status.index})"> ${question.b}</label><br>
+	                            <label><input type="radio" name="q${status.index}" value="c" onclick="markQuestion(${status.index})"> ${question.c}</label><br>
+	                            <label><input type="radio" name="q${status.index}" value="d" onclick="markQuestion(${status.index})"> ${question.d}</label>
+	                        </div>
+	                        <button type="button" onclick="unselectOption(${status.index})">Unselect Option</button>
+	                    </div>
+	                </c:forEach>
+	            </form>
+	            <div class="buttons">
+	                <button type="button" id="prevBtn" onclick="showPreviousQuestion()">Previous</button>
+	                <button type="button" id="nextBtn" onclick="showNextQuestion()">Next</button>
+	            </div>
+	        </div>
+	        <div class="right-section">
+	            <div class="progress-box">
+	                <c:forEach var="question" items="${questionlist}" varStatus="status">
+	                    <div class="progress-bar" id="progress-${status.index}" onclick="jumpToQuestion(${status.index})">
+	                        Question ${status.index + 1}
+	                    </div>
+	                </c:forEach>
+	            </div>
+	        </div>
+	    </div>
+    </div>
+    <div id="submission-message" class="submission-message d-none">
+              <img
+                src="https://www.pngall.com/wp-content/uploads/9/Green-Tick-No-Background.png"
+                alt="Success"
+              />
+              <h1>Success!!!</h1>
+              <p>
+                Test Submitted Successfully. Click on Continue to check your
+                Result.
+              </p>
+              <button id="btn-continue" class="btn-continue btn btn-primary" href="<c:url value='/student/assessment'/>">
+                Continue
+              </button>
+    </div>
+</div>
+
+<!-- Vendor JS Files -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="<c:url value='/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
+	<script src="<c:url value='/assets/vendor/aos/aos.js'/>"></script>
+	<script src="<c:url value='/assets/vendor/glightbox/js/glightbox.min.js'/>"></script>
+	<script src="<c:url value='/assets/vendor/purecounter/purecounter_vanilla.js'/>"></script>
+	<script src="<c:url value='/assets/vendor/swiper/swiper-bundle.min.js'/>"></script>
+	<script src="<c:url value='/assets/vendor/isotope-layout/isotope.pkgd.min.js'/>"></script>
+	<script src="<c:url value='/assets/vendor/php-email-form/validate.js'/>"></script>
+	
+	
+	
+    <script>
+         // 5 minutes in seconds
+        let currentQuestionIndex = 0;
+        const totalQuestions = ${questionlist.size()};
+        let timerDuration = 60 * 1.5*totalQuestions;
+        let startTime;
+        
+        $(document).ready(function () {
+            // Function to start the exam
+            function startExam() {
+            	
+            	// Set the start time
+                startTime = new Date().toISOString();
+                document.getElementById('start_time').value = startTime;
+
+                
+                // Enter full-screen mode
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
+                    document.documentElement.msRequestFullscreen();
+                }
+
+                // Start the countdown timer
+                const display = document.querySelector('#countdown');
+                startTimer(timerDuration, display);
+                showQuestion(currentQuestionIndex);
+
+                // Disable key strokes during exam
+                window.addEventListener('keydown', preventKeyStrokes);
+            }
+
+            // Event listener for start exam button click
+            $("#start-button").on("click", function() {
+                startExam();
+                $("#start-screen").addClass("d-none"); // Hide start screen
+                $("#exam-screen").removeClass("d-none"); // Show exam screen
+                $("body").addClass("exam-mode");
+            });
+
+            // Function to finish the exam
+            function finishExam() {
+            	
+            	
+                if (confirm("Are you sure you want to finish the exam?")) {
+                	
+                	// Set the finish time
+                    let finishTime = new Date().toISOString();
+                    document.getElementById('finish_time').value = finishTime;
+                    // Exit full-screen mode
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) { 
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) { 
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) { 
+                        document.msExitFullscreen();
+                    }
+
+                    // Redirect to assessment page
+                    document.getElementById('questionForm').submit();
+                }
+            }
+
+            // Event listener for finish exam button click
+            $("#finish-button").on("click", finishExam);
+            
+            // Function to prevent key strokes during exam
+            function preventKeyStrokes(event) {
+            	
+                    event.preventDefault();
+           
+            }
+        });
+		
+        $(document).on('keydown',function(e){
+        	  e.preventDefault();
+        	});
+
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = 0;
+                    alert("Time's up!");
+                    // You can add form submission here if needed
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function showQuestion(index) {
+            const questions = document.querySelectorAll('.question');
+            questions.forEach((question, idx) => {
+                question.style.display = idx === index ? 'block' : 'none';
+            });
+        }
+
+        function showNextQuestion() {
+            if (currentQuestionIndex < totalQuestions - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        function showPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        function jumpToQuestion(index) {
+            currentQuestionIndex = index;
+            showQuestion(currentQuestionIndex);
+        }
+
+        function markQuestion(index) {      	
+        	
+        	
+        	let str = "progress-"+index;
+        	       	
+            const progressBar = document.getElementById(str);
+            if (progressBar) {
+                progressBar.classList.add('marked');
+            } else {
+                console.log(`progress bar not fetched for index ${index}!!`);
+            }
+            
+        }
+
+        function unselectOption(index) {
+        	let opt = "q"+index;
+        	let str = "progress-"+index;
+            const options = document.getElementsByName(opt);
+            options.forEach(option => {
+                option.checked = false;
+            });
+            const progressBar = document.getElementById(str);
+            if (progressBar) {
+                progressBar.classList.remove('marked');
+            } else {
+                console.log(`progress bar not fetched for index ${index}!!`);
+            }
+        }
+
+        /**function finishExam() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { 
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { 
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { 
+                document.msExitFullscreen();
+            }
+            //Redirect to assessment page
+            window.location.href = 'student/assessment.jsp';
+        }**/
+
+        
+
+        //window.onload = 
+        /**function startExam() {
+            
+
+        	// Enter full-screen mode
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { 
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { 
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { /
+                document.documentElement.msRequestFullscreen();
+            }
+                // Start the countdown timer
+                const display = document.querySelector('#countdown');
+                startTimer(timerDuration, display);
+                showQuestion(currentQuestionIndex);
+
+                // Disable key strokes
+                window.addEventListener('keydown', preventKeyStrokes);                
+            });
+
+           
+        };**/
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@ package studentzone.model;
 public class Response {
     private int EID;
     private int QID;
-    private char userResponse;
+    private String userResponse;
     private boolean match;
     private int marks;
 
@@ -14,8 +14,8 @@ public class Response {
     public int getQID() { return QID; }
     public void setQID(int QID) { this.QID = QID; }
 
-    public char getUserResponse() { return userResponse; }
-    public void setUserResponse(char userResponse) { this.userResponse = userResponse; }
+    public String getUserResponse() { return userResponse; }
+    public void setUserResponse(String userResponse) { this.userResponse = userResponse; }
 
     public boolean isMatch() { return match; }
     public void setMatch(boolean match) { this.match = match; }

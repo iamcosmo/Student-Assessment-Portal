@@ -1,24 +1,29 @@
 package studentzone.dao;
 
 import studentzone.model.Response;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class ResponseDAOImpl implements ResponseDAO {
 
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void saveResponse(Response response) {
-        String sql = "INSERT INTO responses (EID, QID, userResponse, match, marks) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO responses (EID, QID, user_response, is_match, marks) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, response.getEID(), response.getQID(), response.getUserResponse(), response.isMatch(), response.getMarks());
     }
 
@@ -41,7 +46,7 @@ public class ResponseDAOImpl implements ResponseDAO {
             Response response = new Response();
             response.setEID(rs.getInt("EID"));
             response.setQID(rs.getInt("QID"));
-            response.setUserResponse(rs.getString("userResponse").charAt(0));
+            response.setUserResponse(rs.getString("userResponse").toString());
             response.setMatch(rs.getBoolean("match"));
             response.setMarks(rs.getInt("marks"));
             return response;

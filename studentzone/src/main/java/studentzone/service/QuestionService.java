@@ -1,6 +1,7 @@
 package studentzone.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,4 +38,10 @@ public class QuestionService {
     public int updateQuestion(int qid, String newQuestion, String optA, String optB, String optC, String optD, String answer,int set_id) {
         return questionsDao.updateQuestion(qid, newQuestion, optA, optB, optC, optD, answer,set_id);
     }
+    
+    public Map<Integer,Character> getAnswersBySetId(int setId)
+    {
+    	return questionsDao.getAnswersBySetId(setId);
+    }
+    
 }

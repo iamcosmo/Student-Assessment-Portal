@@ -1,10 +1,13 @@
 package studentzone.dao;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -88,6 +91,26 @@ public boolean insertQuestion(Questions question) {
     public int updateQuestion(int qid, String newQuestion, String optA, String optB, String optC, String optD, String answer, int set_id) {
         String sql = "UPDATE question SET question = ?, a = ?, b = ?, c = ?, d = ?, answer = ?, set_id = ? WHERE id = ?";
         return jdbcTemplate.update(sql, newQuestion, optA, optB, optC, optD, answer, set_id, qid); // Include set_id parameter
+    }
+    
+    @SuppressWarnings("deprecation")
+    public Map<Integer, Character> getAnswersBySetId(int setId)
+    {
+    	String sql = "SELECT q.id AS id, q.answer AS answer " +
+                "FROM question q " +
+                "JOIN question_set qs ON q.set_id = qs.id " +
+                "WHERE qs.id = ?";
+
+	   
+	   List<Questions> questions = jdbcTemplate.query(sql, new Object[]{setId}, new BeanPropertyRowMapper<>(Questions.class));
+	
+	   Map<Integer, Character> questionAnswerMap = new HashMap<>();
+	
+	   for (Questions question : questions) {
+	       questionAnswerMap.put(question.getId(), question.getAnswer().charAt(0)); // Assuming answer is stored as a single character
+	   }
+	
+	   return questionAnswerMap;
     }
 
 

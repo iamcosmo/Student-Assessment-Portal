@@ -14,7 +14,7 @@
 
 
     <!-- Scan both controller and service packages -->
-    <context:component-scan base-package="studentzone.controller,studentzone.service,studentzone.dao"/>
+    <context:component-scan base-package="studentzone.controller,studentzone.service,studentzone.dao,studentzone.model"/>
 
     <!-- View resolver configuration -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" name="viewResolver">
@@ -27,13 +27,15 @@
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/studentzone"/>
         <property name="username" value="root"/>
-        <property name="password" value="010101"/>
+        <property name="password" value="Mydbms22#2001"/>
     </bean>
 
     <!-- JDBC Template -->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+    
+   
     
      <mvc:resources mapping="/assets/**" location="/assets/"
 	cache-period="31556926"/>
