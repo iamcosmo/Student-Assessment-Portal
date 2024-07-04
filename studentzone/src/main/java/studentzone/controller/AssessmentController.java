@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.protobuf.Timestamp;
 
@@ -197,7 +198,7 @@ public class AssessmentController {
     } 
     
     @PostMapping("/beginexam")
-    public String startAssessment(@RequestParam("setid") int setId,HttpSession session, Model model)
+    public String startAssessment(@RequestParam("setid") int setId,HttpSession session,RedirectAttributes redirectAttributes, Model model)
     {
     	User user = isUserLoggedIn(session);
     	if(user==null)
@@ -216,6 +217,18 @@ public class AssessmentController {
     	model.addAttribute("questionlist",questionList);
     	model.addAttribute("setid",setId);
     	System.out.println("SetId fetched is: "+setId);
+    	
+    	int eid = examService.getEIDbySetID_Email(user.getEmail(), setId);
+    	if(eid!=-1)
+    	{
+    		System.out.println("USer already attempted this!");
+    		redirectAttributes.addFlashAttribute("same_exam_error", "You have already attempted that!!!");
+            return "redirect:/student/assessment";
+    	}
+    	else
+    	{
+    		System.out.println("EDI: "+eid);
+    	}
     	return "student/timer";    	
     }
     
@@ -226,87 +239,11 @@ public class AssessmentController {
     	if(user==null)
     	{
     		return "redirect:/login";
-    	}
+    	}   	
+    	
     	return "student/timer";
     }
     
-    @PostMapping("/submitExam1")
-    public String submitUserExam(HttpSession session,
-                                 @RequestParam("setid") int setid,
-                                 @RequestParam("qid") int[] qids,
-                                 @RequestParam("start_time") String startTimeStr,
-                                 @RequestParam("finish_time") String finishTimeStr,
-                                 HttpServletRequest request) {
-        User user = isUserLoggedIn(session);
-        if (user == null) {
-            return "redirect:/login";
-        }
-
-        String email = user.getEmail();
-
-        // Convert the timestamp strings to LocalDateTime objects
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
-        LocalDateTime finishTime = LocalDateTime.parse(finishTimeStr, formatter);
-
-        // Extract the responses for each question
-        Map<Integer, Character> responses = new HashMap<>();
-        for (int i = 0; i < qids.length; i++) {
-            String responseParam = "response" + i;
-            String response = request.getParameter(responseParam);
-            if (response != null && response.length() == 1) {
-                responses.put(qids[i], response.charAt(0));
-                
-            } else {
-                responses.put(qids[i], 'x'); // default value if no response
-            }
-            System.out.println("qid: "+qids[i]+"response: "+response.charAt(0));
-        }
-
-        // Insert the exam and responses into the database
-        Exam exam = new Exam();
-        exam.setEmail(email);
-        exam.setQSID(setid);
-        exam.setStartTime(startTime);
-        exam.setFinishTime(finishTime);
-        exam.setScore(0); // Initial score
-        // Insert exam record and get the generated EID
-        examService.saveExam(exam);
-        
-        int examId = examService.getEIDbySetID_Email(email, setid);
-        // Insert responses
-        Map<Integer , Character> answersOfSet = questionService.getAnswersBySetId(setid);
-        int userScore = 0,score=0;
-        for (Map.Entry<Integer, Character> entry : responses.entrySet()) {
-        	score=0;
-            Response response = new Response();
-            response.setEID(examId);
-            response.setQID(entry.getKey());
-            char userResponseChar = entry.getValue();
-            response.setUserResponse(String.valueOf(userResponseChar));
-            if(String.valueOf(entry.getValue()).equals("x"))
-            {
-            	response.setMatch(false); 
-                response.setMarks(0);
-            }
-            else if(entry.getValue().equals(answersOfSet.get(examId)))
-            {
-            	response.setMatch(entry.getValue().equals(answersOfSet.get(examId))); 
-            	response.setMarks(4);
-            }
-            else
-            {
-            	response.setMatch(entry.getValue().equals(answersOfSet.get(examId)));
-            	response.setMarks(-1);            	
-            }
-            userScore+=score;             
-            responseService.saveResponse(response);
-        }
-        examService.updateTotalScore(examId, userScore);
-        
-
-        return "redirect:/student/assessment";
-    }
     
     
     @PostMapping("/submitExam")
@@ -357,13 +294,7 @@ public class AssessmentController {
                     response.setQID(qId[qid]);
                     response.setUserResponse(userResponse);
                     int marks=0;
-                    if(((answersOfSet.get(qId[qid])).toString()).equals("x"))
-                    {
-                    	response.setMarks(0);
-                    	response.setMatch(false);
-                    	marks=0;
-                    	
-                    }
+                    
                     if(((answersOfSet.get(qId[qid])).toString()).equals(userResponse))
                     {
                     	response.setMarks(4);

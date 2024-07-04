@@ -185,11 +185,16 @@
 
   <main class="main">
     <!-- Hero Section -->
+    
     <section id="hero" class="hero section">
       <img src="<c:url value='/assets/img/photo1.avif'/>" alt="hero" data-aos="fade-in" />
       <div class="container" style="margin-top: -3%">
           <div class="row">
             <div class="col-lg-12">
+            <!-- Check if there is an error message -->
+            <c:if test="${not empty same_exam_error}">
+              <p style="color: red">${same_exam_error}</p>
+            </c:if>
               <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button
