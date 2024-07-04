@@ -30,13 +30,39 @@
     
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+        background-color: #f8f9fa;
+	      }
+	      .start-screen {
+	        width: 100%;
+	        max-width: 900px;
+	      }
+	
+	      .card {
+	        border: none;
+	        box-shadow: -5px 5px 10px black;
+	      }
+	
+	      .card-title {
+	        font-weight: bold;
+	        margin-bottom: 1.5rem;
+	      }
+	
+	      .list-group-item {
+	        border: none;
+	        padding: 0.75rem 1.25rem;
+	      }
+	
+	      .lead {
+	        font-weight: bold;
+	        margin-left: 2%;
+	      }
         .timer {
             display: flex;
             justify-content: space-between;
@@ -89,26 +115,81 @@
         .progress-bar.marked {
             background-color: #4caf50;
         }
+        
+
+      .custom-btn:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+        color: #e2e6ea;
+      }
+
+      .custom-btn:focus,
+      .custom-btn:active {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+      }
     </style>
 </head>
 <body>
 <div class="index-page">
 
-	 <div class="start-screen" id="start-screen">
-              <img
-                src="https://codescandy.com/geeks-bootstrap-5/assets/images/svg/survey-img.svg"
-                alt="Welcome to Quiz"
-              />
-              <h1>Welcome to Quiz</h1>
-              <p>
-                Engage live or asynchronously with quiz and poll questions that
-                participants complete at their own pace.
-              </p>
-              <div id="start-container">
-                <button id="start-button" class="btn-start btn btn-primary">
-                  Start Exam
-                </button>
+	<div class="start-screen" id="start-screen">
+          <div class="card">
+            <div class="card-body">
+              <h5
+                class="card-title text-center"
+                style="margin-left: 2%; font-weight: 800; font-size: larger"
+              >
+                INSTRUCTION FOR THE TEST
+              </h5>
+              <ol class="list-group list-group-flush">
+                <li class="list-group-item">
+                  1. Read the instructions carefully before starting the test.
+                </li>
+                <li class="list-group-item">
+                  2. The test contains a total of 20 questions.
+                </li>
+                <li class="list-group-item">
+                  3. Do not use Dictionaries, Calculators: No calculator (separate
+                  or with watch), Log tables or any other printed/online
+                  reference material during the test.
+                </li>
+                <li class="list-group-item">
+                  4. Do not Close/ Refresh/ LogOut the browser window once you have
+                  started the test.
+                </li>
+                <li class="list-group-item">
+                  5. There will be negative marking in this examination.
+                </li>
+                <li class="list-group-item">
+                  6. Marking Scheme:
+                  <ul>
+                    <li>+4 each correct answer.</li>
+                    <li>-1 for each negative answer.</li>
+                    <li>0 for skip.</li>
+                  </ul>
+                </li>
+                <li class="list-group-item">7. Select only one answer.</li>
+              </ol>
+              <div class="text-center ">
+                <p class="lead">Best of Luck for your Exam</p>
+                <div id="start-container ">
+                  <a
+                    class="btn btn-primary custom-btn"
+                    href="<c:url value='/student/assessment'/>"
+                    style="width: 100px"
+                  >
+                    Back
+                  </a>
+                  <button
+                    id="start-button"
+                    class="btn-start btn btn-primary custom-btn"
+                  >
+                    Start Exam
+                  </button>
+                </div>
               </div>
+            </div>
+          </div>
       </div>
 	<div id="exam-screen"
               class="container-fluid exam-mode d-none p-0">
