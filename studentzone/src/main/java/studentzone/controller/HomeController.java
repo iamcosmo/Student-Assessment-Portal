@@ -112,4 +112,9 @@ public class HomeController {
     public String exam() {
         return "student/exam";
     }
+    
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }
 }
