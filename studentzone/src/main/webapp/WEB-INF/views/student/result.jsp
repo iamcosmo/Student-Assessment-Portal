@@ -201,7 +201,8 @@
 	      <!-- Hero Section -->
 	      <section id="hero" class="hero section">
 	        <img
-	          src="assets/img/features-light-2.jpg"
+	        
+	          src="<c:url value='/assets/img/features-light-2.jpg'/>"
 	          alt="hero"
 	          data-aos="fade-in"
 	        />
@@ -239,6 +240,9 @@
 	                        </div>
 	                        <div class="result-body">
 	                          <div class="table-responsive">
+	                          	 <c:if test="${not empty no_result}">
+					              <p style="color: red">${no_result}</p>
+					            </c:if>
 	                            <table
 	                              class="table widget-26 table-striped table-hover text-center"
 	                            >
@@ -255,123 +259,30 @@
                                 class="table-group-divider"
                                 id="results-tbody"
                               >
-                                <tr>
-                                  <td>
-                                    <div class="widget-26-slno">1</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-test">Java</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-total-mark">100</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-mark-obtained">
-                                      50
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div
-                                      class="widget-26-sub-category bg-soft-base"
-                                    >
-                                      <span>Java</span>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div class="widget-26-slno">2</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-test">C++/C</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-total-mark">100</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-mark-obtained">
-                                      60
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div
-                                      class="widget-26-sub-category bg-soft-warning"
-                                    >
-                                      <span>C/C++</span>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div class="widget-26-slno">3</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-test">Pyhton</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-total-mark">100</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-mark-obtained">
-                                      60
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div
-                                      class="widget-26-sub-category bg-soft-success"
-                                    >
-                                      Python
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div class="widget-26-slno">4</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-test">SQL</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-total-mark">100</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-mark-obtained">
-                                      80
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div
-                                      class="widget-26-sub-category bg-soft-danger"
-                                    >
-                                      SQL
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div class="widget-26-slno">5</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-test">
-                                      Data Analyst
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-total-mark">100</div>
-                                  </td>
-                                  <td>
-                                    <div class="widget-26-mark-obtained">
-                                      75
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div
-                                      class="widget-26-sub-category bg-soft-info widget-26-total-mark"
-                                    >
-                                      <div>Python SQL</div>
-                                    </div>
-                                  </td>
-                                </tr>
+                                <c:forEach var="examResult" items="${resultlist}">
+					                <tr>
+					                    <td>
+					                        <div class="widget-26-slno">${examResult.qsid}</div>
+					                    </td>
+					                    <td>
+					                        <div class="widget-26-test">${examResult.setName}</div>
+					                    </td>
+					                    <td>
+					                        <div class="widget-26-total-mark">${examResult.totalScore}</div>
+					                    </td>
+					                    <td>
+					                        <div class="widget-26-mark-obtained">${examResult.userScore}</div>
+					                    </td>
+					                    <td>
+					                    	<c:forEach var="tag" items="${tagsetmap[examResult.qsid]}">
+						                        <div class="widget-26-sub-category bg-soft-warning">
+						                            <span>${tag}</span>
+						                        </div>
+						                    </c:forEach>
+					                    </td>
+					                </tr>
+					            </c:forEach>
+                                
                               </tbody>
 	                            </table>
 	                          </div>
