@@ -35,13 +35,13 @@
         flex-direction: column;
         height: 100vh;
         margin: 0;
-        justify-content: center;
-        align-items: center;
         background-color: #f8f9fa;
 	      }
 	      .start-screen {
 	        width: 100%;
 	        max-width: 900px;
+	        margin-left:20%;
+	        margin-top:1.5%;
 	      }
 	
 	      .card {
