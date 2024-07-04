@@ -182,7 +182,7 @@
                 students excel in their exams. Our resources cover a wide range
                 of subjects and provide valuable practice and insights.
               </p>
-              <a href="about.jsp" class="read-more"
+              <a href="<c:url value='/about'/>" class="read-more"
                 ><span>Read More</span><i class="bi bi-arrow-right"></i
               ></a>
             </div>
@@ -287,7 +287,7 @@
                   <i class="bi bi-card-checklist"></i>
                 </div>
                 <div>
-                  <h4 class="title">Personal Dashboard</h4>
+                  <h4 class="title">Profile View</h4>
                 </div>
               </div>
             </div>
@@ -299,7 +299,7 @@
                   <i class="bi bi-bar-chart"></i>
                 </div>
                 <div>
-                  <h4 class="title">Performance Tracking and Reports</h4>
+                  <h4 class="title">Result</h4>
                 </div>
               </div>
             </div>
@@ -340,9 +340,6 @@
                   <span>Interactive Quizzes and Mock Tests</span>.
                 </li>
               </ul>
-              <a href="#" class="btn btn-get-started align-self-start"
-                >Get Started</a
-              >
             </div>
           </div>
           <!-- Features Item -->
