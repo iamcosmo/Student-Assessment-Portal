@@ -67,7 +67,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #ffffff;
             padding: 10px;
             border-bottom: 2px solid #ccc;
         }
@@ -91,14 +90,16 @@
             margin-bottom: 20px;
         }
         .options {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .buttons {
             text-align: center;
+            margin-top:2%
         }
         .buttons button {
             padding: 10px 20px;
             margin: 5px;
+            border-radius: 20px;
         }
         .progress-box {
             flex: 1;
@@ -193,14 +194,15 @@
       </div>
 	<div id="exam-screen"
               class="container-fluid exam-mode d-none p-0">
-	    <div class="timer">
-	        <h1>Countdown Timer</h1>
+	    <div class="timer" style="background-color: black; color: white">
+	        <h1 style="margin-left: 20px; color: white">Exam</h1>
+	        <span style="margin-left: 76%; font-weight: 600">Time:</span>
 	        <div id="countdown">Loading...</div>
 	        <button id="finish-button" class="btn btn-danger" type="button" onclick="finishExam()">Finish</button>
 	    </div>
-	    <div class="container">
+	    <div class="container" >
 	        <div class="left-section">
-	            <form id="questionForm" action="<c:url value='/student/submitExam'/>" method="post">
+	            <form id="questionForm" action="<c:url value='/student/submitExam'/>" method="post" class="p-4" style="border: 3px solid black; border-radius: 10px; box-shadow: -5px 5px 10px black">
 	            	<input type="hidden" name="start_time" id="start_time" />
     				<input type="hidden" name="finish_time" id="finish_time" />
 	            	<input type="hidden" name="setid" value="${setid}" />
@@ -216,19 +218,19 @@
 	                            <label><input type="radio" name="q${status.index}" value="c" onclick="markQuestion(${status.index})"> ${question.c}</label><br>
 	                            <label><input type="radio" name="q${status.index}" value="d" onclick="markQuestion(${status.index})"> ${question.d}</label>
 	                        </div>
-	                        <button type="button" onclick="unselectOption(${status.index})">Unselect Option</button>
+	                        <button class="btn  btn-secondary" style="border-radius: 20px; margin-bottom: -2%" type="button" onclick="unselectOption(${status.index})">Unselect Option</button>
 	                    </div>
 	                </c:forEach>
 	            </form>
 	            <div class="buttons">
-	                <button type="button" id="prevBtn" onclick="showPreviousQuestion()">Previous</button>
-	                <button type="button" id="nextBtn" onclick="showNextQuestion()">Next</button>
+	                <button class="btn  btn-outline-dark" type="button" id="prevBtn" onclick="showPreviousQuestion()" style="border: 3px solid black; font-weight:600; float: left; box-shadow: -5px 5px 10px black">Previous</button>
+	                <button class="btn  btn-outline-dark" type="button" id="nextBtn" onclick="showNextQuestion()" style="border: 3px solid black; font-weight:600; float: right; box-shadow: -5px 5px 10px black">Next</button>
 	            </div>
 	        </div>
-	        <div class="right-section">
+	        <div class="right-section" style="background-color: #373A40">
 	            <div class="progress-box">
 	                <c:forEach var="question" items="${questionlist}" varStatus="status">
-	                    <div class="progress-bar" id="progress-${status.index}" onclick="jumpToQuestion(${status.index})">
+	                    <div class="progress-bar m-3" id="progress-${status.index}" onclick="jumpToQuestion(${status.index})" style="box-shadow: -5px 5px 10px black">
 	                        Question ${status.index + 1}
 	                    </div>
 	                </c:forEach>
