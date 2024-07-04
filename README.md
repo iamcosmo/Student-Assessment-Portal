@@ -167,7 +167,20 @@ CREATE TABLE recent_updates (
           date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 ```
+### User_results Table
 
+```sql
+CREATE TABLE user_results (
+    eid INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    qsid INT NOT NULL,
+    email VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    set_name VARCHAR(255),
+    total_score INT,
+    user_score INT,
+    FOREIGN KEY (eid) REFERENCES exams(EID),
+    FOREIGN KEY (email) REFERENCES users(email)
+);
+```
 
 ## Getting Started
 
