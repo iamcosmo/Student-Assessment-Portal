@@ -3,8 +3,6 @@ package studentzone.model;
 public class SubjectTag {
     private int id;
     private String name;
-
-    // Constructor
     public SubjectTag() {
     }
 
@@ -12,8 +10,6 @@ public class SubjectTag {
         this.id = id;
         this.name = name;
     }
-
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -30,7 +26,6 @@ public class SubjectTag {
         this.name = name;
     }
 
-    // toString method
     @Override
     public String toString() {
         return "SubjectTag{" +

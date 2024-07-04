@@ -220,10 +220,8 @@
                 <ul>
                     <li class="active"><a href="${pageContext.request.contextPath}/admin/dashboard" class="btn btn-primary return-dashboard">Dashboard</a></li>
                     <li><a href="${pageContext.request.contextPath}/admin/addQuestionSet" class="btn btn-primary add-set-button">Add Questionset</a></li>
-                        <li><a href="${pageContext.request.contextPath}/admin/subjectTags" class="btn btn-primary">Manage Subject Tags</a></li>
-                    <li><a href="${pageContext.request.contextPath}/admin/Analytics">Analytics</a></li>
-                    <li><a href="${pageContext.request.contextPath}/students">Students</a></li>
-                    <li><a href="${pageContext.request.contextPath}/admin/reports">Reports</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/subjectTags" class="btn btn-primary">Manage Subject Tags</a></li>
+                  
                     <li><a href="${pageContext.request.contextPath}/admin/logout" class="btn btn-primary">Logout</a></li>
                 </ul>
             </nav>
@@ -274,25 +272,6 @@
                         <li>${update.message} - <fmt:formatDate value="${update.date}" pattern="MM/dd/yyyy HH:mm" /></li>
                     </c:forEach>
                 </ul>
-            </section>
-            <section class="analytics">
-                <div class="section-title">Analytics</div>
-                <div class="analytics-cards">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">Subject Java</p>
-                            <p class="card-text">Added</p>
-                            <h5 class="card-text">Details</h5>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">Subject C++</p>
-                            <p class="card-text">Added</p>
-                            <h5 class="card-number">Details</h5>
-                        </div>
-                    </div>
-                </div>
             </section>
         </aside>
     </div>

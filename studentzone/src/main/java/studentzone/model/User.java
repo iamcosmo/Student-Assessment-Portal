@@ -7,7 +7,6 @@ public class User {
     private String password;
     private int usertype;
 
-    // Getters and Setters
     public String getName() {
         return name;
     }

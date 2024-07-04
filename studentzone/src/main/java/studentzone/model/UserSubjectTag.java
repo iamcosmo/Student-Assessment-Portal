@@ -11,7 +11,7 @@ public class UserSubjectTag {
         this.tagId = tagId;
     }
 
-    // Getters and setters
+ 
     public String getUserEmail() {
         return userEmail;
     }

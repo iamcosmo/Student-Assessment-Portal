@@ -111,7 +111,7 @@
 	        <nav id="navmenu" class="navmenu">
 	          <ul>
 	            <li><a href="<c:url value='/'/>" class="active">Home</a></li>
-	            <li><a href="<c:url value='/student/timer'/>">About</a></li>
+	            <li><a href="<c:url value='/about'/>">About</a></li>
 	            <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
 	            <li><a href="<c:url value='/result'/>">Results</a></li>
 	            <c:choose>

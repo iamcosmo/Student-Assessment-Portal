@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import studentzone.dao.QuestionSetDao;
-import studentzone.dao.QuestionsDao;
-import  studentzone.model.QuestionSet;
-import studentzone.model.SubjectTagSetId;
+import studentzone.model.QuestionSet;
+import  studentzone.model.SubjectTagSetId;
 import studentzone.model.UserSubjectTag;
 
 @Service
@@ -20,8 +19,6 @@ public class QuestionSetService {
     private SubjectTagSetIdService subjectTagSetIdService;
 
     public List<QuestionSet> getAllSets() { return questionSetDao.getAllSets(); }
-
-    // public boolean addSet(QuestionSet set) { return questionSetDao.insertSet(set); }
      @Transactional
     public boolean addSetWithTags(QuestionSet set, List<Integer> subjectTags) {
         int setId = questionSetDao.insertSet(set);
