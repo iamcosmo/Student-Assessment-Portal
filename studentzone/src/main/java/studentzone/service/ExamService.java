@@ -54,5 +54,10 @@ public class ExamService{
     {
     	examDAO.updateTotalScore(eid, newScore);
     }
+    
+    public List<Exam> getUsersAllExams(String email)
+    {
+    	return examDAO.getUsersAllExams(email);
+    }
 }
 

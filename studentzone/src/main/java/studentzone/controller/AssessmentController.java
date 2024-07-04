@@ -21,15 +21,18 @@ import studentzone.service.SubjectTagService;
 import studentzone.service.UserSubjectTagService;
 import studentzone.service.ExamService;
 import studentzone.service.ResponseService;
+import studentzone.service.UserResultService;
 import studentzone.model.SubjectTag;
 import studentzone.model.QuestionSet;
 import studentzone.model.Questions;
 import studentzone.model.Exam;
 import studentzone.model.Response;
+import studentzone.model.UserResult;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +50,18 @@ public class AssessmentController {
     private final QuestionService questionService;
     private final ExamService examService;
     private final ResponseService responseService;
+    private final UserResultService userResultService;
 
     @Autowired
-    public AssessmentController(UserService userService,UserSubjectTagService userSubjectTagService,SubjectTagService subjectTagService, UserDetailsService userDetailsService,QuestionService questionService,ExamService examService, ResponseService responseService) {
+    public AssessmentController(UserService userService,
+    		UserSubjectTagService userSubjectTagService,
+    		SubjectTagService subjectTagService,
+    		UserDetailsService userDetailsService,
+    		QuestionService questionService,
+    		ExamService examService, 
+    		ResponseService responseService,
+    		UserResultService userResultService) {
+    	
         this.userService = userService;
         this.userSubjectTagService = userSubjectTagService;
         this.subjectTagService = subjectTagService;    	
@@ -57,6 +69,7 @@ public class AssessmentController {
         this.questionService = questionService;
         this.examService = examService;
         this.responseService = responseService;
+        this.userResultService = userResultService;
     }
     
     public User isUserLoggedIn(HttpSession session)
@@ -242,8 +255,7 @@ public class AssessmentController {
     	}   	
     	
     	return "student/timer";
-    }
-    
+    }    
     
     
     @PostMapping("/submitExam")
@@ -254,10 +266,6 @@ public class AssessmentController {
     	if (user == null) {
             return "redirect:/login";
         }
-    	
-    	//System.out.println("Set ID: " + setid);
-    	
-    	// Parse start and finish times
         LocalDateTime startTime = null;
         LocalDateTime finishTime = null;
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
@@ -283,12 +291,8 @@ public class AssessmentController {
             if (key.startsWith("q")&& !key.equals("qid")) {
                 try {
                 	
-                    int qid = Integer.parseInt(key.substring(1)); // Extract qid from key
+                    int qid = Integer.parseInt(key.substring(1)); 
                     String userResponse = value;
-                    //System.out.println("qid: " + qid + " response: " + userResponse);
-                    
-                    
-//                    
                     Response response = new Response();
                     response.setEID(examId);
                     response.setQID(qId[qid]);
@@ -315,20 +319,67 @@ public class AssessmentController {
                 }
             }
         });
-        //System.out.println("Total score = "+totalMarks[0]);
-        examService.updateTotalScore(examId, totalMarks[0]);
-//        for(int i=0; i<qId.length; i++)
-//        {
-//        	System.out.println("qid : "+qId[i]);
-//        }
         
-//        System.out.println("start time: "+startTime);
-//        System.out.println("Finish Time: "+finishTime);
-        
+        examService.updateTotalScore(examId, totalMarks[0]);        
 
-        return "redirect:/student/assessment"; // You can redirect to a success page or return a response
+        return "redirect:/student/assessment"; 
     }
 
+    @GetMapping("results")
+    public String fetchResult(HttpSession session,Model model)
+    {
+    	User user = isUserLoggedIn(session);
+    	if(user==null)
+    	{
+    		return "redirect:/login";
+    	}
+    	System.out.println("Here in results");
+    	
+    	List<Exam> examList =examService.getUsersAllExams(user.getEmail());
+    	
+    	if(examList.isEmpty())
+    	{
+    		model.addAttribute("no_result","Sorry You dont have any Results to see. Attempt one exam");
+    		return "student/result";
+    	}
+    	
+    	List<UserResult> userResultList = new ArrayList<>();
+    	userResultList = userResultService.getAllUserResultsByEmail(user.getEmail());
+    	
+    	
+    	Map<Integer,Integer> eidQsid = userResultService.getEID_QSIDByEmail(user.getEmail());
+    	    	
+    	    	
+    	Map<Integer,List<String>> tagSetMap = new HashMap<>();
+    	
+    	
+    	for(Exam exam: examList)
+    	{
+    		if(eidQsid.get(exam.getEID())==null)
+    		{
+	    		UserResult userResult = new UserResult();
+	    		QuestionSet questionSet = questionSetService.getSetById(exam.getQSID());
+	    		userResult.setEid(exam.getEID());
+	    		userResult.setEmail(user.getEmail());
+	    		userResult.setQsid(exam.getQSID());
+	    		userResult.setSetName(questionSet.getName());
+	    		userResult.setTotalScore(questionSet.getQuestionCount()*4);
+	    		userResult.setUserScore(exam.getScore());
+	    		
+	    		userResultService.addUserResult(userResult);
+	    		
+	    		userResultList.add(userResult);
+    		}
+    		tagSetMap.put(exam.getQSID(),questionSetService.getTagsForSet(exam.getQSID()));
+    	}    	 	
+    	
+    	model.addAttribute("tagsetmap",tagSetMap);
+    	model.addAttribute("resultlist",userResultList);
+    	
+    	
+    	
+    	return "student/result";
+    }
     
     
         

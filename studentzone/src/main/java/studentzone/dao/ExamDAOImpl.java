@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -19,6 +20,7 @@ public class ExamDAOImpl implements ExamDAO {
     private JdbcTemplate jdbcTemplate;
     
     private static final String MATCH_EXAM_SQL = "SELECT * FROM exams WHERE email = ? AND QSID = ?";
+    private static final String FIND_USERS_EXAMS_SQL = "SELECT * FROM exams WHERE email = ?";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -100,6 +102,27 @@ public class ExamDAOImpl implements ExamDAO {
             e.printStackTrace(); // Print stack trace for detailed error analysis
         }
     }
+    
+    @Override
+    public List<Exam> getUsersAllExams(String email)
+    {
+    	List<Exam> examsList = new ArrayList<>();
+
+    	SqlRowSet rowSet = jdbcTemplate.queryForRowSet(FIND_USERS_EXAMS_SQL, email);
+    	while(rowSet.next())
+    	{
+    		Exam exam = new Exam();
+    		exam.setEID(rowSet.getInt("EID"));
+    		exam.setQSID(rowSet.getInt("QSID"));
+    		exam.setEmail(email);
+    		exam.setScore(rowSet.getInt("score"));
+    		exam.setStartTime(rowSet.getTimestamp("start_time").toLocalDateTime());
+    		exam.setFinishTime(rowSet.getTimestamp("finish_time").toLocalDateTime());
+    		examsList.add(exam);    		
+    	}
+    	
+    	return examsList;    	
+    }
 
     private static final class ExamRowMapper implements RowMapper<Exam> {
         @Override
@@ -108,8 +131,8 @@ public class ExamDAOImpl implements ExamDAO {
             exam.setEID(rs.getInt("EID"));
             exam.setEmail(rs.getString("email"));
             exam.setQSID(rs.getInt("QSID"));
-            exam.setStartTime(rs.getTimestamp("startTime").toLocalDateTime());
-            exam.setFinishTime(rs.getTimestamp("finishTime").toLocalDateTime());
+            exam.setStartTime(rs.getTimestamp("start_time").toLocalDateTime());
+            exam.setFinishTime(rs.getTimestamp("finish_time").toLocalDateTime());
             exam.setScore(rs.getInt("score"));
             return exam;
         }

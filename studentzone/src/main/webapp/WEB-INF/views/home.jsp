@@ -113,7 +113,7 @@
 	            <li><a href="<c:url value='/'/>" class="active">Home</a></li>
 	            <li><a href="<c:url value='/about'/>">About</a></li>
 	            <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
-	            <li><a href="<c:url value='/result'/>">Results</a></li>
+	            <li><a href="<c:url value='/student/results'/>">Results</a></li>
 	            <c:choose>
 	                <c:when test="${not empty sessionScope.user}">
 	                    <li><a href="<c:url value='/logout'/>">Logout</a></li>

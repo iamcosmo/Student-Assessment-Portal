@@ -11,5 +11,6 @@ public interface ExamDAO {
     int getExamIdBysetID_email(String email, int setid);
     void deleteExam(int EID);
     void updateTotalScore(int eid, int newScore);
+    List<Exam> getUsersAllExams(String email);
 }
 
