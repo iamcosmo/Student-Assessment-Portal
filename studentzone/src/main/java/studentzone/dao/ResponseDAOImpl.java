@@ -24,6 +24,14 @@ public class ResponseDAOImpl implements ResponseDAO {
     @Override
     public void saveResponse(Response response) {
         String sql = "INSERT INTO responses (EID, QID, user_response, is_match, marks) VALUES (?, ?, ?, ?, ?)";
+        try
+        {
+        	System.out.println("Skipping Question: "+response.getQID()+" User Response: "+response.getMarks());
+        
+        }
+        catch(Exception e) {
+        	System.out.println("Not Found !!");
+        }
         jdbcTemplate.update(sql, response.getEID(), response.getQID(), response.getUserResponse(), response.isMatch(), response.getMarks());
     }
 

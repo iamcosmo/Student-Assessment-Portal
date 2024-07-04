@@ -3,6 +3,7 @@ package studentzone.dao;
 import studentzone.model.Exam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -77,8 +78,14 @@ public class ExamDAOImpl implements ExamDAO {
     	 String sql = "SELECT EID FROM exams WHERE QSID = ? AND email=?";
          
          // Execute query and retrieve the EID
-         return jdbcTemplate.queryForObject(sql, Integer.class, setid, email);
-    	
+    	 try
+    	 {
+    		 return jdbcTemplate.queryForObject(sql, Integer.class, setid, email);
+    	 }
+    	 catch(EmptyResultDataAccessException e)
+    	 {
+    		 return -1;
+    	 }
     }
     
     @Override
