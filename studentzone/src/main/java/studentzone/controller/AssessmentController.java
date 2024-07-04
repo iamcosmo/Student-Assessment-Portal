@@ -343,7 +343,7 @@ public class AssessmentController {
         Map<Integer , Character> answersOfSet = questionService.getAnswersBySetId(setid);
         final int[] totalMarks = {0};
         allParams.forEach((key, value) -> {
-            if (key.startsWith("q")) {
+            if (key.startsWith("q")&& !key.equals("qid")) {
                 try {
                 	
                     int qid = Integer.parseInt(key.substring(1)); // Extract qid from key
