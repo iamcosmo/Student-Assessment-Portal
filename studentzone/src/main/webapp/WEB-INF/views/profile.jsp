@@ -18,14 +18,13 @@
     rel="stylesheet" />
 
   <!-- Vendor CSS Files -->
-  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
-
+  <link href="<c:url value='/assets/vendor/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet" />
+  <link href="<c:url value='/assets/vendor/bootstrap-icons/bootstrap-icons.css'/>" rel="stylesheet" />
+  <link href="<c:url value='/assets/vendor/aos/aos.css'/>" rel="stylesheet" />
+  <link href="<c:url value='/assets/vendor/glightbox/css/glightbox.min.css'/>" rel="stylesheet" />
+  <link href="<c:url value='/assets/vendor/swiper/swiper-bundle.min.css'/>" rel="stylesheet" />
   <!-- Main CSS File -->
-  <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet" />
+  <link href="<c:url value='/assets/css/main.css'/>" rel="stylesheet" />
   
   <style>
   		:root {
@@ -164,9 +163,9 @@
 	        <nav id="navmenu" class="navmenu">
 	          <ul>
 	            <li><a href="<c:url value='/'/>">Home</a></li>
-	            <li><a href="<c:url value='/exam'/>">About</a></li>
+	            <li><a href="<c:url value='/about'/>">About</a></li>
 	            <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
-	            <li><a href="<c:url value='/result'/>">Results</a></li>
+	            <li><a href="<c:url value='/student/results'/>">Results</a></li>
 	            <c:choose>
 	                <c:when test="${not empty sessionScope.user}">
 	                    <li><a href="<c:url value='/logout'/>">Logout</a></li>
