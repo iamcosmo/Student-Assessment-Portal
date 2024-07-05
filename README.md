@@ -10,6 +10,7 @@ The Student Assessment Portal is a web application designed to manage assessment
 - **User Profiles**: Detailed user profiles including personal and contact information.
 - **Question Management**: Creation, editing, and deletion of questions organized into sets.
 - **Assessment Taking**: Students can access and complete assessments based on predefined question sets.
+- **Results**: Student can fetch their results if any.
 - **Data Validation**: Ensures data integrity and security through validation rules.
 
 ## Database Schema
@@ -81,8 +82,11 @@ CREATE TABLE question (
     c VARCHAR(255) NOT NULL,
     d VARCHAR(255) NOT NULL,
     answer CHAR(1) NOT NULL,
-    PRIMARY KEY (id)
+    set_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (set_id) REFERENCES question_set(id)
 );
+
 ```
 
 ### Question_Set Table
@@ -90,12 +94,9 @@ CREATE TABLE question (
 ```sql
 CREATE TABLE question_set (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    question_count INT DEFAULT 0
 );
-
-ALTER TABLE question
-ADD COLUMN set_id INT,
-ADD FOREIGN KEY (set_id) REFERENCES question_set(id);
 ```
 ### Subject_tag Table
 
