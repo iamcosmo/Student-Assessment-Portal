@@ -158,10 +158,9 @@
 	        <nav id="navmenu" class="navmenu">
 	          <ul>
 	            <li><a href="<c:url value='/'/>" class="active">Home</a></li>
-	            <li><a href="about.jsp">About</a></li>
+	            <li><a href="<c:url value='/about'/>">About</a></li>
 	            <li><a href="<c:url value='/student/assessment'/>">Assessment</a></li>
-	            <li><a href="results.jsp">Results</a></li>
-	            <li><a href="analyze.jsp">Analyze</a></li>
+	            <li><a href="<c:url value='/student/results'/>">Results</a></li>
 	            <c:choose>
 	                <c:when test="${not empty sessionScope.user}">
 	                    <li><a href="<c:url value='/logout'/>">Logout</a></li>
