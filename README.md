@@ -279,31 +279,47 @@ INSERT INTO question (question, a, b, c, d, answer, set_id) VALUES
        </bean>
        ```
 
-4. **Accessing the Application**:
+4. ## Accessing the Application:
+   ```
    - Open your web browser.
    - Navigate to the URL where your application is deployed.
+   ```
 
-5. **Administrator Login**:
-   - Login as an administrator to manage question sets and questions
+5. ## Administrator Login:
+    ```
+       - Login as an administrator to manage question sets and questions
+    ```
 
 
-**Question count**
-   -ALTER TABLE question_set
-   -ADD COLUMN question_count INT;
+### Question count
+```sql
+   ALTER TABLE question_set
+   ADD COLUMN question_count INT;
+```
 
-**subject intrest table**
+### subject intrest table
+
+```sql
    CREATE TABLE subject_interest (
     student_email VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL PRIMARY KEY,
     subjects TEXT,
     FOREIGN KEY (student_email) REFERENCES users(email)
    );
+```
    
-**subject_tag table**
+### subject_tag table
+
+```sql
    CREATE TABLE subject_tag (
        id INT AUTO_INCREMENT PRIMARY KEY,
        name VARCHAR(255) NOT NULL
      );
-     **subjecttag_setid table**
+
+```
+
+### subjecttag_setid table
+
+```sql
     CREATE TABLE subjecttag_setid (
         set_id INT,
         subject_tag_id INT,
@@ -311,4 +327,5 @@ INSERT INTO question (question, a, b, c, d, answer, set_id) VALUES
         FOREIGN KEY (set_id) REFERENCES question_set(id),
         FOREIGN KEY (subject_tag_id) REFERENCES subject_tag(id)
     );
+```
 
