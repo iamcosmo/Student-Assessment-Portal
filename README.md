@@ -292,8 +292,8 @@ INSERT INTO question (question, a, b, c, d, answer, set_id) VALUES
 
 ### Question count
 ```sql
-   -ALTER TABLE question_set
-   -ADD COLUMN question_count INT;
+   ALTER TABLE question_set
+   ADD COLUMN question_count INT;
 ```
 
 ### subject intrest table
